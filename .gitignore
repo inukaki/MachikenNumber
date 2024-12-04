@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Next.js
+frontend/.next/
+frontend/out/
+
+# Nest.js
+backend/dist/
+
+# Environment variables
+.env
+.env.local
+
+# Docker volumes
+postgres_data/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
