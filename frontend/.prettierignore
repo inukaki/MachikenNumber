@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.nuxt/
+.astro/
+build/
+dist/
+out/
+public/
+next.config.js
