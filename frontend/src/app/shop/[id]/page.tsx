@@ -1,5 +1,6 @@
 'use client';
 
+import { eventIdSchema } from '@/app/schema/eventIdSchema';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -22,24 +23,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-
-const FormSchema = z.object({
-    eventId: z.string().min(2, {
-        message: 'Username must be at least 2 characters.',
-    }),
-});
+import type { z } from 'zod';
 
 export default function ShopDetail() {
     const { id } = useParams();
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
+    const form = useForm<z.infer<typeof eventIdSchema>>({
+        resolver: zodResolver(eventIdSchema),
         defaultValues: {
             eventId: '',
         },
     });
 
-    async function onSubmit(data: z.infer<typeof FormSchema>) {
+    async function onSubmit(data: z.infer<typeof eventIdSchema>) {
         try {
             const res = await fetch(`/api/shop/${id}/event`, {
                 method: 'POST',
