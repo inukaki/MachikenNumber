@@ -1,0 +1,33 @@
+openapi: 3.1.0
+info:
+  title: "MachikanNumberAPI"
+  version: "1.0.0"
+  description: "This is a MachikanNumberAPI"
+
+servers:
+  - url: "http://localhost: 25573"
+    description: "開発環境"
+
+paths:
+  /users/{userId}:
+    get:
+      summary: "ユーザー情報取得"
+      description: "ユーザー情報を取得します"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          description: "ユーザーID"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: "ユーザーが見つかりません"
+        "500":
+          description: "サーバーエラー"
