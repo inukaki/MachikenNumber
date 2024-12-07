@@ -25,7 +25,10 @@ CREATE TABLE shops (
     name TEXT NOT NULL,
     description TEXT,
     start_at DATETIME,
-    end_at DATETIME
+    end_at DATETIME,
+    user_key CHAR(36) NOT NULL,
+    -- 外部キー制約
+    FOREIGN KEY (event_id) REFERENCES events(event_id) ON DELETE CASCADE
 );
 
 CREATE TABLE event_to_shops (
