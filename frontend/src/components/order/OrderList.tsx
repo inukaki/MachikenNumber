@@ -1,5 +1,6 @@
 'use client';
 
+import { fetchOrders } from '@/actions/orderActions';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -13,61 +14,26 @@ interface Order {
 export default function OrderList() {
     const { id } = useParams();
     const [orders, setOrders] = useState<Order[]>([]);
-
-    const fetchOrders = async () => {
-        try {
-            const response = await fetch(`/api/orders/${id}`);
-            if (!response.ok) throw new Error('注文データの取得に失敗しました');
-            const data = await response.json();
-            // const data = [
-            //     {
-            //         id: '1',
-            //         status: '受付中',
-            //         createdAt: new Date().toISOString(),
-            //         items: [
-            //             {
-            //                 id: '1',
-            //                 name: '焼きそば',
-            //                 quantity: 2,
-            //                 price: 100,
-            //             },
-            //             {
-            //                 id: '2',
-            //                 name: '唐揚げ',
-            //                 quantity: 1,
-            //                 price: 80,
-            //             },
-            //         ],
-            //     },
-            //     {
-            //         id: '2',
-            //         status: '受付中',
-            //         createdAt: new Date().toISOString(),
-            //         items: [
-            //             {
-            //                 id: '1',
-            //                 name: '焼きそば',
-            //                 quantity: 1,
-            //                 price: 100,
-            //             },
-            //             {
-            //                 id: '2',
-            //                 name: '唐揚げ',
-            //                 quantity: 3,
-            //                 price: 80,
-            //             },
-            //         ],
-            //     },
-            // ];
-            setOrders(data);
-        } catch (error) {
-            console.error('Error fetching orders:', error);
-        }
-    };
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
-        fetchOrders();
+        const loadOrders = async () => {
+            try {
+                const data = await fetchOrders();
+                setOrders(data);
+            } catch (err) {
+                setError('注文リストの取得に失敗しました');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadOrders();
     }, []);
+
+    if (loading) return <p>読み込み中...</p>;
+    if (error) return <p className="text-red-500">{error}</p>;
 
     return (
         <div className="mt-8">
