@@ -7,7 +7,9 @@ DATABASE_URL=""
 # Direct connection to the database. Used for migrations.
 DIRECT_URL=""
 
+# 秘密鍵
 NEXTAUTH_SECRET=""
+# ローカルでのドメイン
 NEXTAUTH_URL=
 NEXT_PUBLIC_APP_URL=
 
