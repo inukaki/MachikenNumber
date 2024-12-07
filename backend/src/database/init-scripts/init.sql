@@ -16,7 +16,8 @@ CREATE TABLE events (
     name TEXT NOT NULL,
     description TEXT,
     start_at DATETIME,
-    end_at DATETIME
+    end_at DATETIME,
+    invite_key CHAR(36) NOT NULL
 );
 
 CREATE TABLE shops (
