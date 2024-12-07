@@ -1,5 +1,5 @@
 services:
-  db:
+  machikan_number_db:
     image: mariadb:10.5
     env_file: ./.env
     ports:

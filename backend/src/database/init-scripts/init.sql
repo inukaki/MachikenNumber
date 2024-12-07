@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS `machikan_number_db`;
+
+USE `machikan_number_db`;
+
 -- 依存関係の確認を無効化
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS order_to_items;
