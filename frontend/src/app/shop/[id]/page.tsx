@@ -93,9 +93,9 @@ export default function ShopDetail() {
                             </Dialog>
                         </div>
                         <div className="flex flex-col space-y-1.5">
-                            <Link href={`/shop/${id}/orderList`}>
+                            <Link href={`/shop/${id}/order`}>
                                 <Button className="w-full" variant="outline">
-                                    注文リスト
+                                    注文関連
                                 </Button>
                             </Link>
                         </div>
