@@ -5,57 +5,84 @@ import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcrypt';
 
+declare module 'next-auth' {
+  interface User {
+    id: string; // User モデルの ID を追加
+    role?: string; // 必要であれば他のカスタムフィールドも追加
+  }
+
+  interface Session {
+    user: {
+      id: string; // セッションの User に ID を追加
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+}
+
+// 環境変数の検証
+if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+  throw new Error('Google認証に必要な環境変数が設定されていません');
+}
+
+// ユーザー認証ヘルパー関数
+async function authenticateUser(email: string, password: string) {
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  if (!user || !user.hashedPassword) {
+    throw new Error('ユーザーが見つからないか、パスワードが設定されていません');
+  }
+
+  const isCorrectPassword = await bcrypt.compare(password, user.hashedPassword);
+
+  if (!isCorrectPassword) {
+    throw new Error('パスワードが一致しません');
+  }
+
+  return user;
+}
+
 // NextAuth設定
 export const authOptions: NextAuthOptions = {
-  // Prismaを使うための設定
   adapter: PrismaAdapter(prisma),
-  // 認証プロバイダーの設定
   providers: [
-    // Google認証
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-    // メールアドレス認証
     CredentialsProvider({
-      name: 'credentials',
+      name: 'Credentials',
       credentials: {
-        // メールアドレスとパスワード
-        email: { label: 'email', type: 'text' },
-        password: { label: 'password', type: 'password' },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        // メールアドレスとパスワードがない場合はエラー
         if (!credentials?.email || !credentials?.password) {
-          throw new Error('メールアドレスとパスワードが存在しません');
+          throw new Error('メールアドレスとパスワードを入力してください');
         }
-
-        // ユーザーを取得
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
-
-        // ユーザーが存在しない場合はエラー
-        if (!user || !user?.hashedPassword) {
-          throw new Error('ユーザーが存在しません');
-        }
-
-        // パスワードが一致しない場合はエラー
-        const isCorrectPassword = await bcrypt.compare(credentials.password, user.hashedPassword);
-
-        if (!isCorrectPassword) {
-          throw new Error('パスワードが一致しません');
-        }
-
-        return user;
+        return authenticateUser(credentials.email, credentials.password);
       },
     }),
   ],
-  // セッションの設定
   session: {
     strategy: 'jwt',
+  },
+  callbacks: {
+    async session({ session, token }) {
+      if (token?.sub) {
+        if (session.user) {
+          session.user.id = token.sub; // ユーザーIDをセッションに追加
+        }
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.sub = user.id; // JWTトークンにユーザーIDを保存
+      }
+      return token;
+    },
   },
 };
 

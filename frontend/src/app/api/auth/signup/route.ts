@@ -16,9 +16,24 @@ export async function POST(request: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    await prisma.user.create({
+    //＊＊＊＊＊以下変更点＊＊＊＊＊
+    const newUser = await prisma.user.create({
       data: { name, email, hashedPassword },
     });
+
+    // Nest.jsにuserIdを送信
+    const nestResponse = await fetch('http://localhost:3001/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: newUser.id }),
+    });
+
+    if (!nestResponse.ok) {
+      console.error('Nest.jsへの登録に失敗しました');
+    }
+    //＊＊＊＊＊以上変更点＊＊＊＊＊
 
     return NextResponse.json({ message: 'サインアップ成功' }, { status: 201 });
   } catch (error) {
