@@ -22,17 +22,17 @@ export async function POST(request: Request) {
     });
 
     // Nest.jsにuserIdを送信
-    const nestResponse = await fetch('http://localhost:3001/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: newUser.id }),
-    });
+    // const nestResponse = await fetch('http://localhost:3001/users', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ id: newUser.id }),
+    // });
 
-    if (!nestResponse.ok) {
-      console.error('Nest.jsへの登録に失敗しました');
-    }
+    // if (!nestResponse.ok) {
+    //   console.error('Nest.jsへの登録に失敗しました');
+    // }
     //＊＊＊＊＊以上変更点＊＊＊＊＊
 
     return NextResponse.json({ message: 'サインアップ成功' }, { status: 201 });
