@@ -1,6 +1,8 @@
 'use client';
 
-import { createMenuSchema } from '@/schema/createMenuSchema';
+
+import { createMenuSchema } from '@/app/schema/createMenuSchema';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import {
