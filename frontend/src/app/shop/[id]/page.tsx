@@ -1,4 +1,3 @@
-
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/nextauth';
 import { redirect } from 'next/navigation';
@@ -22,5 +21,4 @@ export default async function ShopDetail({ params }: { params: { id: string } })
   }
 
   return <ShopHome />;
-
 }
