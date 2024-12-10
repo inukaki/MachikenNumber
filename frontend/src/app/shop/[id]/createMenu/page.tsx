@@ -4,6 +4,7 @@ import type { Payment } from '@/components/dataTable/columns';
 import { columns } from '@/components/dataTable/columns';
 
 async function getData(): Promise<Payment[]> {
+
   return [
     {
       id: '728ed52f',
@@ -32,4 +33,5 @@ export default async function CreateMenuPage({ params }: { params: Promise<{ id:
       </div>
     </div>
   );
+
 }

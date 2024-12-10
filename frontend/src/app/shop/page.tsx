@@ -1,11 +1,17 @@
-import LoginForm from '@/components/LoginForm';
+import { redirect } from 'next/navigation';
+import { getAuthSession } from '@/lib/nextauth';
+import Login from '@/components/auth/Login';
 
-export default async function Shop() {
-  return (
-    <main className="flex items-center justify-center md:h-screen">
-      <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4 md:-mt-32">
-        <LoginForm />
-      </div>
-    </main>
-  );
-}
+// ログインページ
+const LoginPage = async () => {
+  const session = await getAuthSession();
+
+  // ログイン済みならリダイレクト
+  if (session?.id) {
+    redirect(`/shop/${session.id}`);
+  }
+
+  return <Login />;
+};
+
+export default LoginPage;

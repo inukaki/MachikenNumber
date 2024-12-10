@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Swagger UI</title>
-    <link rel="stylesheet" type="text/css" href="./dist/swagger-ui.css">
+    <link rel="stylesheet" type="text/css" href="./dist/swagger-ui.css" />
     <script src="./dist/swagger-ui-bundle.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="swagger-ui"></div>
 
     <script>
-        const ui = SwaggerUIBundle({
-            url: "./openapi.yml",
-            dom_id: '#swagger-ui',
-            presets: [
-                SwaggerUIBundle.presets.apis,
-                SwaggerUIBundle.SwaggerUIStandalonePreset
-            ],
-            layout: "BaseLayout"
-        })
+      const ui = SwaggerUIBundle({
+        url: "./openapi.yml",
+        dom_id: "#swagger-ui",
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIBundle.SwaggerUIStandalonePreset,
+        ],
+        layout: "BaseLayout",
+      });
     </script>
-</body>
-
+  </body>
 </html>
