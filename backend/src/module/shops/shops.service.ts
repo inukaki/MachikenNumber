@@ -1,7 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { Shop } from "../entities/shops.entity";
 import { ShopsRepository } from "./shops.repository";
-import { CreateShopDto } from "src/module/dtos/create_shop_dto";
+import { CreateShopDto } from "../dtos/create_shop_dto";
+import { UpdateShopDto } from "../dtos/update_shop_dto";
+
 
 @Injectable()
 export class ShopsService {
@@ -16,10 +18,17 @@ export class ShopsService {
         const createdShop = this.shopsRepository.createShop(shop);
         return createdShop;
     }
-    getShop() {
-        return 'This action returns a shop';
+    getShop(shop_id: string): Promise<Shop> {
+        const shop = this.shopsRepository.getShop(shop_id);
+        return shop;
+
     }
-    updateShop() {
-        return 'This action updates a shop';
+    async updateShop(shop_id: string, updateShopDto: UpdateShopDto): Promise<Shop> {
+        let shop = await this.shopsRepository.getShop(shop_id);
+        if (updateShopDto.name) shop.name = updateShopDto.name;
+        if (updateShopDto.description) shop.description = updateShopDto.description;
+        if (updateShopDto.start_at) shop.start_at = updateShopDto.start_at;
+        if (updateShopDto.end_at) shop.end_at = updateShopDto.end_at;
+        return this.shopsRepository.createShop(shop);
     }
 }

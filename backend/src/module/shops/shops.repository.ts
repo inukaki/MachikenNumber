@@ -13,10 +13,8 @@ export class ShopsRepository {
         const createdShop = await this.shopsRepositoryTypeORM.save(shop);
         return createdShop;
     }
-    getShop() {
-        return 'This action returns a shop';
-    }
-    updateShop() {
-        return 'This action updates a shop';
+    async getShop(shop_id: string): Promise<Shop> {
+        const shop = await this.shopsRepositoryTypeORM.findOneById(shop_id);
+        return shop;
     }
 }
