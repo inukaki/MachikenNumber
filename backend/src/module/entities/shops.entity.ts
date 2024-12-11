@@ -7,8 +7,7 @@ import { ShopToCardNumbers } from './shop_to_card_numbers.entity';
 @Entity('shops')
 export class Shop {
     @PrimaryGeneratedColumn('uuid')
-    @OneToMany(() => EventToShops, (event_to_shops) => event_to_shops.shop_id)
-    shop_id: number;
+    shop_id: string;
 
     @Column()
     name: string;
@@ -31,9 +30,6 @@ export class Shop {
     @OneToMany(() => Orders, (orders) => orders.shop_id)
     orders: Orders[];
 
-    @OneToMany(
-        () => ShopToCardNumbers,
-        (shopToCardNumbers) => shopToCardNumbers.shop_id,
-    )
+    @OneToMany(() => ShopToCardNumbers, (shopToCardNumbers) => shopToCardNumbers.shop_id)
     shopToCardNumbers: ShopToCardNumbers[];
 }
