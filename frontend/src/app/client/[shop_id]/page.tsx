@@ -1,29 +1,25 @@
 'use client';
-
 import { getOrders } from '@/actions/actions';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import type { Item } from '../../../../types/orderTypes';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import type { Order } from '@/types/orderTypes';
+import { sortOrdersByDate, calculateCumulativeWaitTime } from '@/lib/utils';
 
-type Order = {
-  order_id: string;
-  card_number: string;
-  items: Item[];
-};
-
-export default function Home(params: { shop_id: string }) {
+export default function Home({ params }: { params: { shop_id: string } }) {
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchOrders() {
       try {
         const fetchedOrders = await getOrders();
-        setOrders(fetchedOrders);
+        setOrders(sortOrdersByDate(fetchedOrders));
       } catch (err) {
         console.error('注文の取得中にエラーが発生しました:', err);
+        setError(err instanceof Error ? err.message : '不明なエラーが発生しました');
       }
     }
     fetchOrders();
@@ -32,9 +28,18 @@ export default function Home(params: { shop_id: string }) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const cardNumber = formData.get('cardNumber');
+    const cardNumber = formData.get('cardNumber') as string;
     router.push(`/client/${params.shop_id}/${cardNumber}`);
   };
+
+  if (error) {
+    return (
+      <div className="container mx-auto p-4">
+        <h1 className="mb-4 text-2xl font-bold text-red-600">エラーが発生しました</h1>
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -42,7 +47,7 @@ export default function Home(params: { shop_id: string }) {
       <ul className="mb-8 space-y-2">
         {orders.map((order) => (
           <li key={order.order_id} className="rounded bg-gray-100 p-2">
-            注文番号: {order.card_number} - 待ち時間: {calculateWaitTime(order.items)}分
+            注文番号: {order.card_number} - 待ち時間: {calculateCumulativeWaitTime(orders, order)}分
           </li>
         ))}
       </ul>
@@ -52,8 +57,4 @@ export default function Home(params: { shop_id: string }) {
       </form>
     </div>
   );
-}
-
-function calculateWaitTime(items: Item[]) {
-  return items.reduce((total, item) => total + parseInt(item.time) * item.count, 0);
 }

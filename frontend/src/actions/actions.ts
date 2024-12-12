@@ -1,7 +1,8 @@
 'use server';
+import type { Order } from '@/types/orderTypes';
 
-export async function getOrders() {
-  const response = await fetch('http://localhost:3000/api/tester/shop/orders', {
+export async function getOrders(): Promise<Order[]> {
+  const response = await fetch('http://localhost:3001/api/tester/shop/orders', {
     cache: 'no-store',
   });
   if (!response.ok) {

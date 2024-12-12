@@ -1,16 +1,19 @@
 import { IsString, IsDate, IsNotEmpty } from 'class-validator';
 
 export class CreateShopDto {
-    @IsString()
-    @IsNotEmpty()
-    name: string;
+  @IsString()
+  shop_id: string;
 
-    @IsDate()
-    start_at: Date;
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
-    @IsDate()
-    end_at: Date;
+  @IsDate()
+  start_at: Date;
 
-    @IsString()
-    description: string;
+  @IsDate()
+  end_at: Date;
+
+  @IsString()
+  description: string;
 }
