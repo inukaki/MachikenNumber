@@ -8,18 +8,14 @@ import { Button } from '@/components/ui/button';
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 
-const { toast } = useToast();
-const { id } = useParams();
-
-function sleep(ms:any){
-  return new Promise(resolve => setTimeout(resolve, ms));
+type T = {
+  event_id:string
 }
-
-const EventHome = () => {
-  const CopyBtn = async (id:any) => {
-    const copy:string = id;
+const EventHome = ({event_id}:T) => {
+  const { toast } = useToast();
+  const CopyBtn = async () => {
     try {
-      await navigator.clipboard.writeText(copy);
+      await navigator.clipboard.writeText(event_id);
       toast({
         description: "コピーしました。",
       })
@@ -35,7 +31,7 @@ const EventHome = () => {
       <div className="flex h-full items-center justify-center p-4">
         <Card className="w-[350px] items-center">
           <CardHeader>
-            <CardTitle>Event ID: {id}</CardTitle>
+            <CardTitle>Event ID: {event_id}</CardTitle>
             <CardDescription />
           </CardHeader>
           <CardContent>
@@ -44,7 +40,7 @@ const EventHome = () => {
                 <Button 
                   className="w-full"
                   variant="outline"
-                  onClick={()=>{CopyBtn(id)}}
+                  onClick={()=>{CopyBtn()}}
                 >
                   Event IDをコピーする
                 </Button>
@@ -54,9 +50,10 @@ const EventHome = () => {
         </Card>
       </div>
       <EditShopList
-        event_id={id}
+        event_id={event_id}
       />
       <Toaster />
+      testmsg
     </div>
   );
 };

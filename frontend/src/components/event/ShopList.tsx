@@ -4,14 +4,6 @@ import Link from 'next/link';
 import React , { ReactNode, useState } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { 
-  Card,
-  CardHeader, 
-  CardFooter, 
-  CardTitle, 
-  CardDescription, 
-  CardContent 
-} from '@/components/ui/card';
 import {
   Table,
   TableHeader,
@@ -24,65 +16,14 @@ import {
 } from '@/components/ui/table';
 // import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/hooks/use-toast";
-// import { type DataType, POST, GET, PATCH, DELETE }  from "@/components/event/shopsAPI";
-
+import { type DataType, POST, GET, PATCH, DELETE }  from "@/components/event/shopsAPI";
+import Modal from "@/components/event/Modal"
 type T = {
-  event_id: any
+  event_id: string
 }
-type U = {
-  msg:string
-  children: ReactNode
-  custom?: btninfo[]
-}
-interface btninfo {
-  cont: string;
-  func?: () => void;
-}
+
 // ポップアップ
-const Modal = ({msg,children,custom}: U) => {
-  const buttonStyle = ``;
-  const overlayStyle = `fixed w-screen h-screen bg-gray-500/50 inset-0`;
-  const modalStyle = `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[350px] items-center p-3`;
-  const [isOpen, setIsOpen] = useState(false)
-  const toggleModal = () => {
-    setIsOpen(!isOpen)
-  } // 表示非表示
-  const defaultCustom:btninfo[] = [
-    {cont:"OK",func:() => {}}
-  ] // デフォ指定
-  custom = custom || defaultCustom;
-  const checkType = () => {
-    try{
-      return(
-        <div className='flex row justify-between gap-2'>
-          {custom.map((elm) => (
-            <Button className="flex-1" variant="outline" onClick={() => {elm['func']?.();toggleModal()}}>{elm['cont']}</Button>
-          ))}
-        </div>
-      );
-    }catch(error){
-      console.log(error)
-    }
-  }
-  return(
-    <div>
-      <Button
-        className={buttonStyle}
-        onClick={toggleModal}
-      >
-        {msg}
-      </Button>
-      {isOpen && (
-        <div className={overlayStyle}>
-          <Card className={modalStyle}>
-            {children}
-            {checkType()}
-          </Card>
-        </div>
-      )}
-    </div>
-  )
-}
+
 const twoDigit = (num:number) => {
   var digit:string;
   if(num<10){
@@ -125,7 +66,7 @@ const ShopList = ({event_id}:T) => {
   return EventInfo;
 }
 const ShowShopList = ({event_id}:T) => {
-  const shoplist = ShopList(event_id);
+  const shoplist = ShopList({event_id});
   return (
     <div>
       <h2>{shoplist['name']}</h2><span>{shoplist['event_id']}</span>
@@ -138,10 +79,13 @@ const ShowShopList = ({event_id}:T) => {
   );
 }
 const EditShopList = async ({event_id}:T) => {
-  const { toast } = useToast();
-  const shopListGet = await GET(event_id);
+  const shoplist = ShopList({event_id});
+  const shopListGet = {
+    status:403,
+    data: shoplist
+  }
   const shopListStatus = shopListGet.status;
-  if (shopListStatus === 200){
+    const { toast } = useToast();
     const shopList:DataType = shopListGet.data;
     const [selectedShops, setSelectedShops] = React.useState<Record<string, boolean>>({});
     const handleCheckboxChange = (shopId: string) => {
@@ -167,11 +111,16 @@ const EditShopList = async ({event_id}:T) => {
       return `${name}(${shopId})`
     });
     const del = () => {
-      const res = DELETE(event_id);
       toast({
         description: "Friday, February 10, 2023 at 5:57 PM",
       })
     }
+    const modalCustom = (delShopList.length > 0)
+    ? [{'cont':'戻る'},{'cont':'削除する','func':del}]
+    : [{'cont':'戻る'}];
+    const modalContents = (delShopList.length > 0)
+    ? <>以下のショップを削除してよろしいですか。<br />{delShopList}</>
+    : <>ショップが選択されていません。<br /><br /></>
     return (
       <div>
         <Table>
@@ -211,14 +160,11 @@ const EditShopList = async ({event_id}:T) => {
             ))}
           </TableBody>
         </Table>
-        {delShopList.length > 0 ? 
-          <Modal msg="削除する" custom={[{'cont':'戻る'},{'cont':'削除する','func':del}]}>以下のショップを削除してよろしいですか。<br />{delShopList}</Modal>
-        : <Modal msg="削除する" custom={[{'cont':'戻る'}]}>ショップが選択されていません。<br /></Modal>
-        }
+        <Modal msg="削除する" custom={modalCustom}>{modalContents}</Modal>
       </div>
     );
   }
-}
+
 
 export {
   ShowShopList,

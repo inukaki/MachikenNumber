@@ -19,6 +19,9 @@ export default async function ShopDetail({ params }: { params: { id: string } })
   //   // アクセス権がない場合、適切なエラーページやリダイレクト
   //   redirect('/403');
   // }
+
+  // // const event_id:string = eventId;
+  const event_id:string = '124rfcskjhoui';
   
-  return <EventHome />;
+  return <EventHome event_id={event_id} />
 }
