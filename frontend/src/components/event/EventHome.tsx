@@ -7,8 +7,11 @@ import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
-import { type EventId } from "@/components/type/Apis";
-
+import { type EventId, type BackData } from "@/components/type/Apis";
+type EventHomeT = {
+  event_id:string
+  event_data:BackData
+}
 const EventHome = ({event_id}:EventId) => {
   const { toast } = useToast();
   const CopyBtn = async () => {
@@ -51,7 +54,6 @@ const EventHome = ({event_id}:EventId) => {
         event_id={event_id}
       />
       <Toaster />
-      testmsg
     </div>
   );
 };

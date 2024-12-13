@@ -12,7 +12,7 @@ interface btninfo {
 }
 
 const Modal = ({msg,children,custom}: ModalProps) => {
-  const buttonStyle = ``;
+  const buttonStyle = `w-fitcontent`;
   const overlayStyle = `fixed w-screen h-screen bg-gray-500/50 inset-0`;
   const modalStyle = `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[350px] items-center p-3`;
   const [isOpen, setIsOpen] = useState(false)
@@ -38,12 +38,16 @@ const Modal = ({msg,children,custom}: ModalProps) => {
   }
   return(
     <div>
-      <Button
-        className={buttonStyle}
-        onClick={toggleModal}
-      >
-        {msg}
-      </Button>
+      {/* <div className="w-full items-center p-4">
+        <div className="mx-auto w-fit"> */}
+          <Button
+            className={buttonStyle}
+            onClick={toggleModal}
+          >
+            {msg}
+          </Button>
+        {/* </div>
+      </div> */}
       {isOpen && (
         <div className={overlayStyle}>
           <Card className={modalStyle}>
