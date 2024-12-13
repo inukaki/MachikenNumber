@@ -1,7 +1,7 @@
 import React, { useState, ReactNode } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-type U = {
+type ModalProps = {
   msg:string
   children: ReactNode
   custom?: btninfo[]
@@ -11,7 +11,7 @@ interface btninfo {
   func?: () => void;
 }
 
-const Modal = ({msg,children,custom}: U) => {
+const Modal = ({msg,children,custom}: ModalProps) => {
   const buttonStyle = ``;
   const overlayStyle = `fixed w-screen h-screen bg-gray-500/50 inset-0`;
   const modalStyle = `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[350px] items-center p-3`;

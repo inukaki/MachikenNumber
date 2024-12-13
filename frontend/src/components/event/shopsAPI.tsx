@@ -1,32 +1,8 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/nextauth';
+import { type EventId, type DataProps, type PostProps } from "@/components/type/Apis";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-type PostType = {
-  name:string
-  start_at:string
-  end_at:string
-  description:string
-}
-type DataType = {
-  "event_id": string
-  "name": string
-  "shops": shopType[]
-  "start_at": string
-  "end_at": string
-  "description":string
-}
-interface shopType {
-  "shop_id": string
-  "name": string
-  "start_at": string
-  "end_at": string
-  "description": string
-}
-type backData = {
-  status:number
-  data?:string[] | string
-}
 const Unauthorized = {
   status:'401',
   data:'Unauthorized'
@@ -40,7 +16,7 @@ const OK = {
 }
 
 // 認証関係のチェック（イベントIDとユーザーの確認もする。）
-const checkSession = async(event_id:string) => {
+const checkSession = async({event_id}:EventId) => {
   const session = await getServerSession(authOptions);
   if (!session) {
     return(Unauthorized);
@@ -53,7 +29,7 @@ const checkSession = async(event_id:string) => {
 }
 
 
-const defaultResponse:DataType = {
+const defaultResponse:DataProps = {
   "event_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "name": "string",
   "shops": [
@@ -77,12 +53,9 @@ const defaultResponse:DataType = {
   "description": "string"
 }
 
-
-
-
 // POST リクエストを送信する関数
-//const POST = async (id:string, newData:PostType) => {
-export async function POST(id:string, newData:PostType){
+// const POST = async (id:string, newData:PostProps) => {
+async function POST({event_id}:EventId, newData:PostProps){
   return {status:200, data:{defaultResponse}};
   try {
     const response = await fetch(`${baseUrl}/api/events`, {
@@ -104,10 +77,10 @@ export async function POST(id:string, newData:PostType){
 };
 
 // GET リクエストを送信する関数
-export async function GET(id:string){
+async function GET({event_id}:EventId){
   return {status:200, data:{defaultResponse}};
   try {
-    const response = await fetch(`${baseUrl}/api/events/${id}`);
+    const response = await fetch(`${baseUrl}/api/events/${event_id}`);
     if (!response.ok) {
       throw new Error('Failed to fetch event data');
     }
@@ -120,10 +93,10 @@ export async function GET(id:string){
 };
 
 // PATCH リクエストを送信する関数
-export async function PATCH(id:string, updateData:PostType){
+async function PATCH({event_id}:EventId, updateData:PostProps){
   return {status:200, data:{defaultResponse}};
   try {
-    const response = await fetch(`${baseUrl}/api/events/${id}`, {
+    const response = await fetch(`${baseUrl}/api/events/${event_id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -142,10 +115,10 @@ export async function PATCH(id:string, updateData:PostType){
 };
 
 // DELETE リクエストを送信する関数
-export async function DELETE(id:string){
+async function DELETE({event_id}:EventId){
   return {status:200, data:{defaultResponse}};
   try {
-    const response = await fetch(`${baseUrl}/api/events/${id}`, {
+    const response = await fetch(`${baseUrl}/api/events/${event_id}`, {
       method: 'DELETE',
     });
     if (!response.ok) {
@@ -159,4 +132,4 @@ export async function DELETE(id:string){
   }
 };
 
-export { type DataType }
+export { POST, GET, DELETE, PATCH }

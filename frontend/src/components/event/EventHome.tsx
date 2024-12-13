@@ -7,11 +7,9 @@ import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
+import { type EventId } from "@/components/type/Apis";
 
-type T = {
-  event_id:string
-}
-const EventHome = ({event_id}:T) => {
+const EventHome = ({event_id}:EventId) => {
   const { toast } = useToast();
   const CopyBtn = async () => {
     try {

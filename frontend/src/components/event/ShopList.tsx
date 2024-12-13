@@ -16,11 +16,9 @@ import {
 } from '@/components/ui/table';
 // import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/hooks/use-toast";
-import { type DataType, POST, GET, PATCH, DELETE }  from "@/components/event/shopsAPI";
+import { POST, GET, PATCH, DELETE }  from "@/components/event/shopsAPI";
 import Modal from "@/components/event/Modal"
-type T = {
-  event_id: string
-}
+import { type EventId, type DataProps } from "@/components/type/Apis";
 
 // ポップアップ
 
@@ -37,7 +35,7 @@ const dateFormat = (date:string) =>{
   const dates = new Date(date);
   return `${dates.getFullYear()}/${dates.getMonth()+1}/${dates.getDate()} ${twoDigit(dates.getHours())}:${twoDigit(dates.getMinutes())};${twoDigit(dates.getSeconds())}`;
 };
-const ShopList = ({event_id}:T) => {
+const ShopList = ({event_id}:EventId) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   // const EventInfo = await fetch(`${baseUrl}/api/events/${event_id}`).then((response) => response.json());
   const EventInfo = {
@@ -65,7 +63,7 @@ const ShopList = ({event_id}:T) => {
   }
   return EventInfo;
 }
-const ShowShopList = ({event_id}:T) => {
+const ShowShopList = ({event_id}:EventId) => {
   const shoplist = ShopList({event_id});
   return (
     <div>
@@ -78,7 +76,7 @@ const ShowShopList = ({event_id}:T) => {
     </div>
   );
 }
-const EditShopList = async ({event_id}:T) => {
+const EditShopList = async ({event_id}:EventId) => {
   const shoplist = ShopList({event_id});
   const shopListGet = {
     status:403,
@@ -86,7 +84,7 @@ const EditShopList = async ({event_id}:T) => {
   }
   const shopListStatus = shopListGet.status;
     const { toast } = useToast();
-    const shopList:DataType = shopListGet.data;
+    const shopList:DataProps = shopListGet.data;
     const [selectedShops, setSelectedShops] = React.useState<Record<string, boolean>>({});
     const handleCheckboxChange = (shopId: string) => {
       setSelectedShops((prev) => ({

@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/nextauth';
 import { redirect } from 'next/navigation';
 import EventHome from '@/components/event/EventHome';
-
+import { EventId } from '@/components/type/Apis'
 export default async function ShopDetail({ params }: { params: { id: string } }) {
   // const session = await getServerSession(authOptions);
 
@@ -20,8 +20,8 @@ export default async function ShopDetail({ params }: { params: { id: string } })
   //   redirect('/403');
   // }
 
-  // // const event_id:string = eventId;
-  const event_id:string = '124rfcskjhoui';
+  const eventId:string = "dummyEventId";
+  const {event_id}:EventId = {event_id:eventId};
   
   return <EventHome event_id={event_id} />
 }
