@@ -1,7 +1,7 @@
-import { DataTable } from '@/components/dataTable/dataTable';
+import { DataTable } from '@/components/menu/dataTable/dataTable';
 import CreateMenu from '@/app/shop/[id]/createMenu/newMenuForm';
-import type { Payment } from '@/components/dataTable/columns';
-import { columns } from '@/components/dataTable/columns';
+import type { Payment } from '@/components/menu/dataTable/columns';
+import { columns } from '@/components/menu/dataTable/columns';
 
 async function getData(): Promise<Payment[]> {
   return [

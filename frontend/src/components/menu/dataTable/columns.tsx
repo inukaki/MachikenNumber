@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 
+import { MenuEditModal } from '@/components/menu/MenuEditModal';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -10,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
+import { useState } from 'react';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -19,10 +22,6 @@ export type Payment = {
   name: string;
   time: number;
 };
-
-async function MenuEdit(id: string) {
-  console.log('Editing menu', id);
-}
 
 export const columns: ColumnDef<Payment>[] = [
   {
@@ -58,24 +57,34 @@ export const columns: ColumnDef<Payment>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
+      const [open, setOpen] = useState(false);
+      const [editId, setEditId] = useState<string | null>(null);
       const payment = row.original;
 
+      const MenuEdit = (id: string) => {
+        setEditId(id);
+        setOpen(true);
+      };
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="size-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="size-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>詳細</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => MenuEdit(payment.id)}>編集</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => console.log('Deleting menu', payment.id)}>
-              削除
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="size-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>詳細</DropdownMenuLabel>
+              <DropdownMenuItem onClick={() => MenuEdit(payment.id)}>編集</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => console.log('Deleting menu', payment.id)}>
+                削除
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <MenuEditModal open={open} onOpenChange={setOpen} editId={editId} />
+        </>
       );
     },
   },
