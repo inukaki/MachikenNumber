@@ -3,7 +3,6 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { EditShopList } from '@/components/event/ShopList';
-import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
@@ -14,16 +13,16 @@ type EventHomeT = {
 }
 const EventHome = ({event_id}:EventId) => {
   const { toast } = useToast();
-  const CopyBtn = async () => {
+  const CopyBtn = () => {
     try {
-      await navigator.clipboard.writeText(event_id);
+      navigator.clipboard.writeText(event_id);
       toast({
         description: "コピーしました。",
       })
     } catch(error){
       console.log(error);
       toast({
-        description: `コピーできませんでした。>error :${error}`,
+        description: `コピーできませんでした。> ${error}`,
       })
     }
   }
