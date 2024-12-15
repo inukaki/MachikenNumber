@@ -10,6 +10,7 @@ export class ShopsService {
     constructor(private readonly shopsRepository: ShopsRepository) {}
     createShop(createShopDto: CreateShopDto): Promise<Shop> {
         const shop = new Shop();
+        shop.shop_id = createShopDto.shop_id;
         shop.name = createShopDto.name;
         shop.description = createShopDto.description;
         shop.start_at = createShopDto.start_at;
