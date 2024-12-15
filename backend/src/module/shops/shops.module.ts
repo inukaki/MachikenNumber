@@ -19,6 +19,11 @@ import { ShopToCardNumbers } from "src/module/entities/shop_to_card_numbers.enti
         ShopsService,
         ShopsRepository,
         shopsRepositoryTypeORM
+    ],
+    exports: [
+        ShopsService,
+        ShopsRepository,
+        shopsRepositoryTypeORM
     ]
 })
 export class ShopsModule {}

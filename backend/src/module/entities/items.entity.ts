@@ -4,7 +4,7 @@ import { Shop } from './shops.entity';
 @Entity('items')
 export class Items {
   @PrimaryGeneratedColumn()
-  item_id: number;
+  item_id: string;
 
   @ManyToOne(() => Shop, (shop) => shop.items)
   shop_id: Shop;
