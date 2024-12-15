@@ -33,6 +33,10 @@ paths:
             schema:
               type: "object"
               properties:
+                shop_id:
+                  type: "string"
+                  format: "uuid"
+                  description: "ショップID"
                 name:
                   type: "string"
                   description: "ショップ名"
@@ -404,6 +408,43 @@ paths:
       responses:
         "204":
           description: "成功"
+  "events/{event_id}/shops":
+    patch:
+      tags:
+        - "events"
+      summary: "イベントにショップ表示非表示"
+      description: "イベントにショップの表示状態を変更する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  shop_id:
+                    type: "string"
+                    format: "uuid"
+                    description: "ショップID"
+                  status:
+                    type: "boolean"
+                    description: "true: 表示, false: 非表示"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
 
 components:
   schemas:
@@ -480,6 +521,9 @@ components:
               count:
                 type: "integer"
                 description: "個数"
+              time:
+                type: "integer"
+                description: "必要時間"
       required:
         - order_id
         - shop_id
