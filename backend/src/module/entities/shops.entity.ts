@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, PrimaryColumn } from 'typeorm';
 import { EventToShops } from './event_to_shops.entity';
 import { Items } from './items.entity';
 import { Orders } from './orders.entity';
@@ -12,13 +12,13 @@ export class Shop {
     @Column()
     name: string;
 
-    @Column()
+    @Column({ nullable: true })
     description: string;
 
-    @Column()
+    @Column({ nullable: true })
     start_at: Date;
 
-    @Column()
+    @Column({ nullable: true })
     end_at: Date;
 
     @Column()

@@ -11,7 +11,6 @@ export class ShopsController {
     @Post()
     createShop(@Body() createShopDto: CreateShopDto) {
         const createdShop = this.shopsService.createShop(createShopDto);
-        console.log(createdShop);
         return createdShop;
     }
     @Get(':shop_id')
