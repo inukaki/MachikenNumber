@@ -19,4 +19,12 @@ export class OrdersRepository {
     async saveOrderToItems(orderToItems: OrderToItems[]): Promise<void> {
         await this.orderToItemsRepositoryTypeORM.save(orderToItems);
     }
+    async getOrders(shop_id: string): Promise<Orders[]> {
+        const orders = await this.ordersRepositoryTypeORM.find({where: {shop: {shop_id}}});
+        return orders;
+    }
+    async getItems(order_id: string): Promise<OrderToItems[]> {
+        const orderToItems = await this.orderToItemsRepositoryTypeORM.find({where: {order_id}});
+        return orderToItems;
+    }
 }

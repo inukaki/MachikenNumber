@@ -6,6 +6,8 @@ import { CreateOrdersDto, OrderItemDto } from "src/module/dtos/create_orders_dto
 import { Orders } from "../entities/orders.entity";
 import { get } from "http";
 import { OrderToItems } from "src/module/entities/order_to_items.entity";
+import { ReturnOrdersDto, ReturnOrderItemDto } from "src/module/dtos/return_orders_dto";
+import { create } from "domain";
 
 @Injectable()
 export class OrdersService {
@@ -34,5 +36,29 @@ export class OrdersService {
         });
         const orderToItems = await Promise.all(orderToItemsPromises);
         await this.ordersRepository.saveOrderToItems(orderToItems);
+    }
+    async getOrders(shop_id: string): Promise<ReturnOrdersDto[]> {
+        const orders = await this.ordersRepository.getOrders(shop_id);
+        const returnOrdersPromise = orders.map(async(order) => {
+            const returnOrder = new ReturnOrdersDto();
+            returnOrder.order_id = order.order_id;
+            returnOrder.shop_id = shop_id;
+            returnOrder.card_number = order.card_number;
+            returnOrder.create_at = order.created_at;
+            const items = await this.ordersRepository.getItems(order.order_id);
+            returnOrder.items = await Promise.all(items.map(async(orderToItem) => {
+                const returnOrderItem = new ReturnOrderItemDto();
+                returnOrderItem.item_id = orderToItem.item_id;
+                returnOrderItem.count = orderToItem.count;
+                const item = await this.itemsService.getItems(orderToItem.item_id);
+                returnOrderItem.time = item.time;
+                returnOrderItem.price = item.price;
+                returnOrderItem.name = item.name;
+                return returnOrderItem;
+            }));
+            return returnOrder;
+        });
+        const returnOrders = await Promise.all(returnOrdersPromise);
+        return returnOrders
     }
 }
