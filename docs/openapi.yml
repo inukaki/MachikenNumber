@@ -168,7 +168,42 @@ paths:
               schema:
                 type: "array"
                 items:
-                  $ref: "#/components/schemas/order"
+                  type: "object"
+                  properties:
+                    order_id:
+                      type: "string"
+                      format: "uuid"
+                      example: "90b87d16-50b6-4666-8a3c-43220a652be2"
+                    shop_id:
+                      type: "string"
+                      example: "shop_id"
+                    card_number:
+                      type: "string"
+                      example: "string"
+                    create_at:
+                      type: "string"
+                      format: "date-time"
+                      example: "2024-12-15T20:43:43.632Z"
+                    items:
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          item_id:
+                            type: "string"
+                            example: "1"
+                          count:
+                            type: "integer"
+                            example: 2
+                          time:
+                            type: "integer"
+                            example: 1
+                          price:
+                            type: "integer"
+                            example: 0
+                          name:
+                            type: "string"
+                            example: "teee"
         "404":
           description: "注文が見つからない"
   "/orders/{order_id}":
