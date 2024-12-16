@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ShopsModule } from './shops/shops.module';
 import { ItemsModule } from './items/items.module';
+import { OrdersModule } from './orders/orders.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeormConfig } from '../database/typeorm.config';
 
@@ -8,6 +9,7 @@ import { typeormConfig } from '../database/typeorm.config';
   imports: [
     ShopsModule,
     ItemsModule,
+    OrdersModule,
     TypeOrmModule.forRoot(typeormConfig),
   ],
   controllers: [],

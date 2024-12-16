@@ -7,14 +7,14 @@ export class Items {
   item_id: string;
 
   @ManyToOne(() => Shop, (shop) => shop.items)
-  shop_id: Shop;
+  shop: Shop;
 
   @Column()
   name: string;
 
-  @Column('decimal')
+  @Column({default : 0})
   price: number;
 
-  @Column()
+  @Column({default : 0})
   time: number;
 }

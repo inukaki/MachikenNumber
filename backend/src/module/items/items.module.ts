@@ -22,6 +22,11 @@ import { ShopsModule } from '../shops/shops.module';
         ItemsService,
         ItemsRepository,
         itemsRepositoryTypeORM
+    ],
+    exports: [
+        ItemsService,
+        ItemsRepository,
+        itemsRepositoryTypeORM
     ]
 })
 export class ItemsModule {}

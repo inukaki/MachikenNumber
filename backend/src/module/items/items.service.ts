@@ -14,7 +14,7 @@ export class ItemsService {
     ) {}
     async createItems(createItemsDto: CreateItemsDto): Promise<Items> {
         const items = new Items();
-        items.shop_id = await this.shopsService.getShop(createItemsDto.shop_id);
+        items.shop = await this.shopsService.getShop(createItemsDto.shop_id);
         items.name = createItemsDto.name;
         items.price = createItemsDto.price;
         items.time = createItemsDto.time;
@@ -22,8 +22,8 @@ export class ItemsService {
         return createdItems;
     }
     async getItemsByShopId(shop_id: string): Promise<ReturnItemsDto[]> {
-        const shop = await this.shopsService.getShop(shop_id);
-        const items = await this.itemsRepository.getItemsByShopId(shop);
+        // const shop = await this.shopsService.getShop(shop_id);
+        const items = await this.itemsRepository.getItemsByShopId(shop_id);
         const returnItemsDto: ReturnItemsDto[] = items.map(item => {
             const returnItem: ReturnItemsDto = {
                 item_id: item.item_id,
@@ -34,6 +34,9 @@ export class ItemsService {
             return returnItem;
         });
         return returnItemsDto;
+    }
+    async getItems(item_id: string): Promise<Items> {
+        return this.itemsRepository.getItems(item_id);
     }
     async updateItems(item_id: string, updateItemsDto: UpdateItemsDto): Promise<Items> {
         let items = await this.itemsRepository.getItems(item_id);

@@ -19,8 +19,8 @@ export class ItemsRepository {
         const items = await this.itemsRepositoryTypeORM.findOneBy({item_id});
         return items;
     }
-    async getItemsByShopId(shop: Shop): Promise<Items[]> {
-        const items = await this.itemsRepositoryTypeORM.find({relations: ['shop_id'] });
+    async getItemsByShopId(shop_id: string): Promise<Items[]> {
+        const items = await this.itemsRepositoryTypeORM.find({where: {shop: {shop_id}}});
         return items;
     }
     async deleteItems(item_id: string): Promise<void> {
