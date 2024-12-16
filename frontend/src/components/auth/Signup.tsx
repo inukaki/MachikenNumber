@@ -82,7 +82,7 @@ const Signup = ({ role }: { role: 'shop' | 'event' }) => {
       await signIn('credentials', {
         email: data.email,
         password: data.password,
-        callbackUrl: '/',
+        callbackUrl: `/${role}`,
       });
 
       router.refresh();
