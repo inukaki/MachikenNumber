@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getAuthSession } from '@/lib/nextauth';
-import Login from '@/components/event-auth/Login';
+import Login from '@/components/auth/Login';
 
 // ログインページ
 const LoginPage = async () => {
