@@ -1,3 +1,6 @@
+// ユーザー情報の更新に使う認証用API、cloudinaryを用いて写真などの変換に用いる。
+// ユーザー情報の更新には、ユーザーIDを取得する必要があるが、これはイベントとショップでの違いはない。
+
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { deleteCloudImage, createCloudImage } from '@/actions/cloudImage';
