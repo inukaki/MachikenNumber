@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { EventsRepository } from "./events.repository";
 import { CreateEventDto } from "src/module/dtos/create_event_dto";
-import { Event } from "../entities/events.entity";
 import { UpdateEventDto } from "src/module/dtos/update_event_dto";
+import { UpdateShopViewDto } from "src/module/dtos/update_shop_view_dto";
+import { Event } from "../entities/events.entity";
 
 @Injectable()
 export class EventsService {
@@ -35,5 +36,17 @@ export class EventsService {
         if (updateEventDto.end_at) event.end_at = updateEventDto.end_at;
         const updatedEvent = await this.eventsRepository.createEvent(event);
         return updatedEvent;
+    }
+    async addShopToEvent(event_id: string, shop_id: string): Promise<Event> {
+        const event = await this.eventsRepository.addShopToEvent(event_id, shop_id);
+        return event;
+    }
+    async deleteShopFromEvent(event_id: string, shop_id: string): Promise<Event> {
+        const event = await this.eventsRepository.deleteShopFromEvent(event_id, shop_id);
+        return event;
+    }
+    async updateShopView(event_id: string, updateShopViewDto: UpdateShopViewDto[]): Promise<Event> {
+        const event = await this.eventsRepository.updateShopView(event_id, updateShopViewDto);
+        return event;
     }
 }

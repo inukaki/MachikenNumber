@@ -60,6 +60,7 @@ CREATE TABLE order_to_items (
 
 CREATE TABLE event_to_shops (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    status BOOLEAN DEFAULT TRUE,
     event_id CHAR(36),
     shop_id CHAR(36),
     FOREIGN KEY (event_id) REFERENCES events(event_id),
