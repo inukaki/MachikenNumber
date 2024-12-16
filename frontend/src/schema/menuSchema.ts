@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const createMenuSchema = z.object({
+export const menuSchema = z.object({
   name: z.string().min(2, {
     message: '商品名は2文字以上で入力してください',
   }),
