@@ -41,15 +41,44 @@ export class EventsRepository {
     return this.getEvent(event_id);
   }
   async updateShopView(
-        event_id: string,
-        updateShopViewDto: UpdateShopViewDto[],
-    ): Promise<Event> {
-        for (const shopView of updateShopViewDto) {
-        await this.eventToShopsRepositoryTypeORM.update(
-            { event: { event_id }, shop: { shop_id: shopView.shop_id } },
-            { status: shopView.status },
-        );
-        }
-        return this.getEvent(event_id);
+    event_id: string,
+    updateShopViewDto: UpdateShopViewDto[],
+  ): Promise<Event> {
+    for (const shopView of updateShopViewDto) {
+      await this.eventToShopsRepositoryTypeORM.update(
+        { event: { event_id }, shop: { shop_id: shopView.shop_id } },
+        { status: shopView.status },
+      );
+    }
+    return this.getEvent(event_id);
+  }
+  async getEventWithShops(event_id: string): Promise<any> {
+    const event = await this.eventsRepositoryTypeORM.findOneBy({ event_id });
+    if (!event) {
+      throw new Error('Event not found');
+    }
+
+    const eventToShops = await this.eventToShopsRepositoryTypeORM.find({
+      where: { event: { event_id } },
+      relations: ['shop'],
+    });
+
+    const shops = eventToShops.map((eventToShop) => ({
+      shop_id: eventToShop.shop.shop_id,
+      name: eventToShop.shop.name,
+      start_at: eventToShop.shop.start_at,
+      end_at: eventToShop.shop.end_at,
+      description: eventToShop.shop.description,
+      status: eventToShop.status,
+    }));
+
+    return {
+      event_id: event.event_id,
+      name: event.name,
+      shops: shops,
+      start_at: event.start_at,
+      end_at: event.end_at,
+      description: event.description,
+    };
   }
 }
