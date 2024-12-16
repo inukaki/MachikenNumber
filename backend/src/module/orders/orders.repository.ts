@@ -27,4 +27,7 @@ export class OrdersRepository {
         const orderToItems = await this.orderToItemsRepositoryTypeORM.find({where: {order_id}});
         return orderToItems;
     }
+    async deleteOrder(order_id: string): Promise<void> {
+        await this.ordersRepositoryTypeORM.delete({order_id});
+    }
 }

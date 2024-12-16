@@ -61,4 +61,7 @@ export class OrdersService {
         const returnOrders = await Promise.all(returnOrdersPromise);
         return returnOrders
     }
+    async deleteOrder(order_id: string): Promise<void> {
+        await this.ordersRepository.deleteOrder(order_id);
+    }
 }
