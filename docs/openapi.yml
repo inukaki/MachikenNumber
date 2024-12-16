@@ -637,7 +637,24 @@ components:
         shops:
           type: "array"
           items:
-            $ref: "#/components/schemas/shop"
+            type: "object"
+            properties:
+              shop_id:
+                type: "string"
+              name:
+                type: "string"
+              start_at:
+                type: "string"
+                format: "date-time"
+                nullable: true
+              end_at:
+                type: "string"
+                format: "date-time"
+                nullable: true
+              description:
+                type: "string"
+              status:
+                type: "boolean"
         start_at:
           type: "string"
           format: "date-time"
