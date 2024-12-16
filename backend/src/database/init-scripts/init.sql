@@ -21,8 +21,7 @@ CREATE TABLE events (
     description TEXT,
     start_at DATETIME,
     end_at DATETIME,
-    invite_key CHAR(36) NOT NULL,
-    user_key CHAR(36) NOT NULL
+    invite_key CHAR(36) NOT NULL
 );
 
 CREATE TABLE shops (
@@ -35,9 +34,9 @@ CREATE TABLE shops (
 );
 
 CREATE TABLE event_to_shops (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     event_id CHAR(36) NOT NULL,
     shop_id CHAR(36) NOT NULL,
-    PRIMARY KEY (event_id, shop_id),
     -- 外部キー制約
     FOREIGN KEY (event_id) REFERENCES events(event_id) ON DELETE CASCADE,
     FOREIGN KEY (shop_id) REFERENCES shops(shop_id) ON DELETE CASCADE

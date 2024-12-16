@@ -4,11 +4,12 @@ import { Shop } from './shops.entity';
 
 @Entity('event_to_shops')
 export class EventToShops {
-    @PrimaryGeneratedColumn('uuid')
-    @ManyToOne(() => Event, (event) => event.event_id)
-    event_id: Event;
+    @PrimaryGeneratedColumn()
+    id : number;
 
-    @PrimaryGeneratedColumn('uuid')
+    @ManyToOne(() => Event, (event) => event.event_id)
+    event: Event;
+
     @ManyToOne(() => Shop, (shop) => shop.shop_id)
-    shop_id: Shop;
+    shop: Shop;
 }
