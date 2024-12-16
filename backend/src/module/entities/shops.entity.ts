@@ -27,7 +27,7 @@ export class Shop {
     @OneToMany(() => Items, (items) => items.shop_id)
     items: Items[];
 
-    @OneToMany(() => Orders, (orders) => orders.shop_id)
+    @OneToMany(() => Orders, (orders) => orders.shop)
     orders: Orders[];
 
     @OneToMany(() => ShopToCardNumbers, (shopToCardNumbers) => shopToCardNumbers.shop_id)

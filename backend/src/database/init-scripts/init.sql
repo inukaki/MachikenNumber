@@ -63,11 +63,12 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE order_to_items (
-    order_id CHAR(36) NOT NULL,
-    item_id CHAR(36) NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id CHAR(36),
+    item_id CHAR(36),
     count SMALLINT NOT NULL,
     -- 複合主キー
-    PRIMARY KEY (order_id, item_id),
+    -- PRIMARY KEY (order_id, item_id),
     -- 外部キー制約
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
     FOREIGN KEY (item_id) REFERENCES items(item_id) ON DELETE CASCADE

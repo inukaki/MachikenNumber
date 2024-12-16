@@ -8,15 +8,15 @@ import {
 } from 'typeorm';
 import { Shop } from './shops.entity';
 import { OrderToItems } from './order_to_items.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity('orders')
 export class Orders {
     @PrimaryGeneratedColumn('uuid')
-    order_id: number;
+    order_id: string = uuidv4();
 
-    @PrimaryGeneratedColumn('uuid')
     @ManyToOne(() => Shop, (shop) => shop.orders)
-    shop_id: Shop;
+    shop: Shop;
 
     @Column()
     card_number: string;

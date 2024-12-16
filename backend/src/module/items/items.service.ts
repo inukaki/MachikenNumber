@@ -35,6 +35,9 @@ export class ItemsService {
         });
         return returnItemsDto;
     }
+    async getItems(item_id: string): Promise<Items> {
+        return this.itemsRepository.getItems(item_id);
+    }
     async updateItems(item_id: string, updateItemsDto: UpdateItemsDto): Promise<Items> {
         let items = await this.itemsRepository.getItems(item_id);
         if (updateItemsDto.name) items.name = updateItemsDto.name;
