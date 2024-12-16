@@ -5,8 +5,8 @@ export default async function Client() {
     <div>
       <h1>Client</h1>
       <p>Client page</p>
-      <Link href="/client/1" as="/client/1">
-        <p>Client Shop</p>
+      <Link href="/client/events" as="/client/events">
+        <p>イベントを選ぶ</p>
       </Link>
     </div>
   );

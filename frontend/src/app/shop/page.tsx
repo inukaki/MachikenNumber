@@ -7,7 +7,7 @@ const LoginPage = async () => {
   const session = await getAuthSession();
 
   // ログイン済みならリダイレクト
-  if (session?.id) {
+  if (session?.id && session.role === 'shop') {
     redirect(`/shop/${session.id}`);
   }
 

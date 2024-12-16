@@ -1,15 +1,10 @@
 import Link from 'next/link';
-
+import { Button } from '@/components/ui/button';
 export default function Home() {
   return (
-    <div>
-      <h1>Home</h1>
-      <p>Home page</p>
-      <Link href="/shop">
-        <p>Shop</p>
-      </Link>
-      <Link href="client">
-        <p>Customer</p>
+    <div className="flex items-center justify-center">
+      <Link href="/signup">
+        <Button>利用する</Button>
       </Link>
     </div>
   );

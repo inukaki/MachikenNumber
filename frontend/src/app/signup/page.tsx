@@ -1,17 +1,5 @@
-import { redirect } from 'next/navigation';
-import { getAuthSession } from '@/lib/nextauth';
-import Signup from '@/components/auth/Signup';
+import LoginCard from '@/components/topPage/LoginCard';
 
-// サインアップページ
-const SignupPage = async () => {
-  // 認証情報取得
-  const user = await getAuthSession();
-
-  if (user) {
-    redirect('/');
-  }
-
-  return <Signup />;
-};
-
-export default SignupPage;
+export default function SignupPage() {
+  return <LoginCard />;
+}
