@@ -7,9 +7,9 @@ export class EventToShops {
     @PrimaryGeneratedColumn()
     id : number;
 
-    @ManyToOne(() => Event, (event) => event.event_id)
+    @ManyToOne(() => Event, (event) => event.eventToShops, { onDelete: 'CASCADE' })
     event: Event;
 
-    @ManyToOne(() => Shop, (shop) => shop.shop_id)
+    @ManyToOne(() => Shop, (shop) => shop.eventToShops, { onDelete: 'CASCADE' })
     shop: Shop;
 }

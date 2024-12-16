@@ -1,5 +1,5 @@
-import { Controller, Get } from "@nestjs/common";
-import { Post, Body } from "@nestjs/common";
+import { Controller, Delete, Get } from "@nestjs/common";
+import { Post, Body, Param } from "@nestjs/common";
 import { EventsService } from "./events.service";
 import { CreateEventDto } from "../dtos/create_event_dto";
 import { Event } from "../entities/events.entity";
@@ -15,8 +15,13 @@ export class EventsController {
         return createdEvent;
     }
     @Get(':event_id')
-    async getEvent(event_id: string): Promise<Event> {
+    async getEvent(@Param('event_id') event_id: string): Promise<Event> {
         const event = await this.eventsService.getEvent(event_id);
         return event;
+    }
+    @Delete(':event_id')
+    async deleteEvent(@Param('event_id') event_id: string): Promise<void> {
+        console.log(event_id);
+        await this.eventsService.deleteEvent(event_id);
     }
 }

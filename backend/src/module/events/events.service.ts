@@ -21,4 +21,8 @@ export class EventsService {
         const event = await this.eventsRepository.getEvent(event_id);
         return event;
     }
+    async deleteEvent(event_id: string): Promise<void> {
+        console.log(event_id);
+        await this.eventsRepository.deleteEvent(event_id);
+    }
 }
