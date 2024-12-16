@@ -1,4 +1,4 @@
-import { Controller } from "@nestjs/common";
+import { Controller, Get } from "@nestjs/common";
 import { Post, Body } from "@nestjs/common";
 import { EventsService } from "./events.service";
 import { CreateEventDto } from "../dtos/create_event_dto";
@@ -13,5 +13,10 @@ export class EventsController {
     async createEvent(@Body() createEventDto: CreateEventDto): Promise<Event> {
         const createdEvent = await this.eventsService.createEvent(createEventDto);
         return createdEvent;
+    }
+    @Get(':event_id')
+    async getEvent(event_id: string): Promise<Event> {
+        const event = await this.eventsService.getEvent(event_id);
+        return event;
     }
 }

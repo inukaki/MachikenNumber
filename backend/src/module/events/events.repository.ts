@@ -13,4 +13,8 @@ export class EventsRepository {
         const createdEvent = await this.eventsRepositoryTypeORM.save(event);
         return createdEvent;
     }
+    async getEvent(event_id: string): Promise<Event> {
+        const event = await this.eventsRepositoryTypeORM.findOneBy({ event_id });
+        return event;
+    }
 }
