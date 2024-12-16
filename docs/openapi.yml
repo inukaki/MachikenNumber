@@ -444,6 +444,65 @@ paths:
         "204":
           description: "成功"
   "events/{event_id}/shops":
+    post:
+      tags:
+        - "events"
+      summary: "イベントにショップ登録"
+      description: "イベントにショップを登録する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                shop_id:
+                  type: "string"
+                  format: "uuid"
+                  description: "ショップID"
+      responses:
+        "201":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
+    delete:
+      tags:
+        - "events"
+      summary: "イベントからショップ削除"
+      description: "イベントからショップを削除する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                shop_id:
+                  type: "string"
+                  format: "uuid"
+                  description: "ショップID"
+      responses:
+        "204":
+          description: "成功"
+  "events/{event_id}/shopsView":
     patch:
       tags:
         - "events"
