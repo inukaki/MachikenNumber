@@ -32,4 +32,7 @@ export class Shop {
 
     @OneToMany(() => ShopToCardNumbers, (shopToCardNumbers) => shopToCardNumbers.shop_id)
     shopToCardNumbers: ShopToCardNumbers[];
+
+    @OneToMany(() => EventToShops, eventToShops => eventToShops.shop)
+    eventToShops: EventToShops[];
 }
