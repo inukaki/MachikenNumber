@@ -12,7 +12,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -58,12 +60,35 @@ export const columns: ColumnDef<Payment>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const [open, setOpen] = useState(false);
-      const [editId, setEditId] = useState<string | null>(null);
-      const payment = row.original;
+      const payments = row.original;
+      const { id } = useParams();
+      const router = useRouter();
 
-      const MenuEdit = (id: string) => {
-        setEditId(id);
+      const [payment, setPayment] = useState<Payment | null>(payments);
+      const [shopId, setShopId] = useState<string | null>(id);
+
+      const MenuEdit = (payment: Payment, shopId: string) => {
+        setPayment(payment);
+        setShopId(shopId);
         setOpen(true);
+      };
+      async function MenuDelete(payment: Payment, shopId: string) {
+        const isConfirmed = confirm(`「${payment.name}」を削除してもよろしいですか？`);
+        if (isConfirmed) {
+          const res = await fetch(`/api/shop/${shopId}/menu/${payment.id}`, {
+            method: 'DELETE',
+          });
+          if (res.ok) {
+            toast.success('メニューを削除しました');
+            router.refresh(); // データの再フェッチをトリガー
+          } else {
+            console.error('Failed to delete menu');
+            toast.error('メニューの削除に失敗しました');
+          }
+        }
+      }
+      const handleDelete = () => {
+        MenuDelete(payment, shopId);
       };
 
       return (
@@ -77,13 +102,11 @@ export const columns: ColumnDef<Payment>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>詳細</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => MenuEdit(payment.id)}>編集</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => console.log('Deleting menu', payment.id)}>
-                削除
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => MenuEdit(payment, shopId)}>編集</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleDelete}>削除</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <MenuEditModal open={open} onOpenChange={setOpen} editId={editId} />
+          <MenuEditModal open={open} onOpenChange={setOpen} payment={payment} shopId={shopId} />
         </>
       );
     },
