@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+
 type ModalProps = {
   msg: string;
   children: ReactNode;
@@ -28,6 +29,7 @@ const Modal = ({ msg, children, custom }: ModalProps) => {
         <div className="row flex justify-between gap-2">
           {custom.map((elm) => (
             <Button
+              key={elm['cont']}
               className="flex-1"
               variant="outline"
               onClick={() => {
