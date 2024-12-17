@@ -8,7 +8,7 @@ const LoginPage = async () => {
 
   // ログイン済みならリダイレクト
   if (session?.id && session.role === 'event') {
-    redirect(`/shop/${session.id}`);
+    redirect(`/event/${session.id}`);
   }
 
   return <Login />;
