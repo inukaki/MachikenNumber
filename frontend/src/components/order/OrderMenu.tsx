@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
 interface MenuItem {
   id: string;
@@ -20,11 +21,13 @@ interface OrderItem extends MenuItem {
 
 export default function OrderMenu({ id, menu }: { id: string; menu: MenuItem[] }) {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+  const [isPending, setIsPending] = useState(false);
   const router = useRouter();
 
-  const handleSubmitOrder = async () => {
+  async function handleSubmitOrder() {
     try {
-      const response = await fetch('/api/orders', {
+      setIsPending(true);
+      const response = await fetch(`/api/shop/${id}/order`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,6 +43,7 @@ export default function OrderMenu({ id, menu }: { id: string; menu: MenuItem[] }
         title: '注文が完了しました',
         description: `合計金額: ¥${calculateTotal()}`,
       });
+      setIsPending(false);
       setOrderItems([]);
       router.refresh(); // 注文リストを更新
     } catch (error) {
@@ -50,7 +54,7 @@ export default function OrderMenu({ id, menu }: { id: string; menu: MenuItem[] }
         variant: 'destructive',
       });
     }
-  };
+  }
 
   const handleCheckboxChange = (item: MenuItem, isChecked: boolean) => {
     if (isChecked) {
@@ -103,8 +107,15 @@ export default function OrderMenu({ id, menu }: { id: string; menu: MenuItem[] }
         <Button
           onClick={handleSubmitOrder}
           className="mt-2 w-full"
-          disabled={orderItems.length === 0}>
-          注文する
+          disabled={orderItems.length === 0 || isPending}>
+          {isPending ? (
+            <div className="flex items-center">
+              <Loader2 className="animate-spin" />
+              <span className="ml-2">送信中...</span>
+            </div>
+          ) : (
+            '注文する'
+          )}
         </Button>
       </div>
     </div>

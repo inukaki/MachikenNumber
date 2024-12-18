@@ -10,7 +10,6 @@ import { extractPublicId } from 'cloudinary-build-url';
 export async function PUT(request: Request) {
   const { name, introduction, base64Image } = await request.json();
   const userId = request.headers.get('id');
-  console.log(userId);
   if (!userId) {
     return NextResponse.json({ message: 'ユーザーIDが存在しません' }, { status: 400 });
   }

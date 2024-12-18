@@ -26,8 +26,6 @@ export const sendForgotPassword = async ({ userId }: SendForgotPasswordOptions) 
     throw new Error('ユーザーが存在しません');
   }
 
-  console.log(user);
-
   // トークン取得
   const token = user.PasswordResetToken[0].token;
   // パスワード再設定リンク
