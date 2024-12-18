@@ -3,7 +3,7 @@ import { Shop } from './shops.entity';
 
 @Entity('items')
 export class Items {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   item_id: string;
 
   @ManyToOne(() => Shop, (shop) => shop.items)
