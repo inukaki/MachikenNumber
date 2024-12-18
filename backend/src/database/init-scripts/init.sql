@@ -33,7 +33,7 @@ CREATE TABLE shops (
 );
 
 CREATE TABLE items (
-    item_id INT AUTO_INCREMENT PRIMARY KEY,
+    item_id CHAR(36) PRIMARY KEY,
     shop_id CHAR(36),
     name TEXT NOT NULL,
     price INT DEFAULT 0,
