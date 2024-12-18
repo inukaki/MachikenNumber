@@ -45,7 +45,6 @@ const Signup = ({ role }: { role: 'shop' | 'event' }) => {
 
   const handleGoogleSignup = async () => {
     try {
-      console.log('Googleアカウントでサインアップ');
       const result = await signIn('google', {
         callbackUrl: `/signup/signup_Google/${role}`,
       });

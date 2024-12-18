@@ -6,7 +6,6 @@ import Profile from '@/components/settings/Profile';
 const ProfilePage = async () => {
   // 認証情報取得
   const user = await getAuthSession();
-  console.log(user);
 
   if (!user) {
     redirect('/login');
