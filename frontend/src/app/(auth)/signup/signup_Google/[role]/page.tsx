@@ -12,6 +12,34 @@ const SignupGooglePage = async ({ params }: { params: { role: string } }) => {
     where: { email: session?.email as string },
     data: { role: params.role as 'client' | 'shop' },
   });
+
+  if (params.role === 'shop') {
+    const nestResponse = await fetch('http://localhost:3001/shops', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ shop_id: session?.id, name: session?.name }),
+    });
+
+    if (!nestResponse.ok) {
+      console.error('Nest.jsへの登録に失敗しました');
+    }
+  }
+
+  if (params.role === 'event') {
+    const nestResponse = await fetch('http://localhost:3001/events', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ event_id: session?.id, name: session?.name }),
+    });
+
+    if (!nestResponse.ok) {
+      console.error('Nest.jsへの登録に失敗しました');
+    }
+  }
   redirect('/login');
 };
 

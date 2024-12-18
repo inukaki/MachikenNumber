@@ -4,20 +4,23 @@ import type { Payment } from '@/components/menu/dataTable/columns';
 import { columns } from '@/components/menu/dataTable/columns';
 
 async function getData(): Promise<Payment[]> {
-  return [
-    {
-      id: '728ed52f',
-      price: 100,
-      name: '焼きそば',
-      time: 10,
-    },
-    {
-      id: '7ased52f',
-      price: 80,
-      name: '唐揚げ',
-      time: 5,
-    },
-  ];
+  const res = await fetch(`http://localhost:3001/items`);
+  const data = await res.json();
+  return data;
+  // return [
+  //   {
+  //     id: '728ed52f',
+  //     price: 100,
+  //     name: '焼きそば',
+  //     time: 10,
+  //   },
+  //   {
+  //     id: '7ased52f',
+  //     price: 80,
+  //     name: '唐揚げ',
+  //     time: 5,
+  //   },
+  // ];
 }
 
 export default async function CreateMenuPage({ params }: { params: Promise<{ id: string }> }) {
