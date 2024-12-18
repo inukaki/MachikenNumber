@@ -1,7 +1,15 @@
+'use client';
+
 import type { Payment } from '@/components/menu/dataTable/columns';
 import { Button } from '@/components/ui/button';
-import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { CardContent } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -26,10 +34,9 @@ interface MenuEditModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   payment: Payment;
-  shopId: string;
 }
 
-export function MenuEditModal({ open, onOpenChange, payment, shopId }: MenuEditModalProps) {
+export function MenuEditModal({ open, onOpenChange, payment }: MenuEditModalProps) {
   const router = useRouter();
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -51,12 +58,12 @@ export function MenuEditModal({ open, onOpenChange, payment, shopId }: MenuEditM
       });
       setIsInitialized(true);
     }
-  }, [payment, form, isInitialized]);
+  }, [payment, form, isInitialized, open]);
 
   async function onSubmit(data: z.infer<typeof menuSchema>) {
     try {
-      const res = await fetch(`http://localhost:3001/items/${payment.id}`, {
-        method: 'PUT',
+      const res = await fetch(`http://localhost:3001/items/${payment.item_id}`, {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -64,8 +71,8 @@ export function MenuEditModal({ open, onOpenChange, payment, shopId }: MenuEditM
       });
       if (res.ok) {
         toast.success('メニューを更新しました');
-        router.refresh(); // データの再フェッチをトリガー
         onOpenChange(false); // モーダルを閉じる
+        router.refresh(); // データの再フェッチをトリガー
       } else {
         console.error('Failed to update menu');
       }
@@ -77,10 +84,10 @@ export function MenuEditModal({ open, onOpenChange, payment, shopId }: MenuEditM
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <CardHeader>
-          <CardTitle>メニューの編集</CardTitle>
-          <CardDescription>メニューの編集後は保存ボタンを押してください</CardDescription>
-        </CardHeader>
+        <DialogHeader>
+          <DialogTitle>メニューの編集</DialogTitle>
+          <DialogDescription>メニューの編集後は保存ボタンを押してください</DialogDescription>
+        </DialogHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
