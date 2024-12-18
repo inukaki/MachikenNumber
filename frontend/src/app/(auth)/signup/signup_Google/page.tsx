@@ -5,13 +5,17 @@ import Link from 'next/link';
 const SignupGooglePage = async () => {
   const session = await getAuthSession();
 
-  if (!session || session.role !== null) {
-    redirect('/');
+  console.log(session);
+  if (session?.role === 'shop') {
+    redirect('/shop/');
+  }
+  if (session?.role === 'event') {
+    redirect('/event/');
   }
 
   return (
     <div className="flex h-screen flex-col items-center">
-      <h1 className="mb-5 text-2xl font-bold">ようこそ、{session.name}さん</h1>
+      <h1 className="mb-5 text-2xl font-bold">ようこそ、{session?.name}さん</h1>
       <p className="text-bold mb-5">あなたのロールを選択してください</p>
       <div className="flex  gap-2">
         <Link
