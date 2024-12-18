@@ -12,6 +12,7 @@ export class EventsService {
     ) {}
     async createEvent(createEventDto: CreateEventDto): Promise<Event> {
         const event = new Event();
+        event.event_id = createEventDto.event_id;
         event.name = createEventDto.name;
         event.description = createEventDto.description;
         event.start_at = createEventDto.start_at;

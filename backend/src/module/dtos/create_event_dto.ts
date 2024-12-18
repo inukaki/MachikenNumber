@@ -2,6 +2,9 @@ import { IsDateString, IsString } from "class-validator";
 
 export class CreateEventDto {
     @IsString()
+    event_id: string;
+
+    @IsString()
     name: string;
     
     @IsString()
