@@ -41,7 +41,7 @@ export default function CreateMenu({ id }: { id: string | string[] }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...data, shopId: id }),
+        body: JSON.stringify({ ...data, shop_id: id }),
       });
       if (res.ok) {
         form.reset(); // フォームをリセット

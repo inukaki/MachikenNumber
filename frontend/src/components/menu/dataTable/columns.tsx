@@ -12,14 +12,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Payment = {
-  id: string;
+  item_id: string;
   price: number;
   name: string;
   time: number;
@@ -61,21 +61,19 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => {
       const [open, setOpen] = useState(false);
       const payments = row.original;
-      const { id } = useParams();
+      console.log('payments', payments);
       const router = useRouter();
 
-      const [payment, setPayment] = useState<Payment | null>(payments);
-      const [shopId, setShopId] = useState<string | null>(id);
+      const [payment, setPayment] = useState<Payment>(payments);
 
-      const MenuEdit = (payment: Payment, shopId: string) => {
+      const MenuEdit = (payment: Payment) => {
         setPayment(payment);
-        setShopId(shopId);
         setOpen(true);
       };
-      async function MenuDelete(payment: Payment, shopId: string) {
+      async function MenuDelete(payment: Payment) {
         const isConfirmed = confirm(`「${payment.name}」を削除してもよろしいですか？`);
         if (isConfirmed) {
-          const res = await fetch(`/api/shop/${shopId}/menu/${payment.id}`, {
+          const res = await fetch(`http://localhost:3001/items/${payment.item_id}`, {
             method: 'DELETE',
           });
           if (res.ok) {
@@ -88,7 +86,8 @@ export const columns: ColumnDef<Payment>[] = [
         }
       }
       const handleDelete = () => {
-        MenuDelete(payment, shopId);
+        console.log('削除します', payment.item_id);
+        MenuDelete(payment);
       };
 
       return (
@@ -102,11 +101,11 @@ export const columns: ColumnDef<Payment>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>詳細</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => MenuEdit(payment, shopId)}>編集</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => MenuEdit(payment)}>編集</DropdownMenuItem>
               <DropdownMenuItem onClick={handleDelete}>削除</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <MenuEditModal open={open} onOpenChange={setOpen} payment={payment} shopId={shopId} />
+          <MenuEditModal open={open} onOpenChange={setOpen} payment={payment} />
         </>
       );
     },
