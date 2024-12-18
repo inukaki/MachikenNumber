@@ -5,7 +5,6 @@ import prisma from '@/lib/prisma';
 // パスワード変更
 export async function POST(request: Request) {
   const { currentPassword, newPassword } = await request.json();
-  console.log(currentPassword, newPassword);
   const userId = request.headers.get('userId');
   if (!userId) {
     return NextResponse.json({ message: 'ユーザーIDが見つかりません' }, { status: 400 });
@@ -13,7 +12,6 @@ export async function POST(request: Request) {
 
   try {
     const user = await prisma.user.findUnique({ where: { id: userId } });
-    console.log(user);
     if (!user || !user.hashedPassword) {
       return NextResponse.json(
         { message: 'ユーザーが存在しないか、パスワードが設定されていません' },

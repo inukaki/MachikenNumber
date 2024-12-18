@@ -23,8 +23,6 @@ export async function POST(request: Request) {
       data: { name, email, hashedPassword, role: userRole }, // roleを保存
     });
 
-    console.log(newUser);
-
     // Nest.jsにuserIdを送信
     // const nestResponse = await fetch('http://localhost:3001/users', {
     //   method: 'POST',
