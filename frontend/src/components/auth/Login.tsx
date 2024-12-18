@@ -43,24 +43,19 @@ const Login = () => {
     },
   });
 
-  // Googleアカウントでログイン
   const handleGoogleLogin = async () => {
-    setIsLoading(true);
-
     try {
-      const result = await signIn('google', { redirect: false });
+      console.log('Googleアカウントでサインアップ');
+      const result = await signIn('google', {
+        callbackUrl: '/signup/signup_Google',
+      });
 
-      if (!result || result.error) {
-        throw new Error(result?.error || 'ログインに失敗しました');
+      if (result?.error) {
+        toast.error('Googleアカウントのログインに失敗しました');
       }
-
-      toast.success('Googleアカウントでログインしました!');
-      router.push('/');
-      router.refresh();
     } catch (error) {
-      toast.error((error as Error).message || 'ログインに失敗しました');
-    } finally {
-      setIsLoading(false);
+      toast.error('Googleアカウントのログインに失敗しました');
+      console.error(error);
     }
   };
 
@@ -80,7 +75,7 @@ const Login = () => {
       }
 
       toast.success('ログインしました!');
-      router.push('/');
+      router.push('/login');
       router.refresh();
     } catch (error) {
       toast.error((error as Error).message || 'ログインに失敗しました');

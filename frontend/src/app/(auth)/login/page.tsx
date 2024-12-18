@@ -8,7 +8,11 @@ const LoginPage = async () => {
   const user = await getAuthSession();
 
   if (user) {
-    redirect('/');
+    if (user.role === 'shop') {
+      redirect(`/shop/${user.id}`);
+    } else if (user.role === 'event') {
+      redirect(`/event/${user.id}`);
+    }
   }
 
   return <Login />;

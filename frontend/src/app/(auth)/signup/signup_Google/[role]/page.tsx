@@ -12,7 +12,7 @@ const SignupGooglePage = async ({ params }: { params: { role: string } }) => {
     where: { email: session?.email as string },
     data: { role: params.role as 'client' | 'shop' },
   });
-  redirect('/');
+  redirect('/login');
 };
 
 export default SignupGooglePage;
