@@ -4,7 +4,9 @@ import bcrypt from 'bcrypt';
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password } = await request.json();
+    const { name, email, password, role } = await request.json();
+
+    const userRole = role;
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
@@ -18,7 +20,7 @@ export async function POST(request: Request) {
 
     //＊＊＊＊＊以下変更点＊＊＊＊＊
     const newUser = await prisma.user.create({
-      data: { name, email, hashedPassword },
+      data: { name, email, hashedPassword, role: userRole }, // roleを保存
     });
 
     // Nest.jsにuserIdを送信

@@ -24,12 +24,15 @@ export class Shop {
     @Column()
     user_key: string;
 
-    @OneToMany(() => Items, (items) => items.shop_id)
+    @OneToMany(() => Items, (items) => items.shop)
     items: Items[];
 
-    @OneToMany(() => Orders, (orders) => orders.shop_id)
+    @OneToMany(() => Orders, (orders) => orders.shop)
     orders: Orders[];
 
     @OneToMany(() => ShopToCardNumbers, (shopToCardNumbers) => shopToCardNumbers.shop_id)
     shopToCardNumbers: ShopToCardNumbers[];
+
+    @OneToMany(() => EventToShops, eventToShops => eventToShops.shop)
+    eventToShops: EventToShops[];
 }

@@ -1,0 +1,3 @@
+export const eventToShopsConstants = {
+  EVENTTOSHOPS_REPOSITORY_TYPEORM: 'EVENTTOSHOPS_REPOSITORY_TYPEORM',
+};

@@ -1,18 +1,17 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/nextauth';
+import { getAuthSession } from '@/lib/nextauth';
 import { redirect } from 'next/navigation';
 import ShopHome from '@/components/shop/ShopHome';
 
 export default async function ShopDetail({ params }: { params: { id: string } }) {
-  const session = await getServerSession(authOptions);
+  const session = await getAuthSession();
 
   // セッションがない場合、ログインページにリダイレクト
-  if (!session) {
+  if (!session || session.role !== 'shop') {
     redirect('/login');
   }
 
   // ユーザーIDをチェック
-  const loggedInUserId = session.user.id; // セッションに含まれるユーザーID
+  const loggedInUserId = session.id; // セッションに含まれるユーザーID
   const shopId = params.id; // URLの[id]パラメータ
 
   if (loggedInUserId !== shopId) {

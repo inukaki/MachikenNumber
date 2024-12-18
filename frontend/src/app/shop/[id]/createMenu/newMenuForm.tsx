@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
-import { createMenuSchema } from '@/schema/createMenuSchema';
+import { menuSchema } from '@/schema/menuSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -25,8 +25,8 @@ export default function CreateMenu({ id }: { id: string | string[] }) {
   const [sliderValue, setSliderValue] = useState(5);
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof createMenuSchema>>({
-    resolver: zodResolver(createMenuSchema),
+  const form = useForm<z.infer<typeof menuSchema>>({
+    resolver: zodResolver(menuSchema),
     defaultValues: {
       name: '',
       price: 300,
@@ -34,7 +34,7 @@ export default function CreateMenu({ id }: { id: string | string[] }) {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof createMenuSchema>) {
+  async function onSubmit(data: z.infer<typeof menuSchema>) {
     try {
       const res = await fetch(`/api/shop/${id}/menu`, {
         method: 'POST',

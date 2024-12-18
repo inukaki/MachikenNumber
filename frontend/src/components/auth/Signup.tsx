@@ -15,7 +15,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { FcGoogle } from 'react-icons/fc';
-import { Loader2 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
@@ -30,7 +29,8 @@ const schema = z.object({
 // 入力データの型を定義
 type InputType = z.infer<typeof schema>;
 
-const Signup = () => {
+const Signup = ({ role }: { role: 'shop' | 'event' }) => {
+  console.log(role);
   const router = useRouter();
 
   // フォームの状態
@@ -43,10 +43,11 @@ const Signup = () => {
     },
   });
 
-  // Googleアカウントでサインアップ
-  const handleGoogleSingup = async () => {
+  const handleGoogleSignup = async () => {
     try {
-      const result = await signIn('google', { callbackUrl: '/' });
+      const result = await signIn('google', {
+        callbackUrl: `/signup/signup_Google/${role}`,
+      });
 
       if (result?.error) {
         toast.error('Googleアカウントのサインアップに失敗しました');
@@ -65,7 +66,7 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, role }),
       });
 
       if (!response.ok) {
@@ -80,7 +81,7 @@ const Signup = () => {
       await signIn('credentials', {
         email: data.email,
         password: data.password,
-        callbackUrl: '/',
+        callbackUrl: `/${role}`,
       });
 
       router.refresh();
@@ -91,11 +92,13 @@ const Signup = () => {
   };
 
   return (
-    <div className="max-w-[400px] m-auto">
-      <div className="text-2xl font-bold text-center mb-10">新規登録</div>
+    <div className="m-auto max-w-[400px]">
+      <div className="mb-10 text-center text-2xl font-bold">
+        {role === 'shop' ? 'お店' : 'イベント'}として新規登録
+      </div>
 
-      <Button variant="outline" className="w-full" onClick={handleGoogleSingup}>
-        <FcGoogle className="mr-2 h-4 w-4" />
+      <Button variant="outline" className="w-full" onClick={handleGoogleSignup}>
+        <FcGoogle className="mr-2 size-4" />
         Googleアカウント
       </Button>
 
@@ -104,7 +107,7 @@ const Signup = () => {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-background px-2 text-muted-foreground">OR</span>
+          <span className="bg-background text-muted-foreground px-2">OR</span>
         </div>
       </div>
 
@@ -162,7 +165,7 @@ const Signup = () => {
         </form>
       </Form>
 
-      <div className="text-center mt-5">
+      <div className="mt-5 text-center">
         <Link href="/login" className="text-sm text-blue-500">
           すでにアカウントをお持ちの方
         </Link>

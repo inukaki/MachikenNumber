@@ -1,14 +1,19 @@
 import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Event } from './events.entity';
 import { Shop } from './shops.entity';
+import { Column } from 'typeorm';
 
 @Entity('event_to_shops')
 export class EventToShops {
-    @PrimaryGeneratedColumn('uuid')
-    @ManyToOne(() => Event, (event) => event.event_id)
-    event_id: Event;
+    @PrimaryGeneratedColumn()
+    id : number;
 
-    @PrimaryGeneratedColumn('uuid')
-    @ManyToOne(() => Shop, (shop) => shop.shop_id)
-    shop_id: Shop;
+    @Column({default: true})
+    status: boolean;
+
+    @ManyToOne(() => Event, (event) => event.eventToShops, { onDelete: 'CASCADE' })
+    event: Event;
+
+    @ManyToOne(() => Shop, (shop) => shop.eventToShops, { onDelete: 'CASCADE' })
+    shop: Shop;
 }
