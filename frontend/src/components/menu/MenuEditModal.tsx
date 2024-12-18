@@ -55,7 +55,7 @@ export function MenuEditModal({ open, onOpenChange, payment, shopId }: MenuEditM
 
   async function onSubmit(data: z.infer<typeof menuSchema>) {
     try {
-      const res = await fetch(`/api/shop/${shopId}/menu/${payment.id}`, {
+      const res = await fetch(`http://localhost:3001/items/${payment.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
