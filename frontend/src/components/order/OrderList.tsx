@@ -1,5 +1,6 @@
 'use client';
 
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -48,20 +49,20 @@ export default function OrderList() {
       {orders.length === 0 ? (
         <p>現在の注文はありません。</p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="grid grid-cols-2 md:grid-cols-3">
           {orders.map((order) => (
-            <li key={order.id} className="rounded-md border p-4">
-              <p className="font-bold">注文 ID: {order.id}</p>
-              <p>状態: {order.status}</p>
-              <p>注文時刻: {new Date(order.createdAt).toLocaleString()}</p>
-              <ul className="mt-2">
+            <Card key={order.id} className="min-h-[220px]">
+              <CardContent className="pt-6">
+                <p className="font-bold">注文 ID: {order.id}</p>
+                <p>ステータス: {order.status}</p>
+                <p>注文日時: {new Date(order.createdAt).toLocaleString()}</p>
                 {order.items.map((item) => (
                   <li key={item.id}>
                     {item.name} x {item.quantity} - ¥{item.price * item.quantity}
                   </li>
                 ))}
-              </ul>
-            </li>
+              </CardContent>
+            </Card>
           ))}
         </ul>
       )}
