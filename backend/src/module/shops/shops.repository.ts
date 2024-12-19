@@ -14,7 +14,7 @@ export class ShopsRepository {
         return createdShop;
     }
     async getShop(shop_id: string): Promise<Shop> {
-        const shop = await this.shopsRepositoryTypeORM.findOneById(shop_id);
+        const shop = await this.shopsRepositoryTypeORM.findOneBy({shop_id});
         return shop;
     }
 }
