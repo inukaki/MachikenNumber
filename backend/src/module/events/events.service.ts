@@ -24,6 +24,10 @@ export class EventsService {
         const event = await this.eventsRepository.getEventWithShops(event_id);
         return event;
     }
+    async getAllEvents(): Promise<Event[]> {
+        const events = await this.eventsRepository.getAllEvents();
+        return events;
+    }
     async deleteEvent(event_id: string): Promise<void> {
         console.log(event_id);
         await this.eventsRepository.deleteEvent(event_id);
