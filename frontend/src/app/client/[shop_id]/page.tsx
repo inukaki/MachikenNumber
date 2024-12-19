@@ -17,17 +17,10 @@ export default function Home(params: { shop_id: string }) {
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
 
-  useEffect(() => {
-    async function fetchOrders() {
-      try {
-        const fetchedOrders = await getOrders();
-        setOrders(fetchedOrders);
-      } catch (err) {
-        console.error('注文の取得中にエラーが発生しました:', err);
-      }
-    }
-    fetchOrders();
-  }, []);
+  const response = await fetch(`http://localhost:3001/orders/${params.shop_id}/unready`, {
+    cache: 'no-store',
+  });
+  const orders = await response.json();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
