@@ -26,5 +26,5 @@ export const machikanNumberDataSource: DataSource = new DataSource({
   username: process.env.MARIADB_USERNAME,
   password: process.env.MARIADB_PASSWORD,
   database: process.env.MARIADB_DATABASE,
-  synchronize: true,
+  synchronize: false,
 });

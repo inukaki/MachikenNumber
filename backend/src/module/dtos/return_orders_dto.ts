@@ -30,6 +30,9 @@ export class ReturnOrdersDto {
   @IsDateString()
   create_at: Date;
 
+  @IsNumber()
+  status: number;
+
   @IsArray()
   items: ReturnOrderItemDto[];
 }

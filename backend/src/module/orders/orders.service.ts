@@ -45,6 +45,7 @@ export class OrdersService {
             returnOrder.shop_id = shop_id;
             returnOrder.card_number = order.card_number;
             returnOrder.create_at = order.created_at;
+            returnOrder.status = order.status;
             const items = await this.ordersRepository.getItems(order.order_id);
             returnOrder.items = await Promise.all(items.map(async(orderToItem) => {
                 const returnOrderItem = new ReturnOrderItemDto();
@@ -61,7 +62,100 @@ export class OrdersService {
         const returnOrders = await Promise.all(returnOrdersPromise);
         return returnOrders
     }
+    async getUnreadyOrders(shop_id: string): Promise<ReturnOrdersDto[]> {
+        const orders = await this.ordersRepository.getUnreadyOrders(shop_id);
+        const returnOrdersPromise = orders.map(async (order) => {
+          const returnOrder = new ReturnOrdersDto();
+          returnOrder.order_id = order.order_id;
+          returnOrder.shop_id = shop_id;
+          returnOrder.card_number = order.card_number;
+          returnOrder.create_at = order.created_at;
+          returnOrder.status = order.status;
+          const items = await this.ordersRepository.getItems(order.order_id);
+          returnOrder.items = await Promise.all(
+            items.map(async (orderToItem) => {
+              const returnOrderItem = new ReturnOrderItemDto();
+              returnOrderItem.item_id = orderToItem.item_id;
+              returnOrderItem.count = orderToItem.count;
+              const item = await this.itemsService.getItems(
+                orderToItem.item_id,
+              );
+              returnOrderItem.time = item.time;
+              returnOrderItem.price = item.price;
+              returnOrderItem.name = item.name;
+              return returnOrderItem;
+            }),
+          );
+          return returnOrder;
+        });
+        const returnOrders = await Promise.all(returnOrdersPromise);
+        return returnOrders;
+    }
+    async getReadyOrders(shop_id: string): Promise<ReturnOrdersDto[]> {
+        const orders = await this.ordersRepository.getReadyOrders(shop_id);
+        const returnOrdersPromise = orders.map(async (order) => {
+          const returnOrder = new ReturnOrdersDto();
+          returnOrder.order_id = order.order_id;
+          returnOrder.shop_id = shop_id;
+          returnOrder.card_number = order.card_number;
+          returnOrder.create_at = order.created_at;
+          returnOrder.status = order.status;
+          const items = await this.ordersRepository.getItems(order.order_id);
+          returnOrder.items = await Promise.all(
+            items.map(async (orderToItem) => {
+              const returnOrderItem = new ReturnOrderItemDto();
+              returnOrderItem.item_id = orderToItem.item_id;
+              returnOrderItem.count = orderToItem.count;
+              const item = await this.itemsService.getItems(
+                orderToItem.item_id,
+              );
+              returnOrderItem.time = item.time;
+              returnOrderItem.price = item.price;
+              returnOrderItem.name = item.name;
+              return returnOrderItem;
+            }),
+          );
+          return returnOrder;
+        });
+        const returnOrders = await Promise.all(returnOrdersPromise);
+        return returnOrders;
+    }
+    async getReceivedOrders(shop_id: string): Promise<ReturnOrdersDto[]> {
+        const orders = await this.ordersRepository.getReceivedOrders(shop_id);
+        const returnOrdersPromise = orders.map(async (order) => {
+          const returnOrder = new ReturnOrdersDto();
+          returnOrder.order_id = order.order_id;
+          returnOrder.shop_id = shop_id;
+          returnOrder.card_number = order.card_number;
+          returnOrder.create_at = order.created_at;
+          returnOrder.status = order.status;
+          const items = await this.ordersRepository.getItems(order.order_id);
+          returnOrder.items = await Promise.all(
+            items.map(async (orderToItem) => {
+              const returnOrderItem = new ReturnOrderItemDto();
+              returnOrderItem.item_id = orderToItem.item_id;
+              returnOrderItem.count = orderToItem.count;
+              const item = await this.itemsService.getItems(
+                orderToItem.item_id,
+              );
+              returnOrderItem.time = item.time;
+              returnOrderItem.price = item.price;
+              returnOrderItem.name = item.name;
+              return returnOrderItem;
+            }),
+          );
+          return returnOrder;
+        });
+        const returnOrders = await Promise.all(returnOrdersPromise);
+        return returnOrders;
+    }
     async deleteOrder(order_id: string): Promise<void> {
         await this.ordersRepository.deleteOrder(order_id);
+    }
+    async readyOrder(order_id: string): Promise<void> {
+        await this.ordersRepository.readyOrder(order_id);
+    }
+    async receivedOrder(order_id: string): Promise<void> {
+        await this.ordersRepository.receivedOrder(order_id);
     }
 }
