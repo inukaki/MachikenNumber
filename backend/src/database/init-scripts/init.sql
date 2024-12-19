@@ -33,6 +33,7 @@ CREATE TABLE shops (
     description TEXT,
     start_at DATETIME,
     end_at DATETIME,
+    wait_time INT DEFAULT 0,
     user_key CHAR(36) NOT NULL
 );
 
