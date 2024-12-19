@@ -39,38 +39,53 @@ const dateFormat = (date: string) => {
   const dates = new Date(date);
   return `${dates.getFullYear()}/${dates.getMonth() + 1}/${dates.getDate()} ${twoDigit(dates.getHours())}:${twoDigit(dates.getMinutes())};${twoDigit(dates.getSeconds())}`;
 };
-const ShopList = ({ event_id }: EventId) => {
+const ShopList = async ({ event_id }: EventId) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  try {
+    const response = await fetch(`${baseUrl}/api/events/${event_id}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTPエラー: ${response.status}`);
+    }
 
-  // const EventInfo = await fetch(`${baseUrl}/api/events/${event_id}`).then((response) => response.json());
-  const EventInfo = {
-    event_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    name: 'string',
-    shops: [
-      {
-        shop_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        name: 'string',
-        start_at: '2024-12-10T05:32:05.681Z',
-        end_at: '2024-12-10T05:32:05.681Z',
-        description: 'string',
-      },
-      {
-        shop_id: 'no2',
-        name: 'string',
-        start_at: '2024-12-10T05:32:05.681Z',
-        end_at: '2024-12-10T05:32:05.681Z',
-        description: 'string',
-      },
-    ],
-    start_at: '2024-12-10T05:32:05.681Z',
-    end_at: '2024-12-10T05:32:05.681Z',
-    description: 'string',
-  };
-  return EventInfo;
+    const eventInfo = await response.json();
+    return eventInfo;
+  } catch (error) {
+    return `error -> ${error}`;
+  }
+  // const EventInfo = {
+  //   event_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  //   name: 'string',
+  //   shops: [
+  //     {
+  //       shop_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  //       name: 'string',
+  //       start_at: '2024-12-10T05:32:05.681Z',
+  //       end_at: '2024-12-10T05:32:05.681Z',
+  //       description: 'string',
+  //     },
+  //     {
+  //       shop_id: 'no2',
+  //       name: 'string',
+  //       start_at: '2024-12-10T05:32:05.681Z',
+  //       end_at: '2024-12-10T05:32:05.681Z',
+  //       description: 'string',
+  //     },
+  //   ],
+  //   start_at: '2024-12-10T05:32:05.681Z',
+  //   end_at: '2024-12-10T05:32:05.681Z',
+  //   description: 'string',
+  // };
+  // return EventInfo;
 };
-const EditShopList = ({ event_id }: EventId) => {
-  const { toast } = useToast();
-  const shopList: DataProps = ShopList({ event_id });
+
+interface ShowEditShopList {
+  event_id: string
+  shopList: DataProps
+}
+
+const ShowEditShopList = ({ event_id,shopList }: ShowEditShopList) => {
+  const { toast } = useToast();  
   const [selectedShops, setSelectedShops] = React.useState<Record<string, boolean>>({});
   const handleCheckboxChange = (shopId: string) => {
     setSelectedShops((prev) => ({
@@ -135,7 +150,8 @@ const EditShopList = ({ event_id }: EventId) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {shopList['shops'].map((elem) => (
+        {shopList.shops && shopList.shops.length > 0 ? (
+          shopList.shops.map((elem) => (
             <TableRow key={elem['shop_id']}>
               <TableCell>
                 <Checkbox
@@ -152,14 +168,56 @@ const EditShopList = ({ event_id }: EventId) => {
                 </Button>
               </TableCell>
             </TableRow>
-          ))}
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={5}>ショップが見つかりませんでした。</TableCell>
+          </TableRow>
+        )}
         </TableBody>
       </Table>
       <Modal msg="削除する" custom={modalCustom}>
         {modalContents}
       </Modal>
     </div>
+  )
+};
+
+const EditShopList: React.FC<EventId> = ({ event_id }) => {
+  const [shopList, setShopList] = useState<DataProps | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchShopList = async () => {
+      try {
+        const result = await ShopList({ event_id });
+        setShopList(result);
+      } catch (error) {
+        console.error(error);
+        setError(error instanceof Error ? error.message : '予期しないエラーが発生しました');
+      }
+    };
+
+    fetchShopList();
+  }, [event_id]);
+
+  if (error) {
+    return (
+      <div>
+        <p>{error}</p>
+      </div>
+    );
+  }
+  if(!shopList){
+    return <p>ロード中...</p>
+  }
+  return (
+    <ShowEditShopList 
+      event_id={event_id}
+      shopList={shopList}
+    />
   );
 };
+
 
 export { EditShopList };
