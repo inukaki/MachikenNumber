@@ -1,6 +1,5 @@
 'use client';
 
-import { fetchOrders } from '@/actions/orderActions';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -18,19 +17,27 @@ export default function OrderList() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const loadOrders = async () => {
+    async function getOrder() {
       try {
-        const data = await fetchOrders();
+        const response = await fetch(`/api/shop/${id}/order`, {
+          method: 'GET',
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
         setOrders(data);
       } catch (err) {
-        setError('注文リストの取得に失敗しました');
+        setError(err.message);
       } finally {
         setLoading(false);
       }
-    };
+    }
 
-    loadOrders();
-  }, []);
+    getOrder();
+  }, [id]);
 
   if (loading) return <p>読み込み中...</p>;
   if (error) return <p className="text-red-500">{error}</p>;

@@ -33,6 +33,10 @@ paths:
             schema:
               type: "object"
               properties:
+                shop_id:
+                  type: "string"
+                  format: "uuid"
+                  description: "ショップID"
                 name:
                   type: "string"
                   description: "ショップ名"
@@ -164,7 +168,42 @@ paths:
               schema:
                 type: "array"
                 items:
-                  $ref: "#/components/schemas/order"
+                  type: "object"
+                  properties:
+                    order_id:
+                      type: "string"
+                      format: "uuid"
+                      example: "90b87d16-50b6-4666-8a3c-43220a652be2"
+                    shop_id:
+                      type: "string"
+                      example: "shop_id"
+                    card_number:
+                      type: "string"
+                      example: "string"
+                    create_at:
+                      type: "string"
+                      format: "date-time"
+                      example: "2024-12-15T20:43:43.632Z"
+                    items:
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          item_id:
+                            type: "string"
+                            example: "1"
+                          count:
+                            type: "integer"
+                            example: 2
+                          time:
+                            type: "integer"
+                            example: 1
+                          price:
+                            type: "integer"
+                            example: 0
+                          name:
+                            type: "string"
+                            example: "teee"
         "404":
           description: "注文が見つからない"
   "/orders/{order_id}":
@@ -404,6 +443,102 @@ paths:
       responses:
         "204":
           description: "成功"
+  "events/{event_id}/shops":
+    post:
+      tags:
+        - "events"
+      summary: "イベントにショップ登録"
+      description: "イベントにショップを登録する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                shop_id:
+                  type: "string"
+                  format: "uuid"
+                  description: "ショップID"
+      responses:
+        "201":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
+    delete:
+      tags:
+        - "events"
+      summary: "イベントからショップ削除"
+      description: "イベントからショップを削除する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                shop_id:
+                  type: "string"
+                  format: "uuid"
+                  description: "ショップID"
+      responses:
+        "204":
+          description: "成功"
+  "events/{event_id}/shopsView":
+    patch:
+      tags:
+        - "events"
+      summary: "イベントにショップ表示非表示"
+      description: "イベントにショップの表示状態を変更する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  shop_id:
+                    type: "string"
+                    format: "uuid"
+                    description: "ショップID"
+                  status:
+                    type: "boolean"
+                    description: "true: 表示, false: 非表示"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
 
 components:
   schemas:
@@ -480,6 +615,9 @@ components:
               count:
                 type: "integer"
                 description: "個数"
+              time:
+                type: "integer"
+                description: "必要時間"
       required:
         - order_id
         - shop_id
@@ -499,7 +637,24 @@ components:
         shops:
           type: "array"
           items:
-            $ref: "#/components/schemas/shop"
+            type: "object"
+            properties:
+              shop_id:
+                type: "string"
+              name:
+                type: "string"
+              start_at:
+                type: "string"
+                format: "date-time"
+                nullable: true
+              end_at:
+                type: "string"
+                format: "date-time"
+                nullable: true
+              description:
+                type: "string"
+              status:
+                type: "boolean"
         start_at:
           type: "string"
           format: "date-time"

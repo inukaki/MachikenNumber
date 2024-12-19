@@ -21,7 +21,7 @@ const UserNavigation = ({ user }: UserNavigationProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <div className="relative w-10 h-10 flex-shrink-0">
+        <div className="relative size-10 shrink-0">
           <Image
             src={user.image || '/default.png'}
             className="rounded-full object-cover"
@@ -31,10 +31,10 @@ const UserNavigation = ({ user }: UserNavigationProps) => {
         </div>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="bg-white p-2 w-[300px]" align="end">
-        <Link href={`/user/${user.id}`}>
+      <DropdownMenuContent className="w-[300px] bg-white p-2" align="end">
+        <Link href="/settings/profile">
           <DropdownMenuItem className="cursor-pointer">
-            <div className="break-words min-w-0">
+            <div className="min-w-0 break-words">
               <div className="mb-2">{user.name || ''}</div>
               <div className="text-gray-500">{user.email || ''}</div>
             </div>
@@ -52,7 +52,7 @@ const UserNavigation = ({ user }: UserNavigationProps) => {
             event.preventDefault();
             await signOut({ callbackUrl: '/' });
           }}
-          className="text-red-600 cursor-pointer">
+          className="cursor-pointer text-red-600">
           ログアウト
         </DropdownMenuItem>
       </DropdownMenuContent>

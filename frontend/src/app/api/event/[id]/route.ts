@@ -27,7 +27,9 @@ export async function GET(
     request: Request,
     { params }: { params: { id: string } },
 ) {
+
     const apiUrl = "";
+  
     const event_id = Number(params.id)
     const reqUrl = `${apiUrl}/events/${event_id}`;
     try {

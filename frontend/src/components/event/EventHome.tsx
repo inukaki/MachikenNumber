@@ -4,28 +4,28 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { EditShopList } from '@/components/event/ShopList';
 import { Button } from '@/components/ui/button';
-import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/hooks/use-toast";
-import { type EventId, type BackData } from "@/components/type/Apis";
+import { Toaster } from '@/components/ui/toaster';
+import { useToast } from '@/hooks/use-toast';
+import { type EventId, type BackData } from '@/components/type/Apis';
 type EventHomeT = {
-  event_id:string
-  event_data:BackData
-}
-const EventHome = ({event_id}:EventId) => {
+  event_id: string;
+  event_data: BackData;
+};
+const EventHome = ({ event_id }: EventId) => {
   const { toast } = useToast();
   const CopyBtn = () => {
     try {
       navigator.clipboard.writeText(event_id);
       toast({
-        description: "コピーしました。",
-      })
-    } catch(error){
+        description: 'コピーしました。',
+      });
+    } catch (error) {
       console.log(error);
       toast({
         description: `コピーできませんでした。> ${error}`,
-      })
+      });
     }
-  }
+  };
   return (
     <div>
       <div className="flex h-full items-center justify-center p-4">
@@ -37,11 +37,12 @@ const EventHome = ({event_id}:EventId) => {
           <CardContent>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Button 
+                <Button
                   className="w-full"
                   variant="outline"
-                  onClick={()=>{CopyBtn()}}
-                >
+                  onClick={() => {
+                    CopyBtn();
+                  }}>
                   Event IDをコピーする
                 </Button>
               </div>
@@ -49,9 +50,7 @@ const EventHome = ({event_id}:EventId) => {
           </CardContent>
         </Card>
       </div>
-      <EditShopList
-        event_id={event_id}
-      />
+      <EditShopList event_id={event_id} />
       <Toaster />
     </div>
   );

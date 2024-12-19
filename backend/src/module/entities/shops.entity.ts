@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, PrimaryColumn } from 'typeorm';
 import { EventToShops } from './event_to_shops.entity';
 import { Items } from './items.entity';
 import { Orders } from './orders.entity';
@@ -7,33 +7,32 @@ import { ShopToCardNumbers } from './shop_to_card_numbers.entity';
 @Entity('shops')
 export class Shop {
     @PrimaryGeneratedColumn('uuid')
-    @OneToMany(() => EventToShops, (event_to_shops) => event_to_shops.shop_id)
-    shop_id: number;
+    shop_id: string;
 
     @Column()
     name: string;
 
-    @Column()
+    @Column({ nullable: true })
     description: string;
 
-    @Column()
+    @Column({ nullable: true })
     start_at: Date;
 
-    @Column()
+    @Column({ nullable: true })
     end_at: Date;
 
     @Column()
     user_key: string;
 
-    @OneToMany(() => Items, (items) => items.shop_id)
+    @OneToMany(() => Items, (items) => items.shop)
     items: Items[];
 
-    @OneToMany(() => Orders, (orders) => orders.shop_id)
+    @OneToMany(() => Orders, (orders) => orders.shop)
     orders: Orders[];
 
-    @OneToMany(
-        () => ShopToCardNumbers,
-        (shopToCardNumbers) => shopToCardNumbers.shop_id,
-    )
+    @OneToMany(() => ShopToCardNumbers, (shopToCardNumbers) => shopToCardNumbers.shop_id)
     shopToCardNumbers: ShopToCardNumbers[];
+
+    @OneToMany(() => EventToShops, eventToShops => eventToShops.shop)
+    eventToShops: EventToShops[];
 }
