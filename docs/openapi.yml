@@ -151,7 +151,7 @@ paths:
     get:
       tags:
         - "orders"
-      summary: "注文情報取得"
+      summary: "店の全ての注文情報取得"
       description: "店の全ての注文情報を取得する"
       parameters:
         - name: "shop_id"
@@ -184,6 +184,195 @@ paths:
                       type: "string"
                       format: "date-time"
                       example: "2024-12-15T20:43:43.632Z"
+                    status:
+                      type: "number"
+                      example: "0"
+                    items:
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          item_id:
+                            type: "string"
+                            example: "1"
+                          count:
+                            type: "integer"
+                            example: 2
+                          time:
+                            type: "integer"
+                            example: 1
+                          price:
+                            type: "integer"
+                            example: 0
+                          name:
+                            type: "string"
+                            example: "teee"
+        "404":
+          description: "注文が見つからない"
+  "/orders/{shop_id}/unready":
+    get:
+      tags:
+        - "orders"
+      summary: "提供不可能な注文情報取得"
+      description: "店の提供準備が完了していないの注文情報を取得する"
+      parameters:
+        - name: "shop_id"
+          in: "path"
+          description: "ショップID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    order_id:
+                      type: "string"
+                      format: "uuid"
+                      example: "90b87d16-50b6-4666-8a3c-43220a652be2"
+                    shop_id:
+                      type: "string"
+                      example: "shop_id"
+                    card_number:
+                      type: "string"
+                      example: "string"
+                    create_at:
+                      type: "string"
+                      format: "date-time"
+                      example: "2024-12-15T20:43:43.632Z"
+                    status:
+                      type: "number"
+                      example: "0"
+                    items:
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          item_id:
+                            type: "string"
+                            example: "1"
+                          count:
+                            type: "integer"
+                            example: 2
+                          time:
+                            type: "integer"
+                            example: 1
+                          price:
+                            type: "integer"
+                            example: 0
+                          name:
+                            type: "string"
+                            example: "teee"
+        "404":
+          description: "注文が見つからない"
+  "/orders/{shop_id}/ready":
+    get:
+      tags:
+        - "orders"
+      summary: "提供可能な注文情報取得"
+      description: "店の提供準備が完了している注文情報を取得する"
+      parameters:
+        - name: "shop_id"
+          in: "path"
+          description: "ショップID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    order_id:
+                      type: "string"
+                      format: "uuid"
+                      example: "90b87d16-50b6-4666-8a3c-43220a652be2"
+                    shop_id:
+                      type: "string"
+                      example: "shop_id"
+                    card_number:
+                      type: "string"
+                      example: "string"
+                    create_at:
+                      type: "string"
+                      format: "date-time"
+                      example: "2024-12-15T20:43:43.632Z"
+                    status:
+                      type: "number"
+                      example: "1"
+                    items:
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          item_id:
+                            type: "string"
+                            example: "1"
+                          count:
+                            type: "integer"
+                            example: 2
+                          time:
+                            type: "integer"
+                            example: 1
+                          price:
+                            type: "integer"
+                            example: 0
+                          name:
+                            type: "string"
+                            example: "teee"
+        "404":
+          description: "注文が見つからない"
+  "/orders/{shop_id}/received":
+    get:
+      tags:
+        - "orders"
+      summary: "提供済みの注文情報取得"
+      description: "店の受取が完了した注文情報を取得する"
+      parameters:
+        - name: "shop_id"
+          in: "path"
+          description: "ショップID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    order_id:
+                      type: "string"
+                      format: "uuid"
+                      example: "90b87d16-50b6-4666-8a3c-43220a652be2"
+                    shop_id:
+                      type: "string"
+                      example: "shop_id"
+                    card_number:
+                      type: "string"
+                      example: "string"
+                    create_at:
+                      type: "string"
+                      format: "date-time"
+                      example: "2024-12-15T20:43:43.632Z"
+                    status:
+                      type: "number"
+                      example: "2"
                     items:
                       type: "array"
                       items:
@@ -221,6 +410,58 @@ paths:
             type: "string"
       responses:
         "204":
+          description: "成功"
+  "/orders/{order_id}/ready":
+    patch:
+      tags:
+        - "orders"
+      summary: "注文を提供可能にする"
+      description: "注文を提供可能にする"
+      parameters:
+        - name: "order_id"
+          in: "path"
+          description: "注文ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                status:
+                  type: "number"
+                  description: "0: 提供不可能, 1: 提供可能, 2: 受取済み"
+      responses:
+        "200":
+          description: "成功"
+  "/orders/{order_id}/received":
+    patch:
+      tags:
+        - "orders"
+      summary: "注文を受取済みにする"
+      description: "注文を受取済みにする"
+      parameters:
+        - name: "order_id"
+          in: "path"
+          description: "注文ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                status:
+                  type: "number"
+                  description: "0: 提供不可能, 1: 提供可能, 2: 受取済み"
+      responses:
+        "200":
           description: "成功"
   "/items":
     post:
