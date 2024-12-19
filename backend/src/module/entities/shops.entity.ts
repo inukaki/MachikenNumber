@@ -21,6 +21,9 @@ export class Shop {
     @Column({ nullable: true })
     end_at: Date;
 
+    @Column({ default : 0 })
+    wait_time: number;
+
     @Column()
     user_key: string;
 
