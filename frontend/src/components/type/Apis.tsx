@@ -22,6 +22,7 @@ type ShopsProps = {
   start_at: string
   end_at: string
   description: string
+  status: boolean
 }
 // POST,GET,DELETE,PATCHから帰ってくる型
 type BackData = {
