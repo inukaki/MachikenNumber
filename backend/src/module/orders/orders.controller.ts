@@ -14,8 +14,28 @@ export class OrdersController {
     getOrders(@Param('shop_id') shop_id: string): Promise<ReturnOrdersDto[]> {
         return this.ordersService.getOrders(shop_id);
     }
+    @Get(':shop_id/unready')
+    getUnreadyOrders(@Param('shop_id') shop_id: string): Promise<ReturnOrdersDto[]> {
+        return this.ordersService.getUnreadyOrders(shop_id);
+    }
+    @Get(':shop_id/ready')
+    getReadyOrders(@Param('shop_id') shop_id: string): Promise<ReturnOrdersDto[]> {
+        return this.ordersService.getReadyOrders(shop_id);
+    }
+    @Get(':shop_id/received')
+    getReceivedOrders(@Param('shop_id') shop_id: string): Promise<ReturnOrdersDto[]> {
+        return this.ordersService.getReceivedOrders(shop_id);
+    }
     @Delete(':order_id')
     deleteOrder(@Param('order_id') order_id: string): Promise<void> {
         return this.ordersService.deleteOrder(order_id);
+    }
+    @Post(':order_id/ready')
+    readyOrder(@Param('order_id') order_id: string): Promise<void> {
+        return this.ordersService.readyOrder(order_id);
+    }
+    @Post(':order_id/received')
+    receivedOrder(@Param('order_id') order_id: string): Promise<void> {
+        return this.ordersService.receivedOrder(order_id);
     }
 }

@@ -23,6 +23,6 @@ export const typeormConfig: TypeOrmModuleOptions = {
     EventToShops,
     ShopToCardNumbers,
   ],
-  synchronize: true,
+  synchronize: false,
   logging: false,
 };

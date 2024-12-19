@@ -24,6 +24,9 @@ export class Orders {
     @CreateDateColumn()
     created_at: Date;
 
+    @Column({default: 0})
+    status: number;
+
     @OneToMany(() => OrderToItems, (orderToItems) => orderToItems.order_id)
     orderToItems: OrderToItems[];
 }
