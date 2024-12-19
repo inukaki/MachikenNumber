@@ -1,8 +1,14 @@
-import ShopHome from '@/components/shop/ShopHome';
 import { getAuthSession } from '@/lib/nextauth';
 import { redirect } from 'next/navigation';
+import { ShopNavigation } from '@/components/shop/ShopNavigation';
 
-export default async function ShopDetail({ params }: { params: { id: string } }) {
+export default async function ShopLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { id: string };
+}) {
   const session = await getAuthSession();
 
   if (!session || session.role !== 'shop') {
@@ -16,5 +22,10 @@ export default async function ShopDetail({ params }: { params: { id: string } })
     redirect('/403');
   }
 
-  return <ShopHome user={session} />;
+  return (
+    <div className="min-h-screen pb-16 w-11/12 mx-auto">
+      {children}
+      <ShopNavigation />
+    </div>
+  );
 }
