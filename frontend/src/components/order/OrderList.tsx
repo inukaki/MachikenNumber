@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,49 +25,28 @@ interface Order {
   status: 0 | 1 | 2;
 }
 
-export default function OrderList() {
-  const { id } = useParams();
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function OrderList({ orderData, shopId }: { orderData: Order[]; shopId: string }) {
+  const [orders, setOrders] = useState<Order[]>(orderData);
+  const [loading, setLoading] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    getOrder();
-  }, [id]);
-
-  async function getOrder() {
-    try {
-      setLoading(true);
-      const response = await fetch(`http://localhost:3001/orders/${id}`, {
-        method: 'GET',
-        cache: 'no-store',
-      });
-
-      if (!response.ok) {
-        throw new Error(`エラー: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setOrders(data.map((order: Order) => ({ ...order })));
-    } catch (error) {
-      console.error('注文の取得に失敗しました:', error);
-    } finally {
-      setLoading(false);
-    }
-  }
+    setOrders(orderData); // 最新の orderData を反映
+  }, [orderData]);
 
   async function updateOrderStatus(orderId: string, newStatus: 1 | 2) {
     try {
       if (newStatus === 1) {
-        const response = await fetch(`http://localhost:3001/orders/${orderId}/ready`, {
+        const response = await fetch(`http://localhost:3001/orders/${orderId}/${shopId}/ready`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },
         });
       } else if (newStatus === 2) {
-        const response = await fetch(`http://localhost:3001/orders/${orderId}/received`, {
+        const response = await fetch(`http://localhost:3001/orders/${orderId}/${shopId}/received`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -80,6 +59,7 @@ export default function OrderList() {
           order.order_id === orderId ? { ...order, status: newStatus } : order,
         ),
       );
+      router.refresh();
     } catch (error) {
       console.error('注文状態の更新に失敗しました:', error);
     }
@@ -96,6 +76,7 @@ export default function OrderList() {
       }
 
       setOrders(orders.filter((order) => order.order_id !== orderId));
+      router.refresh();
     } catch (error) {
       console.error('注文の削除に失敗しました:', error);
     }
@@ -177,22 +158,22 @@ function OrderGrid({
           <CardHeader className="bg-primary/10 py-2">
             <CardTitle className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-2">
-                <CreditCard className="h-4 w-4" />
+                <CreditCard className="size-4" />
                 {order.card_number}
               </div>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <Clock className="h-3 w-3" />
+              <div className="text-muted-foreground flex items-center gap-1 text-xs">
+                <Clock className="size-3" />
                 {formatDate(order.create_at)}
               </div>
             </CardTitle>
           </CardHeader>
           <CardContent className="p-2">
-            <ul className="space-y-1 text-sm mb-3">
+            <ul className="mb-3 space-y-1 text-sm">
               {order.items.map((item) => (
                 <li key={item.item_id} className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">{item.name}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-muted-foreground text-xs">
                       {item.count}点 - ¥{item.price * item.count} (
                       {parseInt(item.time) * item.count}分)
                     </p>
@@ -200,7 +181,7 @@ function OrderGrid({
                 </li>
               ))}
             </ul>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               {order.status === 0 && (
                 <Button size="sm" onClick={() => updateOrderStatus(order.order_id, 1)}>
                   完了にする
@@ -214,13 +195,13 @@ function OrderGrid({
                     // updateOrderStatus(order.order_id, 2);
                     deleteOrder(order.order_id);
                   }}>
-                  <ShoppingBag className="h-4 w-4 mr-2" />
+                  <ShoppingBag className="mr-2 size-4" />
                   準備完了
                 </Button>
               )}
               {order.status === 2 && (
                 <Button size="sm" variant="secondary" disabled>
-                  <Check className="h-4 w-4 mr-2" />
+                  <Check className="mr-2 size-4" />
                   受け渡し済み
                 </Button>
               )}
@@ -229,7 +210,7 @@ function OrderGrid({
                 size="sm"
                 className="text-destructive hover:text-destructive hover:bg-destructive/10"
                 onClick={() => handleDeleteClick(order.order_id)}>
-                <Trash2 className="h-4 w-4 mr-2" />
+                <Trash2 className="mr-2 size-4" />
                 削除
               </Button>
             </div>

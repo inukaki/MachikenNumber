@@ -37,11 +37,11 @@ interface UnreadyOrder {
 }
 
 export default function OrderMenu({
-  id,
+  shopId,
   menu,
   unreadyOrders,
 }: {
-  id: string;
+  shopId: string;
   menu: MenuItem[];
   unreadyOrders: UnreadyOrder[];
 }) {
@@ -110,7 +110,7 @@ export default function OrderMenu({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          shop_id: id,
+          shop_id: shopId,
           card_number: cardNumber,
           items: orderItems.map((item) => ({ item_id: item.item_id, count: item.count })),
         }),
@@ -132,6 +132,7 @@ export default function OrderMenu({
         description: '注文の送信中にエラーが発生しました。もう一度お試しください。',
         variant: 'destructive',
       });
+      router.refresh();
     } finally {
       setIsPending(false);
     }
@@ -159,7 +160,7 @@ export default function OrderMenu({
 
   return (
     <div>
-      <Card className="mx-auto max-w-2xl bg-primary/5 mt-8">
+      <Card className="bg-primary/5 mx-auto mt-8 max-w-2xl">
         <CardHeader>
           <CardTitle>注文メニュー</CardTitle>
         </CardHeader>
@@ -188,7 +189,7 @@ export default function OrderMenu({
                         size="icon"
                         variant="outline"
                         onClick={() => handleQuantityChange(item.item_id, -1)}>
-                        <Minus className="h-4 w-4" />
+                        <Minus className="size-4" />
                       </Button>
                       <span className="w-8 text-center">
                         {orderItems.find((orderItem) => orderItem.item_id === item.item_id)
@@ -198,7 +199,7 @@ export default function OrderMenu({
                         size="icon"
                         variant="outline"
                         onClick={() => handleQuantityChange(item.item_id, 1)}>
-                        <Plus className="h-4 w-4" />
+                        <Plus className="size-4" />
                       </Button>
                     </div>
                   )}
@@ -218,7 +219,7 @@ export default function OrderMenu({
               value={cardNumber}
               onChange={handleCardNumberChange}
               placeholder="カード番号を入力"
-              className={`bg-white shadow-sm py-6 ${cardError ? 'border-red-500' : ''}`}
+              className={`bg-white py-6 shadow-sm ${cardError ? 'border-red-500' : ''}`}
             />
             {cardError && <p className="mt-2 text-sm text-red-600">{cardError}</p>}
           </div>
@@ -234,7 +235,7 @@ export default function OrderMenu({
               }>
               {isPending ? (
                 <div className="flex items-center">
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-2 size-4 animate-spin" />
                   <span>送信中...</span>
                 </div>
               ) : (

@@ -30,7 +30,6 @@ const schema = z.object({
 type InputType = z.infer<typeof schema>;
 
 const Signup = ({ role }: { role: 'shop' | 'event' }) => {
-  console.log(role);
   const router = useRouter();
 
   // フォームの状態

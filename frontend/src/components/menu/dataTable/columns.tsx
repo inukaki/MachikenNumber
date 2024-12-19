@@ -61,7 +61,6 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => {
       const [open, setOpen] = useState(false);
       const payments = row.original;
-      console.log('payments', payments);
       const router = useRouter();
 
       const [payment, setPayment] = useState<Payment>(payments);
@@ -86,7 +85,6 @@ export const columns: ColumnDef<Payment>[] = [
         }
       }
       const handleDelete = () => {
-        console.log('削除します', payment.item_id);
         MenuDelete(payment);
       };
 

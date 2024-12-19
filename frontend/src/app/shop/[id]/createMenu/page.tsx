@@ -14,9 +14,6 @@ async function getData(id: string): Promise<Payment[]> {
 export default async function CreateMenuPage({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id;
   const data = await getData(id);
-  const data2 = await getData(id);
-  console.log(data);
-  console.log(data2);
   return (
     <div>
       <CreateMenu id={id} />
