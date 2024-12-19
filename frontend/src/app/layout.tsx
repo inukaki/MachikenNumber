@@ -14,19 +14,21 @@ const meta = {
   description: 'Machiken Number',
   image: 'https://machiken-number.com/ogp/bg-white.png',
   icon: '/logos/icon/bg-white.svg',
-}
+};
 export const metadata: Metadata = {
   title: meta.title,
   description: 'Machiken Number',
   openGraph: {
-    type: "website",
-    url: "https://machiken-number.com/",
+    type: 'website',
+    url: 'https://machiken-number.com/',
     title: meta.title,
     description: meta.description,
     siteName: 'MachikenNumber',
-    images: [{
-      url: meta.image
-    }]
+    images: [
+      {
+        url: meta.image,
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
