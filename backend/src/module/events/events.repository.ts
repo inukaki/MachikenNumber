@@ -74,6 +74,7 @@ export class EventsRepository {
       end_at: eventToShop.shop.end_at,
       description: eventToShop.shop.description,
       status: eventToShop.status,
+      wait_time: eventToShop.shop.wait_time,
     }));
 
     return {
