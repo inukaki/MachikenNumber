@@ -1,31 +1,35 @@
 import OrderList from '@/components/order/OrderList';
 import OrderMenu from '@/components/order/OrderMenu';
-import { Suspense } from 'react';
 
-async function fetchMenu(shopId: string) {
+async function getUnreadyOrders(shopId: string) {
   try {
-    const res = await fetch(`http://localhost:3000/api/shop/${shopId}/menu`);
+    const res = await fetch(`http://localhost:3001/orders/${shopId}/unready`, {
+      cache: 'no-store',
+    });
     if (!res.ok) {
-      throw new Error(`Error: ${res.status}`);
+      console.error('Failed to fetch unready orders');
+      return [];
     }
-    return await res.json();
-  } catch (err) {
-    console.error('Failed to fetch menu:', err);
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching unready orders:', error);
     return [];
   }
 }
 
 export default async function Order({ params }: { params: { id: string } }) {
   const shopId = params.id;
+  console.log(shopId);
 
-  const menu = await fetchMenu(shopId);
+  const [menuData, unreadyOrders] = await Promise.all([
+    fetch(`http://localhost:3001/items/${shopId}`, { cache: 'no-store' }).then((res) => res.json()),
+    getUnreadyOrders(shopId),
+  ]);
 
   return (
     <div>
-      <Suspense fallback={<p>読み込み中...</p>}>
-        <OrderMenu id={shopId} menu={menu} />
-        <OrderList />
-      </Suspense>
+      <OrderMenu id={shopId} menu={menuData} unreadyOrders={unreadyOrders} />
+      <OrderList />
     </div>
   );
 }

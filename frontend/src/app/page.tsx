@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+// import Footer from '@/components/auth/Footer';
+
 export default function Home() {
   return (
-    <div>
+    <div className="mt-10">
       <div className="flex items-center justify-center">
         <Link href="/signup">
           <Button>利用する</Button>
@@ -13,6 +15,8 @@ export default function Home() {
           <Button>お客様の方はこちら</Button>
         </Link>
       </div>
+
+      {/* <Footer /> */}
     </div>
   );
 }
