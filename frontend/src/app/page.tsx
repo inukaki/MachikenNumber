@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import Footer from '@/components/auth/Footer';
+// import Footer from '@/components/auth/Footer';
 
 export default function Home() {
   return (
@@ -15,7 +15,8 @@ export default function Home() {
           <Button>お客様の方はこちら</Button>
         </Link>
       </div>
-      <Footer />
+
+      {/* <Footer /> */}
     </div>
   );
 }

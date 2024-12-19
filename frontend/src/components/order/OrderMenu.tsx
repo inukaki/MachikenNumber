@@ -21,13 +21,49 @@ interface OrderItem extends MenuItem {
   count: number;
 }
 
-export default function OrderMenu({ id, menu }: { id: string; menu: MenuItem[] }) {
+interface UnreadyOrder {
+  order_id: string;
+  shop_id: string;
+  card_number: string;
+  create_at: string;
+  status: number;
+  items: Array<{
+    item_id: string;
+    count: number;
+    time: number;
+    price: number;
+    name: string;
+  }>;
+}
+
+export default function OrderMenu({
+  id,
+  menu,
+  unreadyOrders,
+}: {
+  id: string;
+  menu: MenuItem[];
+  unreadyOrders: UnreadyOrder[];
+}) {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [cardNumber, setCardNumber] = useState('');
+  const [cardError, setCardError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
 
-  async function handleSubmitOrder() {
+  const unreadyCardNumbers = unreadyOrders.map((order) => order.card_number);
+
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newCardNumber = e.target.value;
+    setCardNumber(newCardNumber);
+    if (unreadyCardNumbers.includes(newCardNumber)) {
+      setCardError('このカードは現在使用中です。');
+    } else {
+      setCardError(null);
+    }
+  };
+
+  const handleSubmitOrder = async () => {
     if (!cardNumber) {
       toast({
         title: 'エラー',
@@ -37,8 +73,37 @@ export default function OrderMenu({ id, menu }: { id: string; menu: MenuItem[] }
       return;
     }
 
+    if (cardError) {
+      toast({
+        title: 'エラー',
+        description: cardError,
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (unreadyCardNumbers.includes(cardNumber)) {
+      toast({
+        title: 'エラー',
+        description: 'このカード番号は現在使用中です。',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsPending(true);
+
     try {
-      setIsPending(true);
+      // Check if the card number exists in any order
+      // const existingOrderResponse = await fetch(`http://localhost:3001/orders/check/${cardNumber}`);
+      // const existingOrderData = await existingOrderResponse.json();
+
+      // if (existingOrderData.exists) {
+      //   await fetch(`http://localhost:3001/orders/${existingOrderData.orderId}`, {
+      //     method: 'DELETE',
+      //   });
+      // }
+
       const response = await fetch(`http://localhost:3001/orders`, {
         method: 'POST',
         headers: {
@@ -57,7 +122,6 @@ export default function OrderMenu({ id, menu }: { id: string; menu: MenuItem[] }
         title: '注文が完了しました',
         description: `合計金額: ¥${calculateTotal()}`,
       });
-      setIsPending(false);
       setOrderItems([]);
       setCardNumber('');
       router.refresh();
@@ -71,7 +135,7 @@ export default function OrderMenu({ id, menu }: { id: string; menu: MenuItem[] }
     } finally {
       setIsPending(false);
     }
-  }
+  };
 
   const handleCheckboxChange = (item: MenuItem, isChecked: boolean) => {
     if (isChecked) {
@@ -152,16 +216,22 @@ export default function OrderMenu({ id, menu }: { id: string; menu: MenuItem[] }
               id="card-number"
               type="text"
               value={cardNumber}
-              onChange={(e) => setCardNumber(e.target.value)}
+              onChange={handleCardNumberChange}
               placeholder="カード番号を入力"
-              className="bg-white shadow-sm py-6"
+              className={`bg-white shadow-sm py-6 ${cardError ? 'border-red-500' : ''}`}
             />
+            {cardError && <p className="mt-2 text-sm text-red-600">{cardError}</p>}
           </div>
           <div className="flex items-center justify-between">
             <p className="font-bold">合計: ¥{calculateTotal()}</p>
             <Button
               onClick={handleSubmitOrder}
-              disabled={orderItems.length === 0 || isPending || !cardNumber}>
+              disabled={
+                orderItems.length === 0 ||
+                isPending ||
+                !cardNumber ||
+                unreadyCardNumbers.includes(cardNumber)
+              }>
               {isPending ? (
                 <div className="flex items-center">
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

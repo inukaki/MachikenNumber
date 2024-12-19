@@ -22,7 +22,7 @@ interface Order {
   card_number: string;
   items: OrderItem[];
   create_at: string;
-  status: '0' | '1' | '2';
+  status: 0 | 1 | 2;
 }
 
 export default function OrderList() {
@@ -57,18 +57,22 @@ export default function OrderList() {
     }
   }
 
-  async function updateOrderStatus(orderId: string, newStatus: '1' | '2') {
+  async function updateOrderStatus(orderId: string, newStatus: 1 | 2) {
     try {
-      const response = await fetch(`http://localhost:3001/orders/${orderId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`エラー: ${response.status}`);
+      if (newStatus === 1) {
+        const response = await fetch(`http://localhost:3001/orders/${orderId}/ready`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      } else if (newStatus === 2) {
+        const response = await fetch(`http://localhost:3001/orders/${orderId}/received`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
       }
 
       setOrders(
@@ -112,8 +116,8 @@ export default function OrderList() {
 
   if (loading) return <p>読み込み中...</p>;
 
-  const incompleteOrders = orders.filter((order) => order.status === '0');
-  const completeOrders = orders.filter((order) => order.status === '1' || order.status === '2');
+  const incompleteOrders = orders.filter((order) => order.status === 0);
+  const completeOrders = orders.filter((order) => order.status === 1 || order.status === 2);
 
   return (
     <div className="mt-8 pb-20">
@@ -131,6 +135,7 @@ export default function OrderList() {
               orders={incompleteOrders}
               updateOrderStatus={updateOrderStatus}
               handleDeleteClick={handleDeleteClick}
+              deleteOrder={deleteOrder}
             />
           </TabsContent>
           <TabsContent value="complete">
@@ -138,6 +143,7 @@ export default function OrderList() {
               orders={completeOrders}
               updateOrderStatus={updateOrderStatus}
               handleDeleteClick={handleDeleteClick}
+              deleteOrder={deleteOrder}
             />
           </TabsContent>
         </Tabs>
@@ -157,10 +163,12 @@ function OrderGrid({
   orders,
   updateOrderStatus,
   handleDeleteClick,
+  deleteOrder,
 }: {
   orders: Order[];
-  updateOrderStatus: (orderId: string, newStatus: '1' | '2') => void;
+  updateOrderStatus: (orderId: string, newStatus: 1 | 2) => void;
   handleDeleteClick: (orderId: string) => void;
+  deleteOrder: (orderId: string) => void;
 }) {
   return (
     <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -193,21 +201,24 @@ function OrderGrid({
               ))}
             </ul>
             <div className="flex justify-between items-center">
-              {order.status === '0' && (
-                <Button size="sm" onClick={() => updateOrderStatus(order.order_id, '1')}>
+              {order.status === 0 && (
+                <Button size="sm" onClick={() => updateOrderStatus(order.order_id, 1)}>
                   完了にする
                 </Button>
               )}
-              {order.status === '1' && (
+              {order.status === 1 && (
                 <Button
                   size="sm"
                   variant="secondary"
-                  onClick={() => updateOrderStatus(order.order_id, '2')}>
+                  onClick={() => {
+                    // updateOrderStatus(order.order_id, 2);
+                    deleteOrder(order.order_id);
+                  }}>
                   <ShoppingBag className="h-4 w-4 mr-2" />
-                  受け渡し完了
+                  準備完了
                 </Button>
               )}
-              {order.status === '2' && (
+              {order.status === 2 && (
                 <Button size="sm" variant="secondary" disabled>
                   <Check className="h-4 w-4 mr-2" />
                   受け渡し済み

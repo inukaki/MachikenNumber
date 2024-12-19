@@ -23,7 +23,7 @@ export default async function ShopLayout({
   }
 
   return (
-    <div className="min-h-screen pb-16 w-11/12 mx-auto">
+    <div className="min-h-screen pb-16 ">
       {children}
       <ShopNavigation />
     </div>
