@@ -1,18 +1,14 @@
-import Link from 'next/link'
+import Link from 'next/link';
 
 export default function home() {
-  return(
+  return (
     <>
       <p>
-        <Link href="/howtouse/shop">
-          ショップの使い方
-        </Link>
+        <Link href="/howtouse/shop">ショップの使い方</Link>
       </p>
       <p>
-        <Link href="/howtouse/event">
-          イベントの使い方
-        </Link>
+        <Link href="/howtouse/event">イベントの使い方</Link>
       </p>
     </>
-  )
+  );
 }

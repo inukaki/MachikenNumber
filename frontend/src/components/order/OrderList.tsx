@@ -1,11 +1,11 @@
 'use client';
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CreditCard, Clock, Trash2, Check } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CreditCard, Clock, Trash2, Check, ShoppingBag } from 'lucide-react';
 import { formatDate } from '@/actions/formatDate';
 import { ConfirmationModal } from './confirmation-modal';
 
@@ -22,7 +22,7 @@ interface Order {
   card_number: string;
   items: OrderItem[];
   create_at: string;
-  status: 'incomplete' | 'complete';
+  status: '0' | '1' | '2';
 }
 
 export default function OrderList() {
@@ -49,7 +49,7 @@ export default function OrderList() {
       }
 
       const data = await response.json();
-      setOrders(data.map((order: Order) => ({ ...order, status: 'incomplete' })));
+      setOrders(data.map((order: Order) => ({ ...order })));
     } catch (error) {
       console.error('注文の取得に失敗しました:', error);
     } finally {
@@ -57,14 +57,14 @@ export default function OrderList() {
     }
   }
 
-  async function updateOrderStatus(orderId: string) {
+  async function updateOrderStatus(orderId: string, newStatus: '1' | '2') {
     try {
       const response = await fetch(`http://localhost:3001/orders/${orderId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ status: 'complete' }),
+        body: JSON.stringify({ status: newStatus }),
       });
 
       if (!response.ok) {
@@ -73,7 +73,7 @@ export default function OrderList() {
 
       setOrders(
         orders.map((order) =>
-          order.order_id === orderId ? { ...order, status: 'complete' } : order,
+          order.order_id === orderId ? { ...order, status: newStatus } : order,
         ),
       );
     } catch (error) {
@@ -112,63 +112,35 @@ export default function OrderList() {
 
   if (loading) return <p>読み込み中...</p>;
 
+  const incompleteOrders = orders.filter((order) => order.status === '0');
+  const completeOrders = orders.filter((order) => order.status === '1' || order.status === '2');
+
   return (
     <div className="mt-8 pb-20">
       <h2 className="mb-4 text-xl font-bold">注文リスト</h2>
       {orders.length === 0 ? (
         <p>現在の注文はありません。</p>
       ) : (
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {orders.map((order) => (
-            <Card key={order.order_id} className="overflow-hidden ">
-              <CardHeader className="bg-primary/10 py-2">
-                <CardTitle className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <CreditCard className="h-4 w-4" />
-                    {order.card_number}
-                  </div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Clock className="h-3 w-3" />
-                    {formatDate(order.create_at)}
-                  </div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-2">
-                <ul className="space-y-1 text-sm mb-3">
-                  {order.items.map((item) => (
-                    <li key={item.item_id} className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">{item.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {item.count}点 - ¥{item.price * item.count} (
-                          {parseInt(item.time) * item.count}分)
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex justify-between items-center">
-                  <Button
-                    size="sm"
-                    variant={order.status === 'complete' ? 'secondary' : 'default'}
-                    onClick={() => updateOrderStatus(order.order_id)}
-                    disabled={order.status === 'complete'}>
-                    {order.status === 'complete' ? <Check className="h-4 w-4 mr-2" /> : null}
-                    {order.status === 'complete' ? '完了済み' : '完了にする'}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                    onClick={() => handleDeleteClick(order.order_id)}>
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    削除
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <Tabs defaultValue="incomplete" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="incomplete">未完了 ({incompleteOrders.length})</TabsTrigger>
+            <TabsTrigger value="complete">完了 ({completeOrders.length})</TabsTrigger>
+          </TabsList>
+          <TabsContent value="incomplete">
+            <OrderGrid
+              orders={incompleteOrders}
+              updateOrderStatus={updateOrderStatus}
+              handleDeleteClick={handleDeleteClick}
+            />
+          </TabsContent>
+          <TabsContent value="complete">
+            <OrderGrid
+              orders={completeOrders}
+              updateOrderStatus={updateOrderStatus}
+              handleDeleteClick={handleDeleteClick}
+            />
+          </TabsContent>
+        </Tabs>
       )}
       <ConfirmationModal
         isOpen={deleteModalOpen}
@@ -177,6 +149,82 @@ export default function OrderList() {
         title="注文の削除"
         description="この注文を削除してもよろしいですか？この操作は取り消せません。"
       />
+    </div>
+  );
+}
+
+function OrderGrid({
+  orders,
+  updateOrderStatus,
+  handleDeleteClick,
+}: {
+  orders: Order[];
+  updateOrderStatus: (orderId: string, newStatus: '1' | '2') => void;
+  handleDeleteClick: (orderId: string) => void;
+}) {
+  return (
+    <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      {orders.map((order) => (
+        <Card key={order.order_id} className="overflow-hidden">
+          <CardHeader className="bg-primary/10 py-2">
+            <CardTitle className="flex items-center justify-between text-sm">
+              <div className="flex items-center gap-2">
+                <CreditCard className="h-4 w-4" />
+                {order.card_number}
+              </div>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Clock className="h-3 w-3" />
+                {formatDate(order.create_at)}
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-2">
+            <ul className="space-y-1 text-sm mb-3">
+              {order.items.map((item) => (
+                <li key={item.item_id} className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">{item.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {item.count}点 - ¥{item.price * item.count} (
+                      {parseInt(item.time) * item.count}分)
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="flex justify-between items-center">
+              {order.status === '0' && (
+                <Button size="sm" onClick={() => updateOrderStatus(order.order_id, '1')}>
+                  完了にする
+                </Button>
+              )}
+              {order.status === '1' && (
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => updateOrderStatus(order.order_id, '2')}>
+                  <ShoppingBag className="h-4 w-4 mr-2" />
+                  受け渡し完了
+                </Button>
+              )}
+              {order.status === '2' && (
+                <Button size="sm" variant="secondary" disabled>
+                  <Check className="h-4 w-4 mr-2" />
+                  受け渡し済み
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                onClick={() => handleDeleteClick(order.order_id)}>
+                <Trash2 className="h-4 w-4 mr-2" />
+                削除
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }
