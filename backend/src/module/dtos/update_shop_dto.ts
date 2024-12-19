@@ -1,4 +1,4 @@
-import { IsDate, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class UpdateShopDto {
     @IsString()
@@ -12,4 +12,7 @@ export class UpdateShopDto {
 
     @IsDate()
     end_at?: Date;
+
+    @IsNumber()
+    wait_time?: number;
 }

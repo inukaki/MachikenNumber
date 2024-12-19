@@ -1,7 +1,7 @@
 'use server';
 
-export async function getOrders() {
-  const response = await fetch('http://localhost:3000/api/tester/shop/orders', {
+export async function getOrders(shop_id: string) {
+  const response = await fetch(`http://localhost:3001/orders/${shop_id}/unready`, {
     cache: 'no-store',
   });
   if (!response.ok) {

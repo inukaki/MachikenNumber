@@ -8,7 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CreditCard, Clock, Trash2, Check, ShoppingBag } from 'lucide-react';
 import { formatDate } from '@/actions/formatDate';
 import { ConfirmationModal } from './confirmation-modal';
-
+import { cn } from '@/lib/utils';
+import * as React from 'react';
 interface OrderItem {
   item_id: string;
   name: string;

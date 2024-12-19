@@ -30,6 +30,20 @@ export class ShopsService {
         if (updateShopDto.description) shop.description = updateShopDto.description;
         if (updateShopDto.start_at) shop.start_at = updateShopDto.start_at;
         if (updateShopDto.end_at) shop.end_at = updateShopDto.end_at;
+        if (updateShopDto.wait_time) shop.wait_time = updateShopDto.wait_time;
+        return this.shopsRepository.createShop(shop);
+    }
+    async addWaitTime(shop_id: string, wait_time: number): Promise<Shop> {
+        let shop = await this.shopsRepository.getShop(shop_id);
+        shop.wait_time += wait_time;
+        console.log(wait_time);
+        console.log(shop.wait_time);
+        return this.shopsRepository.createShop(shop);
+    }
+    async subWaitTime(shop_id: string, wait_time: number): Promise<Shop> {
+        let shop = await this.shopsRepository.getShop(shop_id);
+        shop.wait_time -= wait_time;
+        if (shop.wait_time < 0) shop.wait_time = 0;
         return this.shopsRepository.createShop(shop);
     }
 }

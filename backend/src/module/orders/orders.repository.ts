@@ -23,6 +23,10 @@ export class OrdersRepository {
         const orders = await this.ordersRepositoryTypeORM.find({where: {shop: {shop_id}}});
         return orders;
     }
+    async getOrderById(order_id: string): Promise<Orders> {
+        const order = await this.ordersRepositoryTypeORM.findOne({where: {order_id}});
+        return order;
+    }
     async getUnreadyOrders(shop_id: string): Promise<Orders[]> {
         const orders = await this.ordersRepositoryTypeORM.find({where: {shop: {shop_id}, status: 0}});
         return orders;

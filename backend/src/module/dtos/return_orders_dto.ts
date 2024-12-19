@@ -33,6 +33,9 @@ export class ReturnOrdersDto {
   @IsNumber()
   status: number;
 
+  @IsNumber()
+  wait_time: number;
+
   @IsArray()
   items: ReturnOrderItemDto[];
 }

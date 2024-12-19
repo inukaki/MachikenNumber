@@ -60,7 +60,7 @@ const ShopHome = ({ user }: { user: User }) => {
     setIsSubmitting(true);
     try {
       const shopId = Array.isArray(id) ? id[0] : id;
-      const res = await fetch(`/api/shop/${shopId}/event`, {
+      const res = await fetch(`http://localhost:3001/events/${data.eventId}/shops`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

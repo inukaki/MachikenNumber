@@ -19,6 +19,11 @@ export class EventsController {
     const event = await this.eventsService.getEvent(event_id);
     return event;
   }
+  @Get('')
+  async getAllEvents(): Promise<Event[]> {
+    const events = await this.eventsService.getAllEvents();
+    return events;
+  }
   @Delete(':event_id')
   async deleteEvent(@Param('event_id') event_id: string): Promise<void> {
     console.log(event_id);

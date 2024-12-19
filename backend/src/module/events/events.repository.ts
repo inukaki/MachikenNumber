@@ -23,6 +23,10 @@ export class EventsRepository {
     const event = await this.eventsRepositoryTypeORM.findOneBy({ event_id });
     return event;
   }
+  async getAllEvents(): Promise<Event[]> {
+    const events = await this.eventsRepositoryTypeORM.find();
+    return events;
+  }
   async deleteEvent(event_id: string): Promise<void> {
     await this.eventsRepositoryTypeORM.delete({ event_id });
   }
@@ -70,6 +74,7 @@ export class EventsRepository {
       end_at: eventToShop.shop.end_at,
       description: eventToShop.shop.description,
       status: eventToShop.status,
+      wait_time: eventToShop.shop.wait_time,
     }));
 
     return {
