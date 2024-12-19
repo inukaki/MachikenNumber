@@ -606,6 +606,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/event"
+    get:
+      tags:
+        - "events"
+      summary: "全てのイベント情報取得"
+      description: "全てのイベント情報を取得する"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/event"
   "/events/{event_id}":
     get:
       tags:
