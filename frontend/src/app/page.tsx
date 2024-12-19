@@ -1,22 +1,19 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import HowtouseButton from '@/components/HowtouseButton';
+import Image from "next/image";
+import Top from '@/components/page/Top';
+import Contents from '@/components/page/Contents';
 // import Footer from '@/components/auth/Footer';
 
 export default function Home() {
   return (
-    <div className="mt-10">
-      <div className="flex items-center justify-center">
-        <Link href="/signup">
-          <Button>利用する</Button>
-        </Link>
-      </div>
-      <div className="m-5 flex items-center justify-center">
-        <Link href="/client">
-          <Button>お客様の方はこちら</Button>
-        </Link>
-      </div>
+    <>
+    <Top />
+    <Contents />
 
       {/* <Footer /> */}
-    </div>
+      <HowtouseButton/>
+    </>
   );
 }
