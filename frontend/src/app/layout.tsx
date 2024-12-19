@@ -5,12 +5,34 @@ import Navigation from '@/components/auth/Navigation';
 import { getAuthSession } from '@/lib/nextauth';
 import AuthProvider from '@/components/providers/AuthProvider';
 import ToastProvider from '@/components/providers/ToastProvider';
+import { title } from 'process';
+import { Description } from '@radix-ui/react-toast';
 
 const inter = Inter({ subsets: ['latin'] });
-
-export const metadata: Metadata = {
+const meta = {
   title: 'Machiken Number',
   description: 'Machiken Number',
+  image: 'https://machiken-number.com/ogp/bg-white.png',
+  icon: '/logos/icon/bg-white.svg',
+}
+export const metadata: Metadata = {
+  title: meta.title,
+  description: 'Machiken Number',
+  openGraph: {
+    type: "website",
+    url: "https://machiken-number.com/",
+    title: meta.title,
+    description: meta.description,
+    siteName: 'MachikenNumber',
+    images: [{
+      url: meta.image
+    }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@site',
+    images: meta.image,
+  },
 };
 
 interface RootLayoutProps {
