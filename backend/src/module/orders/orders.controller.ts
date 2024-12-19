@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete} from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Delete, Patch} from "@nestjs/common";
 import { OrdersService } from "src/module/orders/orders.service";
 import { CreateOrdersDto } from "src/module/dtos/create_orders_dto";
 import { ReturnOrdersDto } from "src/module/dtos/return_orders_dto";
@@ -30,11 +30,11 @@ export class OrdersController {
     deleteOrder(@Param('order_id') order_id: string): Promise<void> {
         return this.ordersService.deleteOrder(order_id);
     }
-    @Post(':order_id/ready')
+    @Patch(':order_id/ready')
     readyOrder(@Param('order_id') order_id: string): Promise<void> {
         return this.ordersService.readyOrder(order_id);
     }
-    @Post(':order_id/received')
+    @Patch(':order_id/received')
     receivedOrder(@Param('order_id') order_id: string): Promise<void> {
         return this.ordersService.receivedOrder(order_id);
     }
