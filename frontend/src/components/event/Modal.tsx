@@ -1,62 +1,42 @@
 import type { ReactNode } from 'react';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-type ModalProps = {
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+
+interface ModalProps {
   msg: string;
   children: ReactNode;
-  custom?: btninfo[];
-};
-interface btninfo {
-  cont: string;
-  func?: () => void;
+  custom?: { cont: string; func?: () => void }[];
 }
 
-const Modal = ({ msg, children, custom }: ModalProps) => {
-  const buttonStyle = `w-fitcontent`;
-  const overlayStyle = `fixed w-screen h-screen bg-gray-500/50 inset-0`;
-  const modalStyle = `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[350px] items-center p-3`;
+const Modal: React.FC<ModalProps> = ({ msg, children, custom }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  }; // 表示非表示
-  const defaultCustom: btninfo[] = [{ cont: 'OK', func: () => {} }]; // デフォ指定
-  custom = custom || defaultCustom;
-  const checkType = () => {
-    try {
-      return (
-        <div className="row flex justify-between gap-2">
-          {custom.map((elm) => (
-            <Button
-              className="flex-1"
-              variant="outline"
-              onClick={() => {
-                elm['func']?.();
-                toggleModal();
-              }}>
-              {elm['cont']}
-            </Button>
-          ))}
-        </div>
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
+  const toggleModal = () => setIsOpen(!isOpen);
+
+  const defaultCustom = [{ cont: 'OK', func: () => {} }];
+  const buttons = custom || defaultCustom;
+
   return (
     <div>
-      {/* <div className="w-full items-center p-4">
-        <div className="mx-auto w-fit"> */}
-      <Button className={buttonStyle} onClick={toggleModal}>
-        {msg}
-      </Button>
-      {/* </div>
-      </div> */}
+      <Button onClick={toggleModal}>{msg}</Button>
       {isOpen && (
-        <div className={overlayStyle}>
-          <Card className={modalStyle}>
-            {children}
-            {checkType()}
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <Card className="w-[350px] max-w-[90%]">
+            <CardContent className="pt-6">{children}</CardContent>
+            <CardFooter className="flex justify-end space-x-2">
+              {buttons.map((btn, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  onClick={() => {
+                    btn.func?.();
+                    toggleModal();
+                  }}>
+                  {btn.cont}
+                </Button>
+              ))}
+            </CardFooter>
           </Card>
         </div>
       )}

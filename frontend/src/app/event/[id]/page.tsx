@@ -1,21 +1,13 @@
-import { getAuthSession } from '@/lib/nextauth';
-import { redirect } from 'next/navigation';
+import EventDetails from '@/components/event/EventDetails';
 import EventHome from '@/components/event/EventHome';
 
-export default async function ShopDetail({ params }: { params: { id: string } }) {
-  const session = await getAuthSession();
-  // セッションがない場合、ログインページにリダイレクト
-  if (!session || session.role !== 'event') {
-    redirect('/login');
-  }
-
-  // ユーザーIDをチェック
-  const loggedInUserId = session.id; // セッションに含まれるユーザーID
-  const event_id = params.id; // URLの[id]パラメータ
-
-  if (loggedInUserId !== event_id) {
-    // アクセス権がない場合、適切なエラーページやリダイレクト
-    redirect('/403');
-  }
-  return <EventHome event_id={event_id} />;
+export default function EventPage({ params }: { params: { id: string } }) {
+  return (
+    <div className="container mx-auto px-4 py-6">
+      <h1 className="text-2xl font-bold ">イベントID</h1>
+      <EventHome event_id={params.id} />
+      <h1 className="text-2xl font-bold ">詳細設定</h1>
+      <EventDetails event_id={params.id} />
+    </div>
+  );
 }
