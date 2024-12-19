@@ -17,10 +17,10 @@ export default function Home(params: { shop_id: string }) {
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
 
-  const response = await fetch(`http://localhost:3001/orders/${params.shop_id}/unready`, {
-    cache: 'no-store',
-  });
-  const orders = await response.json();
+  // const response = await fetch(`http://localhost:3001/orders/${params.shop_id}/unready`, {
+  //   cache: 'no-store',
+  // });
+  // const orders = await response.json();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
