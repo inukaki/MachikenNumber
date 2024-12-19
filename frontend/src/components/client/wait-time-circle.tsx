@@ -2,24 +2,24 @@
 
 import { useEffect, useState } from 'react';
 
-interface WaitingCircleProps {
+interface WaitTimeCircleProps {
   waitTime: number;
-  ordersAhead: number;
+  orderCount: number;
 }
 
-export function WaitingCircle({ waitTime, ordersAhead }: WaitingCircleProps) {
+export function WaitingCircle({ waitTime, orderCount }: WaitTimeCircleProps) {
   const [wave, setWave] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setWave((prevWave) => (prevWave + 1) % 100);
+      setWave((prev) => (prev + 1) % 100);
     }, 50);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="relative size-64">
-      <div className="absolute inset-0 overflow-hidden rounded-full bg-blue-200">
+      <div className="absolute inset-0 overflow-hidden rounded-full bg-blue-100">
         <div
           className="absolute inset-0 rounded-full bg-blue-500"
           style={{
@@ -29,9 +29,9 @@ export function WaitingCircle({ waitTime, ordersAhead }: WaitingCircleProps) {
           }}
         />
       </div>
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-        <p className="text-2xl font-bold">{ordersAhead}組待ち</p>
-        <p className="text-xl">約{waitTime}分</p>
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
+        <p className="text-3xl font-bold">{orderCount}件</p>
+        <p className="text-xl">待ち時間 約{waitTime}分</p>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { getAuthSession } from '@/lib/nextauth';
 import { redirect } from 'next/navigation';
 import { EventNavigation } from '@/components/event/EventNavigation';
+import { Toaster } from '@/components/ui/toaster';
 
 export default async function EventLayout({
   children,
@@ -25,6 +26,7 @@ export default async function EventLayout({
   return (
     <div className="min-h-screen pb-16">
       {children}
+      <Toaster />
       <EventNavigation />
     </div>
   );

@@ -137,7 +137,7 @@ export default function EventDetails({ event_id }: { event_id: string }) {
             <Textarea
               id="description"
               name="description"
-              value={editedDetails?.description}
+              value={editedDetails?.description || ''}
               onChange={handleInputChange}
               rows={4}
             />

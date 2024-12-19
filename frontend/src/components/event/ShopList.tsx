@@ -98,6 +98,28 @@ export default function ShopList({ event_id }: ShopListProps) {
     }
   };
 
+  const deleteShop = async (event_id: string, shop_id: string) => {
+    try {
+      const response = await fetch(`http://localhost:3001/events/${event_id}/shops/`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ shop_id }),
+      });
+      if (!response.ok) throw new Error('ショップの削除に失敗しました');
+      toast({
+        description: 'ショップを削除しました',
+      });
+      fetchShops();
+    } catch (error) {
+      console.error('Error deleting shop:', error);
+      toast({
+        title: 'エラー',
+        description: 'ショップの削除に失敗しました',
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <div className="mt-8">
       <h2 className="text-2xl font-bold mb-4">ショップリスト</h2>
@@ -105,10 +127,10 @@ export default function ShopList({ event_id }: ShopListProps) {
         <TableHeader>
           <TableRow>
             <TableHead>表示</TableHead>
-            <TableHead>店名</TableHead>
+            <TableHead>店名の詳細</TableHead>
 
             {/* <TableHead>追加日時</TableHead> */}
-            <TableHead>詳細</TableHead>
+            <TableHead>削除</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -120,12 +142,16 @@ export default function ShopList({ event_id }: ShopListProps) {
                   onCheckedChange={() => handleCheckboxChange(shop.shop_id)}
                 />
               </TableCell>
-              <TableCell>{shop.name}</TableCell>
+              <TableCell>
+                <Button variant="link" asChild>
+                  <Link href={`/client/${shop.shop_id}`}>{shop.name}</Link>
+                </Button>
+              </TableCell>
 
               {/* <TableCell>{dateFormat(shop.end_at)}</TableCell> */}
               <TableCell>
-                <Button asChild>
-                  <Link href={`/client/${shop.shop_id}`}>詳細</Link>
+                <Button variant="destructive" onClick={() => deleteShop(event_id, shop.shop_id)}>
+                  削除
                 </Button>
               </TableCell>
             </TableRow>

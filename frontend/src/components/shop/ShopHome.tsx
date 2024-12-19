@@ -49,7 +49,7 @@ const ShopHome = ({ user }: { user: User }) => {
 
   const qrCodeUrl = useMemo(() => {
     const shopId = Array.isArray(id) ? id[0] : id;
-    return `http://localhost:3000/client/${shopId}`;
+    return `http://localhost:3000/client/shops/${shopId}`;
   }, [id]);
 
   const form = useForm<z.infer<typeof eventIdSchema>>({
@@ -87,7 +87,7 @@ const ShopHome = ({ user }: { user: User }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ eventId: data.eventId, shopId }),
+        body: JSON.stringify({ shop_id: shopId }),
       });
       if (res.ok) {
         toast.success('イベント登録が完了しました');

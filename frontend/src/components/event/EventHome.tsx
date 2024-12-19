@@ -3,7 +3,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Toaster } from '@/components/ui/toaster';
 import { toast } from '@/hooks/use-toast';
 
 const EventHome = ({ event_id }: { event_id: string }) => {
@@ -33,8 +32,6 @@ const EventHome = ({ event_id }: { event_id: string }) => {
           <Button onClick={copyEventId}>イベントIDをコピー</Button>
         </CardContent>
       </Card>
-
-      <Toaster />
     </div>
   );
 };
