@@ -187,6 +187,9 @@ paths:
                     status:
                       type: "number"
                       example: "0"
+                    wait_time:
+                      type: "integer"
+                      example: 0
                     items:
                       type: "array"
                       items:
@@ -249,6 +252,9 @@ paths:
                     status:
                       type: "number"
                       example: "0"
+                    wait_time:
+                      type: "integer"
+                      example: 0
                     items:
                       type: "array"
                       items:
@@ -311,6 +317,9 @@ paths:
                     status:
                       type: "number"
                       example: "1"
+                    wait_time:
+                      type: "integer"
+                      example: 0
                     items:
                       type: "array"
                       items:
@@ -395,7 +404,7 @@ paths:
                             example: "teee"
         "404":
           description: "注文が見つからない"
-  "/orders/{order_id}":
+  "/orders/{order_id}/{shop_id}":
     delete:
       tags:
         - "orders"
@@ -411,7 +420,7 @@ paths:
       responses:
         "204":
           description: "成功"
-  "/orders/{order_id}/ready":
+  "/orders/{order_id}/{shop_id}/ready":
     patch:
       tags:
         - "orders"
@@ -437,7 +446,7 @@ paths:
       responses:
         "200":
           description: "成功"
-  "/orders/{order_id}/received":
+  "/orders/{order_id}/{shop_id}/received":
     patch:
       tags:
         - "orders"
@@ -816,6 +825,9 @@ components:
         description:
           type: "string"
           description: "説明"
+        wait_time:
+          type: "integer"
+          description: "待ち時間"
       required:
         - shop_id
         - name
@@ -858,6 +870,9 @@ components:
           type: "string"
           format: "date-time"
           description: "注文時間"
+        wait_time:
+          type: "integer"
+          description: "待ち時間"
         items:
           type: "array"
           items:
