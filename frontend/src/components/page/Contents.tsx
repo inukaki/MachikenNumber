@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '../ui/card';
@@ -40,16 +42,41 @@ const Machiken = () => {
 }
 
 export default function () {
-  const lineCN = `m-2 h-1 flex-1 bg-stone-400 rounded-full w-full`
-  const h2outerCN = `relative min-h-[16rem] w-full overflow-hidden border-b-4 bg-slate-800 rounded-2xl z-10 my-4`
-  const h2CN = `absolute text-9xl font-bold text-outline z-20`
+  const lineCN = `my-2 h-1 flex-1 bg-stone-400 rounded-full w-full`
+  const h2outerCN = `relative min-h-[16rem] w-full overflow-hidden border-b-4 bg-slate-400 rounded-2xl z-10 my-4`
+  const h2CN = `absolute text-9xl font-bold text-outline text-gray-500 z-20`
   const h2contCN = `relative p-4 text-white h-fit min-h-[16rem] text-blackback z-30`   //text-whiteback
+  const scrollToSection = () => {
+    const element = document.getElementById('trytouse');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
   return (
     <>
     <div className="mt-10 item-center">
       <div className="my-2 mb-4">
         <div>
           <h1 className="text-2xl font-bold">「<Machiken/>」はユーザー、オーナーどちらにもやさしい待ち時間表示Webアプリです。</h1>
+          <div className='p-4'>
+            <p className='mb-2'>
+              模擬店でからあげを買ったとき「少し待ってください。」と言われた。どれくらい待てばいいんだろう？<br />
+              結局30分待った。この間にVRジェットコースター乗りに行けたな...<br />
+            </p><p className='mb-2'>  
+              私たちが文化祭で経験したこんな出来事から「待ち時間」と「待ち順」に注目し、開発をしたのが「マチケンナンバ」です。
+            </p><p className='mb-2'>
+              顧客目線でわかりやすく、操作が簡単なアプリを目指しました。<br />
+              またお店目線で、できるだけ手間を増やさず、導入コストゼロを目指し、開発をすすめました。
+            </p>
+            <div className="text-center ">
+              <div className=' flex items-center justify-center m-1'>
+                <div className={lineCN}></div>
+                <p className='px-2 font-bold text-lg'>少しでも気になりましたか？</p>
+                <div className={lineCN}></div>
+              </div>
+              <Button className='text-lg m-4' onClick={scrollToSection}>つかってみる</Button>
+            </div>
+          </div>
         </div>
         <div className={h2outerCN}>
           <h2 className={h2CN}>For<br />Customer</h2>
@@ -84,7 +111,8 @@ export default function () {
           </div>
         </div>
       </div>
-      <div className='max-w-[30rem] mx-auto'>
+      <div className={lineCN}></div>
+      <div id="trytouse" className='max-w-[30rem] mx-auto my-4'>
         <Card>
           <CardHeader>
             <CardTitle className='text-center'>
@@ -113,12 +141,12 @@ export default function () {
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Link href="/client">
-                <Button variant="outline" className="w-full">
+                <Button className="w-full">
                   ショップを登録
                 </Button>
               </Link>
               <Link href="/client/events">
-                <Button variant="outline" className="w-full">
+                <Button className="w-full">
                   イベントを登録
                 </Button>
               </Link>
@@ -126,12 +154,12 @@ export default function () {
           </div>      
           <div className=' flex items-center justify-center m-1'>
             <div className={lineCN}></div>
-            <p>または</p>
+            <p className='px-2'>または</p>
             <div className={lineCN}></div>
           </div>
           <div>
             <Link href="/client/events">
-              <Button className="w-full">
+              <Button variant="outline" className="w-full">
                 ログイン
               </Button>
             </Link>
