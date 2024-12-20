@@ -1,0 +1,10 @@
+services:
+  machikan_number_db:
+    image: mariadb:10.5
+    env_file: ./.env
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./init-scripts:/docker-entrypoint-initdb.d

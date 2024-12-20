@@ -1,0 +1,926 @@
+openapi: 3.1.0
+info:
+  title: "MachikanNumberAPI"
+  version: "1.0.0"
+  description: "This is a MachikanNumberAPI"
+
+servers:
+  - url: "http://localhost: 3000"
+    description: "開発環境"
+
+tags:
+  - name: "shops"
+    description: "ショップ情報"
+  - name: "items"
+    description: "商品情報"
+  - name: "orders"
+    description: "注文情報"
+  - name: "events"
+    description: "イベント情報"
+
+
+paths:
+  "/shops":
+    post:
+      tags:
+        - "shops"
+      summary: "ショップ登録"
+      description: "ショップを登録する"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                shop_id:
+                  type: "string"
+                  format: "uuid"
+                  description: "ショップID"
+                name:
+                  type: "string"
+                  description: "ショップ名"
+                start_at:
+                  type: "string"
+                  format: "date-time"
+                end_at:
+                  type: "string"
+                  format: "date-time"
+                description:
+                  type: "string"
+                  description: "説明"
+      responses:
+        "201":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shop"
+  "/shops/{shop_id}":
+    get:
+      tags:
+        - "shops"
+      summary: "ショップ情報取得"
+      description: "ショップ情報を取得する"
+      parameters:
+        - name: "shop_id"
+          in: "path"
+          description: "ショップID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shop"
+        "404":
+          description: "ショップが見つからない"
+    patch:
+      tags:
+        - "shops"
+      summary: "ショップ情報更新"
+      description: "ショップ情報を更新する"
+      parameters:
+        - name: "shop_id"
+          in: "path"
+          description: "ショップID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                name:
+                  type: "string"
+                  description: "ショップ名"
+                start_at:
+                  type: "string"
+                  format: "date-time"
+                end_at:
+                  type: "string"
+                  format: "date-time"
+                description:
+                  type: "string"
+                  description: "説明"
+  "/orders":
+    post:
+      tags:
+        - "orders"
+      summary: "注文登録"
+      description: "注文を登録する"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                shop_id:
+                  type: "string"
+                  format: "uuid"
+                  description: "ショップID"
+                card_number:
+                  type: "string"
+                  description: "カード番号"
+                items:
+                  type: "array"
+                  items:
+                    type: "object"
+                    properties:
+                      item_id:
+                        type: "string"
+                        description: "商品ID"
+                      count:
+                        type: "integer"
+                        description: "個数"
+      responses:
+        "201":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+  "/orders/{shop_id}":
+    get:
+      tags:
+        - "orders"
+      summary: "店の全ての注文情報取得"
+      description: "店の全ての注文情報を取得する"
+      parameters:
+        - name: "shop_id"
+          in: "path"
+          description: "ショップID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    order_id:
+                      type: "string"
+                      format: "uuid"
+                      example: "90b87d16-50b6-4666-8a3c-43220a652be2"
+                    shop_id:
+                      type: "string"
+                      example: "shop_id"
+                    card_number:
+                      type: "string"
+                      example: "string"
+                    create_at:
+                      type: "string"
+                      format: "date-time"
+                      example: "2024-12-15T20:43:43.632Z"
+                    status:
+                      type: "number"
+                      example: "0"
+                    items:
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          item_id:
+                            type: "string"
+                            example: "1"
+                          count:
+                            type: "integer"
+                            example: 2
+                          time:
+                            type: "integer"
+                            example: 1
+                          price:
+                            type: "integer"
+                            example: 0
+                          name:
+                            type: "string"
+                            example: "teee"
+        "404":
+          description: "注文が見つからない"
+  "/orders/{shop_id}/unready":
+    get:
+      tags:
+        - "orders"
+      summary: "提供不可能な注文情報取得"
+      description: "店の提供準備が完了していないの注文情報を取得する"
+      parameters:
+        - name: "shop_id"
+          in: "path"
+          description: "ショップID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    order_id:
+                      type: "string"
+                      format: "uuid"
+                      example: "90b87d16-50b6-4666-8a3c-43220a652be2"
+                    shop_id:
+                      type: "string"
+                      example: "shop_id"
+                    card_number:
+                      type: "string"
+                      example: "string"
+                    create_at:
+                      type: "string"
+                      format: "date-time"
+                      example: "2024-12-15T20:43:43.632Z"
+                    status:
+                      type: "number"
+                      example: "0"
+                    items:
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          item_id:
+                            type: "string"
+                            example: "1"
+                          count:
+                            type: "integer"
+                            example: 2
+                          time:
+                            type: "integer"
+                            example: 1
+                          price:
+                            type: "integer"
+                            example: 0
+                          name:
+                            type: "string"
+                            example: "teee"
+        "404":
+          description: "注文が見つからない"
+  "/orders/{shop_id}/ready":
+    get:
+      tags:
+        - "orders"
+      summary: "提供可能な注文情報取得"
+      description: "店の提供準備が完了している注文情報を取得する"
+      parameters:
+        - name: "shop_id"
+          in: "path"
+          description: "ショップID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    order_id:
+                      type: "string"
+                      format: "uuid"
+                      example: "90b87d16-50b6-4666-8a3c-43220a652be2"
+                    shop_id:
+                      type: "string"
+                      example: "shop_id"
+                    card_number:
+                      type: "string"
+                      example: "string"
+                    create_at:
+                      type: "string"
+                      format: "date-time"
+                      example: "2024-12-15T20:43:43.632Z"
+                    status:
+                      type: "number"
+                      example: "1"
+                    items:
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          item_id:
+                            type: "string"
+                            example: "1"
+                          count:
+                            type: "integer"
+                            example: 2
+                          time:
+                            type: "integer"
+                            example: 1
+                          price:
+                            type: "integer"
+                            example: 0
+                          name:
+                            type: "string"
+                            example: "teee"
+        "404":
+          description: "注文が見つからない"
+  "/orders/{shop_id}/received":
+    get:
+      tags:
+        - "orders"
+      summary: "提供済みの注文情報取得"
+      description: "店の受取が完了した注文情報を取得する"
+      parameters:
+        - name: "shop_id"
+          in: "path"
+          description: "ショップID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    order_id:
+                      type: "string"
+                      format: "uuid"
+                      example: "90b87d16-50b6-4666-8a3c-43220a652be2"
+                    shop_id:
+                      type: "string"
+                      example: "shop_id"
+                    card_number:
+                      type: "string"
+                      example: "string"
+                    create_at:
+                      type: "string"
+                      format: "date-time"
+                      example: "2024-12-15T20:43:43.632Z"
+                    status:
+                      type: "number"
+                      example: "2"
+                    items:
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          item_id:
+                            type: "string"
+                            example: "1"
+                          count:
+                            type: "integer"
+                            example: 2
+                          time:
+                            type: "integer"
+                            example: 1
+                          price:
+                            type: "integer"
+                            example: 0
+                          name:
+                            type: "string"
+                            example: "teee"
+        "404":
+          description: "注文が見つからない"
+  "/orders/{order_id}":
+    delete:
+      tags:
+        - "orders"
+      summary: "注文削除"
+      description: "注文を削除する"
+      parameters:
+        - name: "order_id"
+          in: "path"
+          description: "注文ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "204":
+          description: "成功"
+  "/orders/{order_id}/ready":
+    patch:
+      tags:
+        - "orders"
+      summary: "注文を提供可能にする"
+      description: "注文を提供可能にする"
+      parameters:
+        - name: "order_id"
+          in: "path"
+          description: "注文ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                status:
+                  type: "number"
+                  description: "0: 提供不可能, 1: 提供可能, 2: 受取済み"
+      responses:
+        "200":
+          description: "成功"
+  "/orders/{order_id}/received":
+    patch:
+      tags:
+        - "orders"
+      summary: "注文を受取済みにする"
+      description: "注文を受取済みにする"
+      parameters:
+        - name: "order_id"
+          in: "path"
+          description: "注文ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                status:
+                  type: "number"
+                  description: "0: 提供不可能, 1: 提供可能, 2: 受取済み"
+      responses:
+        "200":
+          description: "成功"
+  "/items":
+    post:
+      tags:
+        - "items"
+      summary: "商品登録"
+      description: "商品を登録する"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                shop_id:
+                  type: "string"
+                  format: "uuid"
+                  description: "ショップID"
+                name:
+                  type: "string"
+                  description: "商品名"
+                price:
+                  type: "integer"
+                  description: "価格"
+                time:
+                  type: "integer"
+                  description: "必要時間"
+      responses:
+        "201":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/item"
+  "/items/{shop_id}":
+    get:
+      tags:
+        - "items"
+      summary: "商品情報取得"
+      description: "店の全ての商品情報を取得する"
+      parameters:
+        - name: "shop_id"
+          in: "path"
+          description: "ショップID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/item"
+        "404":
+          description: "商品が見つからない"
+  "/items/{item_id}":
+    patch:
+      tags:
+        - "items"
+      summary: "商品情報更新"
+      description: "商品情報を更新する"
+      parameters:
+        - name: "item_id"
+          in: "path"
+          description: "商品ID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                name:
+                  type: "string"
+                  description: "商品名"
+                price:
+                  type: "integer"
+                  description: "価格"
+                time:
+                  type: "integer"
+                  description: "必要時間"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/item"
+    delete:
+      tags:
+        - "items"
+      summary: "商品削除"
+      description: "商品を削除する"
+      parameters:
+        - name: "item_id"
+          in: "path"
+          description: "商品ID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "成功"
+  "/events":
+    post:
+      tags:
+        - "events"
+      summary: "イベント登録"
+      description: "イベントを登録する"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                name:
+                  type: "string"
+                  description: "イベント名"
+                start_at:
+                  type: "string"
+                  format: "date-time"
+                end_at:
+                  type: "string"
+                  format: "date-time"
+                description:
+                  type: "string"
+                  description: "説明"
+      responses:
+        "201":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
+    get:
+      tags:
+        - "events"
+      summary: "全てのイベント情報取得"
+      description: "全てのイベント情報を取得する"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/event"
+  "/events/{event_id}":
+    get:
+      tags:
+        - "events"
+      summary: "イベント情報取得"
+      description: "イベント情報を取得する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
+        "404":
+          description: "イベントが見つからない"
+    patch:
+      tags:
+        - "events"
+      summary: "イベント情報更新"
+      description: "イベント情報を更新する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                name:
+                  type: "string"
+                  description: "イベント名"
+                start_at:
+                  type: "string"
+                  format: "date-time"
+                end_at:
+                  type: "string"
+                  format: "date-time"
+                description:
+                  type: "string"
+                  description: "説明"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
+    delete:
+      tags:
+        - "events"
+      summary: "イベント削除"
+      description: "イベントを削除する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "成功"
+  "events/{event_id}/shops":
+    post:
+      tags:
+        - "events"
+      summary: "イベントにショップ登録"
+      description: "イベントにショップを登録する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                shop_id:
+                  type: "string"
+                  format: "uuid"
+                  description: "ショップID"
+      responses:
+        "201":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
+    delete:
+      tags:
+        - "events"
+      summary: "イベントからショップ削除"
+      description: "イベントからショップを削除する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                shop_id:
+                  type: "string"
+                  format: "uuid"
+                  description: "ショップID"
+      responses:
+        "204":
+          description: "成功"
+  "events/{event_id}/shopsView":
+    patch:
+      tags:
+        - "events"
+      summary: "イベントにショップ表示非表示"
+      description: "イベントにショップの表示状態を変更する"
+      parameters:
+        - name: "event_id"
+          in: "path"
+          description: "イベントID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  shop_id:
+                    type: "string"
+                    format: "uuid"
+                    description: "ショップID"
+                  status:
+                    type: "boolean"
+                    description: "true: 表示, false: 非表示"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
+
+components:
+  schemas:
+    shop:
+      type: "object"
+      properties:
+        shop_id:
+          type: "string"
+          format: "uuid"
+          description: "ショップID"
+        name:
+          type: "string"
+          description: "ショップ名"
+        start_at:
+          type: "string"
+          format: "date-time"
+        end_at:
+          type: "string"
+          format: "date-time"
+        description:
+          type: "string"
+          description: "説明"
+      required:
+        - shop_id
+        - name
+    item:
+      type: "object"
+      properties:
+        item_id:
+          type: "string"
+          format: "uuid"
+          description: "商品ID"
+        name:
+          type: "string"
+          description: "商品名"
+        price:
+          type: "integer"
+          description: "価格"
+        time:
+          type: "integer"
+          description: "必要時間"
+      required:
+        - item_id
+        - name
+        - price
+        - time
+    order:
+      type: "object"
+      properties:
+        order_id:
+          type: "string"
+          format: "uuid"
+          description: "注文ID"
+        shop_id:
+          type: "string"
+          format: "uuid"
+          description: "ショップID"
+        card_number:
+          type: "string"
+          description: "カード番号"
+        create_at:
+          type: "string"
+          format: "date-time"
+          description: "注文時間"
+        items:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              item_id:
+                type: "string"
+                format: "uuid"
+                description: "商品ID"
+              count:
+                type: "integer"
+                description: "個数"
+              time:
+                type: "integer"
+                description: "必要時間"
+      required:
+        - order_id
+        - shop_id
+        - items
+        - card_number
+        - create_at
+    event:
+      type: "object"
+      properties:
+        event_id:
+          type: "string"
+          format: "uuid"
+          description: "イベントID"
+        name:
+          type: "string"
+          description: "イベント名"
+        shops:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              shop_id:
+                type: "string"
+              name:
+                type: "string"
+              start_at:
+                type: "string"
+                format: "date-time"
+                nullable: true
+              end_at:
+                type: "string"
+                format: "date-time"
+                nullable: true
+              description:
+                type: "string"
+              status:
+                type: "boolean"
+        start_at:
+          type: "string"
+          format: "date-time"
+          description: "開始時間"
+        end_at:
+          type: "string"
+          format: "date-time"
+          description: "終了時間"
+        description:
+          type: "string"
+          description: "説明"
+      required:
+        - event_id
+        - name

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Swagger UI</title>
+    <link rel="stylesheet" type="text/css" href="./dist/swagger-ui.css" />
+    <script src="./dist/swagger-ui-bundle.js"></script>
+  </head>
+
+  <body>
+    <div id="swagger-ui"></div>
+
+    <script>
+      const ui = SwaggerUIBundle({
+        url: "./openapi.yml",
+        dom_id: "#swagger-ui",
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIBundle.SwaggerUIStandalonePreset,
+        ],
+        layout: "BaseLayout",
+      });
+    </script>
+  </body>
+</html>
