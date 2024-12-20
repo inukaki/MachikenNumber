@@ -14,7 +14,7 @@ interface T {
 }
 
 const Yellow = ({ children }: T) => {
-  return <span className="rounded bg-yellow-500 bg-opacity-50 px-1">{children}</span>;
+  return <span className="rounded bg-yellow-500/50 px-1">{children}</span>;
 };
 
 const Large = ({ children }: T) => {

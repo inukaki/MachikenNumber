@@ -33,7 +33,7 @@ export default async function EventDetailPage({ params }: { params: { eventId: s
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             <Link href="/client" className="flex items-center gap-2">
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="size-5" />
               <span>戻る</span>
             </Link>
             <h1 className="text-lg font-semibold">{event.name}</h1>
@@ -45,14 +45,14 @@ export default async function EventDetailPage({ params }: { params: { eventId: s
       <div className="container mx-auto px-4 py-6">
         <div className="mb-8 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 p-6 text-white">
           <div className="flex items-center gap-4">
-            <Store className="h-8 w-8" />
+            <Store className="size-8" />
             <div>
               <p className="text-sm font-medium text-blue-100">現在の出店数</p>
               <p className="text-4xl font-bold">{event.shops.length}店舗</p>
             </div>
           </div>
         </div>
-        <h1 className="text-xl font-semibold mb-4">店舗を選択</h1>
+        <h1 className="mb-4 text-xl font-semibold">店舗を選択</h1>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {event.shops.map((shop) => (
@@ -67,11 +67,11 @@ export default async function EventDetailPage({ params }: { params: { eventId: s
                       {shop.status ? '営業中' : '休業中'}
                     </Badge>
                   </div>
-                  <p className="mt-2 text-sm text-gray-600 line-clamp-2">{shop.description}</p>
+                  <p className="mt-2 line-clamp-2 text-sm text-gray-600">{shop.description}</p>
                 </div>
                 <div className="flex flex-col items-end justify-center border-l border-gray-100 pl-4">
                   <div className="flex items-center gap-2 text-gray-600">
-                    <Clock className="h-5 w-5" />
+                    <Clock className="size-5" />
                   </div>
                   <div className="mt-1 text-center">
                     <span className="text-2xl font-bold text-blue-600">{shop.wait_time}</span>

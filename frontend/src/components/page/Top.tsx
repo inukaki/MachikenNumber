@@ -22,7 +22,7 @@ export default function Top() {
             layout="fill"
             className="absolute left-0 top-0 object-cover blur-sm"
           />
-          <div className="absolute top-1/2 size-full -translate-y-1/2 bg-white bg-opacity-50"></div>
+          <div className="absolute top-1/2 size-full -translate-y-1/2 bg-white/50"></div>
           <Image
             src="/logos/textonly/bg-no.svg"
             alt="マチケンナンバ"

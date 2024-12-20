@@ -5,8 +5,6 @@ import Navigation from '@/components/auth/Navigation';
 import { getAuthSession } from '@/lib/nextauth';
 import AuthProvider from '@/components/providers/AuthProvider';
 import ToastProvider from '@/components/providers/ToastProvider';
-import { title } from 'process';
-import { Description } from '@radix-ui/react-toast';
 
 const inter = Inter({ subsets: ['latin'] });
 const meta = {

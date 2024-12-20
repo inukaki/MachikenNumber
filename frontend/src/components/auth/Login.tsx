@@ -85,11 +85,11 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-[400px] m-auto">
-      <div className="text-2xl font-bold text-center mb-10">ログイン</div>
+    <div className="m-auto max-w-[400px]">
+      <div className="mb-10 text-center text-2xl font-bold">ログイン</div>
 
       <Button variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={isLoading}>
-        <FcGoogle className="mr-2 h-4 w-4" />
+        <FcGoogle className="mr-2 size-4" />
         Googleアカウント
       </Button>
 
@@ -98,7 +98,7 @@ const Login = () => {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-background px-2 text-muted-foreground">OR</span>
+          <span className="bg-background text-muted-foreground px-2">OR</span>
         </div>
       </div>
 
@@ -133,18 +133,18 @@ const Login = () => {
           />
 
           <Button disabled={isLoading} type="submit" className="w-full">
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
             ログイン
           </Button>
         </form>
       </Form>
 
-      <div className="text-center mt-5">
+      <div className="mt-5 text-center">
         <Link href="/reset-password" className="text-sm text-blue-500">
           パスワードを忘れた方はこちら
         </Link>
       </div>
-      <div className="text-center mt-2">
+      <div className="mt-2 text-center">
         <Link href="/signup" className="text-sm text-blue-500">
           アカウントを作成する
         </Link>
