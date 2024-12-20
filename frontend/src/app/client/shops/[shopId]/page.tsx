@@ -94,7 +94,7 @@ export default function ShopDetailPage({ params }: { params: { shopId: string } 
               placeholder="注文番号を入力して検索"
               value={cardNumber}
               onChange={(e) => setCardNumber(e.target.value)}
-              className="h-12 pl-12 pr-4"
+              className="h-12 bg-white pl-12 pr-4"
             />
             <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-gray-400" />
             <Button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2" size="sm">

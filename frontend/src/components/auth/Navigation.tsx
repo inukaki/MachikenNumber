@@ -12,7 +12,7 @@ interface NavigationProps {
 }
 // ナビゲーション
 const Navigation = ({ user }: NavigationProps) => {
-  const role = (user) ? user.role : null ;
+  const role = user ? user.role : null;
   return (
     <header className="shadow-lg shadow-gray-100">
       <div className="container mx-auto flex max-w-screen-md items-center justify-between px-2 py-3">
@@ -23,15 +23,13 @@ const Navigation = ({ user }: NavigationProps) => {
             alt="マチケンナンバ"
             width={256}
             height={64}
-            className='h-12 w-auto'
+            className="h-12 w-auto"
           />
         </Link>
         {user ? (
-          <div className='flex flex-row'>
-          <HowtouseButton 
-            type={role}
-          />
-          <UserNavigation user={user} />
+          <div className="flex flex-row">
+            <HowtouseButton type={role} />
+            <UserNavigation user={user} />
           </div>
         ) : (
           <div className="flex items-center space-x-1">

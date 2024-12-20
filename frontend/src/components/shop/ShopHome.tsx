@@ -158,7 +158,7 @@ const ShopHome = ({ user }: { user: User }) => {
         </header>
 
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="space-y-2">
+          <div className="space-y-6">
             <div className="bg-card rounded-lg border p-6">
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -168,7 +168,7 @@ const ShopHome = ({ user }: { user: User }) => {
               </div>
 
               {eventData ? (
-                <div className="space-y-2">
+                <div className="space-y-6">
                   <div className="bg-primary/5 rounded-md p-4">
                     <p className="text-primary font-medium">{eventData.name}</p>
                     <div className="text-muted-foreground mt-2 flex items-center gap-2 text-sm">
@@ -251,7 +251,7 @@ const ShopHome = ({ user }: { user: User }) => {
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-6">
             <div className="bg-card rounded-lg border p-6">
               <div className="mb-4 flex items-center gap-2">
                 <Utensils className="text-primary size-5" />

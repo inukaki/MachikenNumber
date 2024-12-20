@@ -18,7 +18,23 @@ const LoginCard = async () => {
   const shop = { login: '/shop', signup: '/signup' };
   const event = { login: '/event', signup: '/signup' };
   return (
-    <div className="flex h-full flex-col items-center justify-center space-y-3 p-4">
+    <div className="flex h-full flex-col items-center justify-center space-y-6 p-4">
+      <p className="m-2 text-lg font-bold">登録なしで、順番を確認できます！</p>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-center">ショップ・イベントを探す</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid w-full items-center gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <Link href="/client">
+                <Button className="w-full text-lg">イベント一覧へ</Button>
+              </Link>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      <p className="m-2 my-6 text-lg font-bold">ショップ・イベントの管理者ですか？</p>
       <Card className="w-[350px] items-center">
         <CardHeader>
           <CardTitle className="text-center">ショップ</CardTitle>
@@ -33,7 +49,7 @@ const LoginCard = async () => {
                 </Button>
               </Link>
               <Link href="/signup/shop">
-                <Button variant="outline" className="w-full">
+                <Button className="w-full">
                   <p>新規登録</p>
                 </Button>
               </Link>
@@ -55,7 +71,7 @@ const LoginCard = async () => {
                 </Button>
               </Link>
               <Link href="/signup/event">
-                <Button variant="outline" className="w-full">
+                <Button className="w-full">
                   <p>新規登録</p>
                 </Button>
               </Link>
