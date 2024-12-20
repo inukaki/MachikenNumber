@@ -55,8 +55,8 @@ export default function CreateMenu({ id }: { id: string | string[] }) {
   }
 
   return (
-    <div className="flex h-full items-center justify-center p-4">
-      <Card className="w-[420px]">
+    <div className="flex h-full items-center justify-center ">
+      <Card className="bg-primary/5 w-[420px]">
         <CardHeader>
           <CardTitle>メニューの追加登録</CardTitle>
           <CardDescription>以下の情報を入力してメニューを追加してください</CardDescription>
@@ -71,7 +71,7 @@ export default function CreateMenu({ id }: { id: string | string[] }) {
                   <FormItem>
                     <FormLabel>商品名</FormLabel>
                     <FormControl>
-                      <Input className="w-4/5" placeholder="焼きそば" {...field} />
+                      <Input className="w-4/5 bg-white" placeholder="焼きそば" {...field} />
                     </FormControl>
                     <FormDescription>トッピングは商品名に含めてください</FormDescription>
                     <FormMessage />
@@ -87,7 +87,7 @@ export default function CreateMenu({ id }: { id: string | string[] }) {
                     <FormControl>
                       <div className="flex items-center space-x-2">
                         <Input
-                          className="w-4/5"
+                          className="w-4/5 bg-white"
                           type="number"
                           {...field}
                           onChange={(e) => field.onChange(e.target.valueAsNumber)}
@@ -124,7 +124,9 @@ export default function CreateMenu({ id }: { id: string | string[] }) {
                   </FormItem>
                 )}
               />
-              <Button type="submit">登録</Button>
+              <div className="flex justify-center">
+                <Button type="submit">登録</Button>
+              </div>
             </form>
           </Form>
         </CardContent>

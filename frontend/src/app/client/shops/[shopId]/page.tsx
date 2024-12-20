@@ -64,7 +64,7 @@ export default function ShopDetailPage({ params }: { params: { shopId: string } 
           <div className="flex h-16 items-center justify-between">
             <Link href="/client">
               <Button variant="ghost" size="icon">
-                <ArrowLeft className="h-5 w-5" />
+                <ArrowLeft className="size-5" />
               </Button>
             </Link>
             <h1 className="text-lg font-semibold">注文状況</h1>
@@ -77,7 +77,7 @@ export default function ShopDetailPage({ params }: { params: { shopId: string } 
         {/* 待ち時間サマリー */}
         <div className="mb-8 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 p-6 text-white">
           <div className="flex items-center gap-4">
-            <Clock className="h-8 w-8" />
+            <Clock className="size-8" />
             <div>
               <p className="text-sm font-medium text-indigo-100">現在の総待ち時間</p>
               <p className="text-4xl font-bold">{totalWaitTime}分</p>
@@ -94,9 +94,9 @@ export default function ShopDetailPage({ params }: { params: { shopId: string } 
               placeholder="注文番号を入力して検索"
               value={cardNumber}
               onChange={(e) => setCardNumber(e.target.value)}
-              className="h-12 pl-12 pr-4"
+              className="h-12 bg-white pl-12 pr-4"
             />
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+            <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-gray-400" />
             <Button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2" size="sm">
               検索
             </Button>
@@ -107,7 +107,7 @@ export default function ShopDetailPage({ params }: { params: { shopId: string } 
         {readyOrders.length > 0 && (
           <div className="mb-8">
             <div className="mb-4 flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500" />
+              <CheckCircle2 className="size-5 text-green-500" />
               <h2 className="text-lg font-medium">完了済み注文</h2>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -126,7 +126,7 @@ export default function ShopDetailPage({ params }: { params: { shopId: string } 
 
         {/* 待ち注文一覧 */}
         <div>
-          <h2 className="mb-4 text-lg font-medium">待ち注文一覧</h2>
+          <h2 className="mb-4 text-lg font-medium">タップで詳細を確認</h2>
           <div className="space-y-3">
             {unreadyOrders.map((order: Order) => {
               const waitTime = order.items.reduce(

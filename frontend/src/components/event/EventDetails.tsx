@@ -81,14 +81,14 @@ export default function EventDetails({ event_id }: { event_id: string }) {
     }
   };
 
-  const handleCancel = () => {
-    setEditedDetails(eventDetails);
-  };
+  // const handleCancel = () => {
+  //   setEditedDetails(eventDetails);
+  // };
 
   if (!eventDetails) return <div>読み込み中...</div>;
 
   return (
-    <Card className="w-full max-w-2xl mx-auto mt-8">
+    <Card className="mx-auto mt-8 w-full max-w-2xl">
       <CardHeader>
         <CardTitle>イベント詳細</CardTitle>
       </CardHeader>
@@ -144,9 +144,6 @@ export default function EventDetails({ event_id }: { event_id: string }) {
           </div>
           <div className="flex justify-end space-x-2">
             <Button type="submit">保存</Button>
-            <Button type="button" variant="outline" onClick={handleCancel}>
-              キャンセル
-            </Button>
           </div>
         </form>
       </CardContent>

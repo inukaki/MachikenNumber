@@ -24,7 +24,7 @@ export default async function EventLayout({
   }
 
   return (
-    <div className="min-h-screen pb-16">
+    <div className=" min-h-screen pb-16">
       {children}
       <Toaster />
       <EventNavigation />

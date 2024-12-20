@@ -17,7 +17,7 @@ export default async function CreateMenuPage({ params }: { params: Promise<{ id:
   return (
     <div>
       <CreateMenu id={id} />
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto py-4">
         <DataTable columns={columns} data={data} />
       </div>
     </div>
