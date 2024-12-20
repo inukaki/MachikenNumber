@@ -1,0 +1,3 @@
+export const orderToItemsConstants = {
+  ORDERTOITEMS_REPOSITORY_TYPEORM: 'ORDERSTOITEMS_REPOSITORY_TYPEORM',
+};
