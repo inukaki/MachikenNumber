@@ -37,7 +37,7 @@ import type { z } from 'zod';
 import QRCodeReact from 'react-qr-code';
 import * as QRCode from 'qrcode';
 import type { User } from '@prisma/client';
-import { Store, QrCode, Utensils, FileText, Calendar } from 'lucide-react';
+import { Store, QrCode, Utensils, FileText, Calendar, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { formatDate } from '@/actions/formatDate';
 import type { EventData } from '../../../types/orderTypes';
@@ -76,7 +76,7 @@ const ShopHome = ({ user }: { user: User }) => {
     };
 
     fetchEventData();
-  }, []);
+  }, [id]);
 
   async function onSubmit(data: z.infer<typeof eventIdSchema>) {
     setIsSubmitting(true);
@@ -145,141 +145,138 @@ const ShopHome = ({ user }: { user: User }) => {
   }
 
   return (
-    <div className="min-h-screen p-8">
-      <div className="mx-auto max-w-4xl">
-        <header className="mb-2 text-center">
-          <Store className="mx-auto mb-4 size-16 text-indigo-600" />
-          <h1 className="mb-2 text-3xl font-bold text-indigo-800">
-            ようこそ！
-            <br />
-            {user.name}さん
-          </h1>
-          <p className="text-indigo-600">ショップの各種設定を行います</p>
+    <div className="min-h-screen bg-gray-50/50">
+      <div className="container mx-auto p-4">
+        <header className="bg-primary/10 mb-8 rounded-lg p-6">
+          <div className="flex items-center gap-4">
+            <Store className="text-primary size-12" />
+            <div>
+              <h1 className="text-primary text-2xl font-bold">{user.name}</h1>
+              <p className="text-muted-foreground text-sm">ショップ管理ダッシュボード</p>
+            </div>
+          </div>
         </header>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div className="rounded-lg bg-white p-6 shadow-md transition-all hover:scale-105">
-            {eventData ? (
-              <>
-                <h2 className="mb-4 flex items-center text-xl font-semibold text-indigo-700">
-                  <Calendar className="mr-2 size-5" />
-                  登録イベント情報
-                </h2>
-                <div className="mb-4">
-                  <p>イベント名: {eventData.name}</p>
-                  <p>開始時間: {formatDate(eventData.start_at)}</p>
-                  <p>終了時間: {formatDate(eventData.end_at)}</p>
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="space-y-2">
+            <div className="bg-card rounded-lg border p-6">
+              <div className="mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Calendar className="text-primary size-5" />
+                  <h2 className="text-lg font-semibold">イベント管理</h2>
                 </div>
-                <Button
-                  className="w-full bg-indigo-600 text-white hover:bg-indigo-700"
-                  onClick={() => deleteShopEvent(eventData.event_id)}>
-                  イベントの紐付け解除
-                </Button>
-              </>
-            ) : (
-              <>
-                <h2 className="mb-4 flex items-center text-xl font-semibold text-indigo-700">
-                  <Calendar className="mr-2 size-5" />
-                  イベント登録
-                </h2>
+              </div>
+
+              {eventData ? (
+                <div className="space-y-2">
+                  <div className="bg-primary/5 rounded-md p-4">
+                    <p className="text-primary font-medium">{eventData.name}</p>
+                    <div className="text-muted-foreground mt-2 flex items-center gap-2 text-sm">
+                      <Clock className="size-4" />
+                      <span>
+                        {formatDate(eventData.start_at)} - {formatDate(eventData.end_at)}
+                      </span>
+                    </div>
+                  </div>
+                  <Button
+                    variant="destructive"
+                    className="w-full"
+                    onClick={() => deleteShopEvent(eventData.event_id)}>
+                    イベントの紐付け解除
+                  </Button>
+                </div>
+              ) : (
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="w-full bg-indigo-600 text-white hover:bg-indigo-700">
-                      イベントの登録
-                    </Button>
+                    <Button className="w-full">イベントに参加</Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
+                  <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>イベントIDを入力してください</DialogTitle>
+                      <DialogTitle>イベントIDを入力</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <FormField
                           control={form.control}
                           name="eventId"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>ID</FormLabel>
+                              <FormLabel>イベントID</FormLabel>
                               <FormControl>
-                                <Input {...field} />
+                                <Input placeholder="イベントIDを入力してください" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-                        <Button type="submit" disabled={isSubmitting} className="w-full">
-                          {isSubmitting ? '送信中...' : '送信'}
+                        <Button type="submit" className="w-full" disabled={isSubmitting}>
+                          {isSubmitting ? '送信中...' : '登録する'}
                         </Button>
                       </form>
                     </Form>
                   </DialogContent>
                 </Dialog>
-              </>
-            )}
-          </div>
+              )}
+            </div>
 
-          <div className="rounded-lg bg-white p-6 shadow-md transition-all hover:scale-105">
-            <h2 className="mb-4 flex items-center text-xl font-semibold text-indigo-700">
-              <QrCode className="mr-2 size-5" />
-              QRコード
-            </h2>
-            <Drawer>
-              <DrawerTrigger asChild>
-                <Button className="w-full bg-indigo-600 text-white hover:bg-indigo-700">
-                  QRコードを表示
-                </Button>
-              </DrawerTrigger>
-              <DrawerContent>
-                <DrawerHeader>
-                  <DrawerTitle>QRコード</DrawerTitle>
-                  <DrawerDescription>
-                    このQRコードをスキャンしてクライアントページにアクセスできます。
-                  </DrawerDescription>
-                </DrawerHeader>
-                <div className="flex justify-center p-4">
-                  <QRCodeReact
-                    value={qrCodeUrl}
-                    aria-label={`クライアントページへのQRコード: ${qrCodeUrl}`}
-                  />
-                </div>
-                <DrawerFooter>
-                  <Button
-                    onClick={handleDownload}
-                    className="w-full bg-indigo-600 text-white hover:bg-indigo-700">
-                    QRコードをダウンロード
+            <div className="bg-card rounded-lg border p-6">
+              <div className="mb-4 flex items-center gap-2">
+                <QrCode className="text-primary size-5" />
+                <h2 className="text-lg font-semibold">QRコード</h2>
+              </div>
+              <Drawer>
+                <DrawerTrigger asChild>
+                  <Button className="w-full" variant="outline">
+                    QRコードを表示
                   </Button>
-                  <DrawerClose asChild>
-                    <Button variant="outline" className="w-full">
-                      閉じる
-                    </Button>
-                  </DrawerClose>
-                </DrawerFooter>
-              </DrawerContent>
-            </Drawer>
+                </DrawerTrigger>
+                <DrawerContent>
+                  <DrawerHeader>
+                    <DrawerTitle>店舗QRコード</DrawerTitle>
+                    <DrawerDescription>
+                      このQRコードをスキャンすると注文ページにアクセスできます
+                    </DrawerDescription>
+                  </DrawerHeader>
+                  <div className="flex justify-center p-4">
+                    <QRCodeReact value={qrCodeUrl} />
+                  </div>
+                  <DrawerFooter>
+                    <Button onClick={handleDownload}>QRコードをダウンロード</Button>
+                    <DrawerClose asChild>
+                      <Button variant="outline">閉じる</Button>
+                    </DrawerClose>
+                  </DrawerFooter>
+                </DrawerContent>
+              </Drawer>
+            </div>
           </div>
 
-          <div className="rounded-lg bg-white p-6 shadow-md transition-all hover:scale-105">
-            <h2 className="mb-4 flex items-center text-xl font-semibold text-indigo-700">
-              <Utensils className="mr-2 size-5" />
-              注文管理
-            </h2>
-            <Link href={`/shop/${Array.isArray(id) ? id[0] : id}/order`}>
-              <Button className="w-full bg-indigo-600 text-white hover:bg-indigo-700">
-                注文関連
-              </Button>
-            </Link>
-          </div>
+          <div className="space-y-2">
+            <div className="bg-card rounded-lg border p-6">
+              <div className="mb-4 flex items-center gap-2">
+                <Utensils className="text-primary size-5" />
+                <h2 className="text-lg font-semibold">注文管理</h2>
+              </div>
+              <p className="text-muted-foreground mb-4 text-sm">
+                注文の確認、ステータス更新、履歴の管理ができます
+              </p>
+              <Link href={`/shop/${Array.isArray(id) ? id[0] : id}/order`}>
+                <Button className="w-full">注文管理へ</Button>
+              </Link>
+            </div>
 
-          <div className="rounded-lg bg-white p-6 shadow-md transition-all hover:scale-105">
-            <h2 className="mb-4 flex items-center text-xl font-semibold text-indigo-700">
-              <FileText className="mr-2 size-5" />
-              メニュー管理
-            </h2>
-            <Link href={`/shop/${Array.isArray(id) ? id[0] : id}/createMenu`}>
-              <Button className="w-full bg-indigo-600 text-white hover:bg-indigo-700">
-                メニューの登録
-              </Button>
-            </Link>
+            <div className="bg-card rounded-lg border p-6">
+              <div className="mb-4 flex items-center gap-2">
+                <FileText className="text-primary size-5" />
+                <h2 className="text-lg font-semibold">メニュー管理</h2>
+              </div>
+              <p className="text-muted-foreground mb-4 text-sm">
+                メニューの登録、編集、価格設定ができます
+              </p>
+              <Link href={`/shop/${Array.isArray(id) ? id[0] : id}/createMenu`}>
+                <Button className="w-full">メニュー管理へ</Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

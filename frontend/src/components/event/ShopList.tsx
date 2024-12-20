@@ -121,8 +121,8 @@ export default function ShopList({ event_id }: ShopListProps) {
   };
 
   return (
-    <div className="mt-8">
-      <h2 className="text-2xl font-bold mb-4">ショップリスト</h2>
+    <div className="">
+      <h2 className="mb-4 text-2xl font-bold">ショップリスト</h2>
       <Table>
         <TableHeader>
           <TableRow>

@@ -160,7 +160,7 @@ export default function OrderMenu({
 
   return (
     <div>
-      <Card className="bg-primary/5 mx-auto mt-8 max-w-2xl">
+      <Card className="bg-primary/5 mx-auto max-w-2xl">
         <CardHeader>
           <CardTitle>注文メニュー</CardTitle>
         </CardHeader>
