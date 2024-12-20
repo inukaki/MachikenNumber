@@ -60,6 +60,7 @@ const config: Config = {
             textShadow: {
                 outline: '0 0 4px rgba(255, 255, 255, 1), 0 0 0 rgba(0, 0, 0, 1)',
                 whiteback: '#fff 0 -4px 4px,#fff 0 4px 4px;',
+                blackback: '#000 0 -4px 4px,#000 0 4px 4px;',
             }
         }
     },
@@ -68,11 +69,14 @@ const config: Config = {
         function ({ addUtilities }:PluginAPI) {
             addUtilities({
                 '.text-outline': {
-                    color: 'transparent', // 文字色を透明に
+                    color: "#000000", // 文字色を透明に
                     textShadow: '0 0 4px rgba(255, 255, 255, 1), 0 0 0 rgba(0, 0, 0, 1)',
                 },
                 '.text-whiteback': {
-                  textShadow: '#fff 0 -4px 4px,#fff 0 4px 4px;',
+                    textShadow: '#fff 0 -4px 4px,#fff 0 4px 4px;',
+                },
+                '.text-blackback': {
+                    textShadow: '#000 0 -4px 4px,#000 0 4px 4px;',
                 }
             },);
         },

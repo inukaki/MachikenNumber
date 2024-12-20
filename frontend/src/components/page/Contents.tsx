@@ -2,13 +2,15 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '../ui/card';
 import React, { ReactNode } from 'react'
+import Image from 'next/image';
 
 interface T {
   children:ReactNode
 }
 
 const Yellow = ({children}:T) => {
-  const spanCN = `bg-yellow-500 bg-opacity-50 rounded px-1`
+  // const spanCN = `bg-yellow-500 bg-opacity-50 rounded px-1`
+  const spanCN = ''
   return(
     <span className={spanCN}>
       {children}
@@ -16,15 +18,39 @@ const Yellow = ({children}:T) => {
   )
 }
 
+const Large = ({children}:T) => {
+  const spanCN = `text-xl`;
+  return(
+    <span className={spanCN}>
+      {children}
+    </span>
+  )
+}
+
+const Machiken = () => {
+  return (
+    <Image
+      src="/logos/textonly/bg-no.svg"
+      alt="マチケンナンバ"
+      width={15}
+      height={15}
+      className="h-9 w-auto inline-block"
+    />
+  )
+}
+
 export default function () {
   const lineCN = `m-2 h-1 flex-1 bg-stone-400 rounded-full w-full`
-  const h2outerCN = `static min-h-[16rem] w-full overflow-hidden border-b-4 bg-black`
-  const h2CN = `absolute text-9xl font-bold text-outline -z-10`
-  const h2contCN = `p-4 text-white h-fit min-h-[16rem]` //text-whiteback
+  const h2outerCN = `relative min-h-[16rem] w-full overflow-hidden border-b-4 bg-slate-800 rounded-2xl z-10 my-4`
+  const h2CN = `absolute text-9xl font-bold text-outline z-20`
+  const h2contCN = `relative p-4 text-white h-fit min-h-[16rem] text-blackback z-30`   //text-whiteback
   return (
     <>
     <div className="mt-10 item-center">
       <div className="my-2 mb-4">
+        <div>
+          <h1 className="text-2xl font-bold">「<Machiken/>」はユーザー、オーナーどちらにもやさしい待ち時間表示Webアプリです。</h1>
+        </div>
         <div className={h2outerCN}>
           <h2 className={h2CN}>For<br />Customer</h2>
           <div className={h2contCN}>
@@ -33,7 +59,7 @@ export default function () {
               自分って待ち順何番目くらい？
             </p><br />
             <p>
-            <Yellow>スマホでサイトにアクセスするだけで、全部解決！？</Yellow>
+            <Large><Yellow>スマホでサイトにアクセスするだけで、全部解決！？</Yellow></Large>
             </p><br />
             <p>
               「マチケンナンバ」はお店ごとの待ち時間が分かるだけでなく、自分の注文した品物が提供されるまでの想定待ち時間もそれぞれ表示！<br />
@@ -49,7 +75,7 @@ export default function () {
             どのお客さんに渡すの...？順番は...？<br />
             </p><br />
             <p>
-              こんな悩み、<Yellow>「マチケンナンバ」で即解決</Yellow>
+              こんな悩み、<Large><Yellow>「マチケンナンバ」で即解決</Yellow></Large>
             </p><br />
             <p>
             「マチケンナンバ」は”誰が””何を”買ったのかすぐにわかるシステムだから、渡し間違いをなくせるだけでなく、順番や混雑状況も一目瞭然。<br />
