@@ -21,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({ msg, children, custom }) => {
     <div>
       <Button onClick={toggleModal}>{msg}</Button>
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50">
           <Card className="w-[350px] max-w-[90%]">
             <CardContent className="pt-6">{children}</CardContent>
             <CardFooter className="flex justify-end space-x-2">

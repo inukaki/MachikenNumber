@@ -1,15 +1,5 @@
 'use-client';
 
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from '@/components/ui/card';
 import HWTitle from '@/components/howtouse/HWTitle';
 import Tips from '@/components/ui/tips';
 export default function HWAddShop({ no }: { no: number }) {

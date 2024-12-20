@@ -8,7 +8,6 @@ import bcrypt from 'bcrypt';
 declare module 'next-auth' {
   interface User {
     id: string; // User モデルの ID を追加
-    role?: string; // 必要であれば他のカスタムフィールドも追加
   }
 
   interface Session {

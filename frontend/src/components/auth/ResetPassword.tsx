@@ -75,8 +75,8 @@ const ResetPassword = ({ token }: ResetPasswordProps) => {
   };
 
   return (
-    <div className="max-w-[400px] m-auto">
-      <div className="text-2xl font-bold text-center mb-10">パスワード再設定</div>
+    <div className="m-auto max-w-[400px]">
+      <div className="mb-10 text-center text-2xl font-bold">パスワード再設定</div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -109,7 +109,7 @@ const ResetPassword = ({ token }: ResetPasswordProps) => {
           />
 
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
-            {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {form.formState.isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
             送信
           </Button>
         </form>

@@ -15,11 +15,6 @@ import {
 import Modal from '@/components/event/Modal';
 import { toast } from '@/hooks/use-toast';
 
-const dateFormat = (date: string) => {
-  const dates = new Date(date);
-  return `${dates.getFullYear()}/${dates.getMonth() + 1}/${dates.getDate()} ${dates.getHours().toString().padStart(2, '0')}:${dates.getMinutes().toString().padStart(2, '0')}`;
-};
-
 interface Shop {
   shop_id: string;
   name: string;

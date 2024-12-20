@@ -40,14 +40,14 @@ export default async function EventsPage() {
                       {event.name}
                     </h2>
                     <div className="mt-2 flex items-center gap-2 text-sm text-gray-500">
-                      <Calendar className="h-4 w-4" />
+                      <Calendar className="size-4" />
                       <span>
                         {new Date(event.start_at).toLocaleDateString('ja-JP')} -
                         {new Date(event.end_at).toLocaleDateString('ja-JP')}
                       </span>
                     </div>
                   </div>
-                  <ArrowRight className="h-5 w-5 text-gray-400 transition-transform group-hover:translate-x-1 group-hover:text-blue-600" />
+                  <ArrowRight className="size-5 text-gray-400 transition-transform group-hover:translate-x-1 group-hover:text-blue-600" />
                 </div>
                 <p className="text-gray-600">{event.description}</p>
               </div>

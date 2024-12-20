@@ -50,7 +50,7 @@ export default async function OrderPage({ params }: OrderPageProps) {
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             <Link href={`/client/shops/${shopId}`} className="flex items-center gap-2">
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="size-5" />
               <span>戻る</span>
             </Link>
             <h1 className="text-lg font-semibold">注文詳細</h1>
@@ -62,7 +62,7 @@ export default async function OrderPage({ params }: OrderPageProps) {
       <div className="container mx-auto px-4 py-6">
         <div className="mb-8 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 p-6 text-white">
           <div className="flex items-center gap-4">
-            <Clock className="h-8 w-8" />
+            <Clock className="size-8" />
             <div>
               <p className="text-sm font-medium text-indigo-100">あなたの待ち時間</p>
               <p className="text-4xl font-bold">{totalWaitTime}分</p>
