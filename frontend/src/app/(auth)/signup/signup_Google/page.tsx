@@ -19,9 +19,9 @@ const SignupGooglePage = async () => {
       <p className="text-bold mb-5">あなたのロールを選択してください</p>
       <div className="flex  gap-2">
         <Link
-          href="/signup/signup_Google/client"
+          href="/signup/signup_Google/event"
           className="rounded-md bg-blue-500 px-4 py-2 text-white">
-          クライアントでサインアップ
+          イベントでサインアップ
         </Link>
         <Link
           href="/signup/signup_Google/shop"
