@@ -18,7 +18,7 @@ interface EventDetail {
 }
 
 async function getEventDetail(eventId: string) {
-  const res = await fetch(`http://localhost:3001/events/${eventId}`, {
+  const res = await fetch(`${process.env.NEST_URL}/events/${eventId}`, {
     cache: 'no-store',
   });
   return res.json();

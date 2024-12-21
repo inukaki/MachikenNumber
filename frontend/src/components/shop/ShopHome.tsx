@@ -49,7 +49,7 @@ const ShopHome = ({ user }: { user: User }) => {
 
   const qrCodeUrl = useMemo(() => {
     const shopId = Array.isArray(id) ? id[0] : id;
-    return `http://localhost:3000/client/shops/${shopId}`;
+    return `https://machiken-number.com/client/shops/${shopId}`;
   }, [id]);
 
   const form = useForm<z.infer<typeof eventIdSchema>>({
@@ -62,7 +62,7 @@ const ShopHome = ({ user }: { user: User }) => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/events/${id}`, {
+        const response = await fetch(`${process.env.NEST_URL}/events/${id}`, {
           method: 'GET',
         });
         if (response.ok) {
@@ -71,7 +71,6 @@ const ShopHome = ({ user }: { user: User }) => {
         }
       } catch (error) {
         console.error(error);
-        toast.error('イベント情報の取得に失敗しました');
       }
     };
 
@@ -82,7 +81,7 @@ const ShopHome = ({ user }: { user: User }) => {
     setIsSubmitting(true);
     try {
       const shopId = Array.isArray(id) ? id[0] : id;
-      const res = await fetch(`http://localhost:3001/events/${data.eventId}/shops`, {
+      const res = await fetch(`${process.env.NEST_URL}/events/${data.eventId}/shops`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +90,7 @@ const ShopHome = ({ user }: { user: User }) => {
       });
       if (res.ok) {
         toast.success('イベント登録が完了しました');
-        const response = await fetch(`http://localhost:3001/events/${data.eventId}`, {
+        const response = await fetch(`${process.env.NEST_URL}/events/${data.eventId}`, {
           method: 'GET',
         });
         if (response.ok) {
@@ -125,7 +124,7 @@ const ShopHome = ({ user }: { user: User }) => {
   async function deleteShopEvent(eventId: string) {
     try {
       const shopId = Array.isArray(id) ? id[0] : id;
-      const res = await fetch(`http://localhost:3001/events/${eventId}/shops`, {
+      const res = await fetch(`${process.env.NEST_URL}/events/${eventId}/shops`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

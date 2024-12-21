@@ -4,7 +4,7 @@ import type { Payment } from '@/components/menu/dataTable/columns';
 import { columns } from '@/components/menu/dataTable/columns';
 
 async function getData(id: string): Promise<Payment[]> {
-  const res = await fetch(`http://localhost:3001/items/${id}`, {
+  const res = await fetch(`${process.env.NEST_URL}/items/${id}`, {
     cache: 'no-store',
   });
   const data = await res.json();

@@ -14,7 +14,7 @@ const SignupGooglePage = async ({ params }: { params: { role: string } }) => {
   });
 
   if (params.role === 'shop') {
-    const nestResponse = await fetch('http://localhost:3001/shops', {
+    const nestResponse = await fetch(`${process.env.NEST_URL}/shops`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ const SignupGooglePage = async ({ params }: { params: { role: string } }) => {
   }
 
   if (params.role === 'event') {
-    const nestResponse = await fetch('http://localhost:3001/events', {
+    const nestResponse = await fetch(`${process.env.NEST_URL}/events`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

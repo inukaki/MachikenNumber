@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
     // Nest.jsにuserIdを送信;
     if (newUser.role === 'shop') {
-      const nestResponse = await fetch('http://localhost:3001/shops', {
+      const nestResponse = await fetch(`${process.env.NEST_URL}/shops`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     }
 
     if (newUser.role === 'event') {
-      const nestResponse = await fetch('http://localhost:3001/events', {
+      const nestResponse = await fetch(`${process.env.NEST_URL}/events`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

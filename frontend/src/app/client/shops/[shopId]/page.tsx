@@ -32,8 +32,8 @@ export default function ShopDetailPage({ params }: { params: { shopId: string } 
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const unreadyRes = await fetch(`http://localhost:3001/orders/${params.shopId}/unready`);
-      const readyRes = await fetch(`http://localhost:3001/orders/${params.shopId}/ready`);
+      const unreadyRes = await fetch(`${process.env.NEST_URL}/orders/${params.shopId}/unready`);
+      const readyRes = await fetch(`${process.env.NEST_URL}/orders/${params.shopId}/ready`);
       const unready = await unreadyRes.json();
       const ready = await readyRes.json();
       setUnreadyOrders(unready);

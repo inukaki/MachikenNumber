@@ -95,16 +95,16 @@ export default function OrderMenu({
 
     try {
       // Check if the card number exists in any order
-      // const existingOrderResponse = await fetch(`http://localhost:3001/orders/check/${cardNumber}`);
+      // const existingOrderResponse = await fetch(`${process.env.NEST_URL}/orders/check/${cardNumber}`);
       // const existingOrderData = await existingOrderResponse.json();
 
       // if (existingOrderData.exists) {
-      //   await fetch(`http://localhost:3001/orders/${existingOrderData.orderId}`, {
+      //   await fetch(`${process.env.NEST_URL}/orders/${existingOrderData.orderId}`, {
       //     method: 'DELETE',
       //   });
       // }
 
-      const response = await fetch(`http://localhost:3001/orders`, {
+      const response = await fetch(`${process.env.NEST_URL}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

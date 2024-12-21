@@ -89,7 +89,7 @@ export default function Contents() {
             </div>
           </div>
         </div>
-        <div className={h2outerCN} data-aos="fade-right" data-aos-delay="200">
+        <div className={h2outerCN} data-aos="fade-right">
           <h2 className={h2CN}>
             For
             <br />
@@ -115,7 +115,7 @@ export default function Contents() {
             </p>
           </div>
         </div>
-        <div className={h2outerCN} data-aos="fade-left">
+        <div className={h2outerCN} data-aos="fade-right">
           <h2 className={h2CN}>
             For
             <br />

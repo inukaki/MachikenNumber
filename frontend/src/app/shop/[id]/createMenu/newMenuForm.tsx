@@ -36,7 +36,7 @@ export default function CreateMenu({ id }: { id: string | string[] }) {
 
   async function onSubmit(data: z.infer<typeof menuSchema>) {
     try {
-      const res = await fetch(`http://localhost:3001/items`, {
+      const res = await fetch(`${process.env.NEST_URL}/items`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
