@@ -1,7 +1,7 @@
 'use server';
 
 export async function getOrders(shop_id: string) {
-  const response = await fetch(`http://localhost:3001/orders/${shop_id}/unready`, {
+  const response = await fetch(`https://nya2:3002/orders/${shop_id}/unready`, {
     cache: 'no-store',
   });
   if (!response.ok) {

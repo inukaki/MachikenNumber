@@ -62,7 +62,7 @@ const ShopHome = ({ user }: { user: User }) => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await fetch(`${process.env.NEST_URL}/events/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${id}`, {
           method: 'GET',
         });
         if (response.ok) {
@@ -81,7 +81,7 @@ const ShopHome = ({ user }: { user: User }) => {
     setIsSubmitting(true);
     try {
       const shopId = Array.isArray(id) ? id[0] : id;
-      const res = await fetch(`${process.env.NEST_URL}/events/${data.eventId}/shops`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${data.eventId}/shops`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ const ShopHome = ({ user }: { user: User }) => {
       });
       if (res.ok) {
         toast.success('イベント登録が完了しました');
-        const response = await fetch(`${process.env.NEST_URL}/events/${data.eventId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${data.eventId}`, {
           method: 'GET',
         });
         if (response.ok) {
@@ -124,7 +124,7 @@ const ShopHome = ({ user }: { user: User }) => {
   async function deleteShopEvent(eventId: string) {
     try {
       const shopId = Array.isArray(id) ? id[0] : id;
-      const res = await fetch(`${process.env.NEST_URL}/events/${eventId}/shops`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${eventId}/shops`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

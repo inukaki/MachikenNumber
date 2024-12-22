@@ -27,7 +27,7 @@ export default function EventDetails({ event_id }: { event_id: string }) {
 
   const fetchEventDetails = async () => {
     try {
-      const response = await fetch(`${process.env.NEST_URL}/events/${event_id}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${event_id}`);
       if (!response.ok) throw new Error('イベント詳細の取得に失敗しました');
       const data = await response.json();
       setEventDetails(data);
@@ -52,7 +52,7 @@ export default function EventDetails({ event_id }: { event_id: string }) {
     if (!editedDetails) return;
 
     try {
-      const response = await fetch(`${process.env.NEST_URL}/events/${event_id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${event_id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

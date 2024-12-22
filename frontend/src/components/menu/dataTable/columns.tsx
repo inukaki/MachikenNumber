@@ -72,7 +72,7 @@ export const columns: ColumnDef<Payment>[] = [
       async function MenuDelete(payment: Payment) {
         const isConfirmed = confirm(`「${payment.name}」を削除してもよろしいですか？`);
         if (isConfirmed) {
-          const res = await fetch(`${process.env.NEST_URL}/items/${payment.item_id}`, {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/items/${payment.item_id}`, {
             method: 'DELETE',
           });
           if (res.ok) {

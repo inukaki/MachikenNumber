@@ -38,7 +38,7 @@ export default function ShopList({ event_id }: ShopListProps) {
 
   const fetchShops = async () => {
     try {
-      const response = await fetch(`${process.env.NEST_URL}/events/${event_id}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${event_id}`);
       if (!response.ok) throw new Error('ショップリストの取得に失敗しました');
       const data = await response.json();
       setShops(data.shops);
@@ -66,7 +66,7 @@ export default function ShopList({ event_id }: ShopListProps) {
         status,
       }));
 
-      const response = await fetch(`${process.env.NEST_URL}/events/${event_id}/shopsView`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${event_id}/shopsView`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedShops),
@@ -90,7 +90,7 @@ export default function ShopList({ event_id }: ShopListProps) {
 
   const deleteShop = async (event_id: string, shop_id: string) => {
     try {
-      const response = await fetch(`${process.env.NEST_URL}/events/${event_id}/shops/`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${event_id}/shops/`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ shop_id }),

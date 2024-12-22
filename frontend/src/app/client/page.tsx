@@ -10,7 +10,7 @@ interface Event {
 }
 
 async function getEvents() {
-  const res = await fetch(`${process.env.NEST_URL}/events`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events`, {
     cache: 'no-store',
   });
   return res.json();
