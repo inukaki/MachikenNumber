@@ -23,6 +23,13 @@ export class EventsRepository {
     const event = await this.eventsRepositoryTypeORM.findOneBy({ event_id });
     return event;
   }
+  async getEventByShopId(shop_id: string): Promise<Event> {
+    const eventToShop = await this.eventToShopsRepositoryTypeORM.findOne({
+      where:{shop: { shop_id }},
+      relations: ['event'],
+    });
+    return eventToShop.event;
+  }
   async getAllEvents(): Promise<Event[]> {
     const events = await this.eventsRepositoryTypeORM.find();
     return events;
