@@ -629,7 +629,7 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/event"
-  "/events/{shop_id}":
+  "/events/shops/{shop_id}":
     get:
       tags:
         - "events"
