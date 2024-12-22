@@ -629,6 +629,29 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/event"
+  "/events/{shop_id}":
+    get:
+      tags:
+        - "events"
+      summary: "イベント情報取得"
+      description: "イベント情報を取得する"
+      parameters:
+        - name: "shop_id"
+          in: "path"
+          description: "ショップID"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
+        "404":
+          description: "イベントが見つからない"
   "/events/{event_id}":
     get:
       tags:
