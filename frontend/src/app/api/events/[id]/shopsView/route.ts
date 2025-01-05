@@ -1,27 +1,31 @@
-// クライアントサイドからNESTのエンドポイントにfetchできないので、ここ経由で
+import axios, { AxiosInstance } from 'axios';   
+import { NextResponse } from 'next/server';
 
-interface fetchType {
-    params: {id:string};
-    method: 'PATCH';
-    headers?:{
-        [key: string]: string;
-    }
-    body?: string | object | null | undefined;
-}
-export default async function api({
-    params,
-    method,
-    headers={'Content-Type': 'application/json',},
-    body=null
-}:fetchType) {
-    const id = params.id
-    if (typeof body === 'object') {
-        body = JSON.stringify(body);
-    }
-    const res = await fetch(`${process.env.NEST_URL}/events/${id}/shopsView`, {
-        method: method,
-        headers: headers,
-        body: body,
+const axiosReq: AxiosInstance = axios.create({
+    baseURL: `${process.env.NEST_URL}`,
+    timeout: 20000,
+    responseType: 'json',
+});
+
+export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+    const event_id = params.id;
+    const headers = new Headers(request.headers);
+    const body = request.body;
+    const axiosHeaders: { [key: string]: string } = {};
+
+    headers.forEach((value, key) => {
+        axiosHeaders[key] = value;
     });
-    return res
+
+    try {
+        const response = await axiosReq.patch(`/events/${event_id}/shopsView`, body, { headers: axiosHeaders });
+        return NextResponse.json(response.data)
+    } catch (error: any) {
+        if (error.response) {
+            console.error("Axios error:", error.response.data);
+        } else {
+            console.error("Unexpected error:", error.message);
+        }
+        throw new Error('イベント詳細の取得に失敗しました',error);
+    }
 }

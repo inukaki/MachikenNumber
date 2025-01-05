@@ -27,11 +27,11 @@ export default function EventDetails({ event_id }: { event_id: string }) {
 
   const fetchEventDetails = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${event_id}`);
+      const response = await fetch(`/api/events/${event_id}`);// /api/events/${event_id} // http://minipc:3001/events/${event_id}
       if (!response.ok) throw new Error('イベント詳細の取得に失敗しました');
-      const data = await response.json();
-      setEventDetails(data);
-      setEditedDetails(data);
+        const data = await response.json();
+        setEventDetails(data);
+        setEditedDetails(data);
     } catch (error) {
       console.error('Error fetching event details:', error);
       toast({

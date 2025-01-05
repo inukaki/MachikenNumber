@@ -7,9 +7,9 @@ const axiosReq: AxiosInstance = axios.create({
     responseType: 'json',
 });
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-    const shop_id = params.id;
+export async function POST(request: Request ) {
     const headers = new Headers(request.headers);
+    const body = request.body;
     const axiosHeaders: { [key: string]: string } = {};
 
     headers.forEach((value, key) => {
@@ -17,7 +17,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     });
 
     try {
-        const response = await axiosReq.get(`/events/shops/${shop_id}`, { headers: axiosHeaders });
+        const response = await axiosReq.post(`/orders`, body, { headers: axiosHeaders });
         return NextResponse.json(response.data)
     } catch (error: any) {
         if (error.response) {
@@ -25,6 +25,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
         } else {
             console.error("Unexpected error:", error.message);
         }
-        throw new Error('イベント詳細の取得に失敗しました',error);
+        throw new Error('注文登録に失敗しました',error);
     }
 }

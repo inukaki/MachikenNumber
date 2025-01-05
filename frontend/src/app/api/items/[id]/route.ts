@@ -7,8 +7,30 @@ const axiosReq: AxiosInstance = axios.create({
     responseType: 'json',
 });
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
-    const event_id = params.id;
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+    const shop_id = params.id;
+    const headers = new Headers(request.headers);
+    const axiosHeaders: { [key: string]: string } = {};
+
+    headers.forEach((value, key) => {
+        axiosHeaders[key] = value;
+    });
+
+    try {
+        const response = await axiosReq.get(`/items/${shop_id}`, { headers: axiosHeaders });
+        return NextResponse.json(response.data)
+    } catch (error: any) {
+        if (error.response) {
+            console.error("Axios error:", error.response.data);
+        } else {
+            console.error("Unexpected error:", error.message);
+        }
+        throw new Error('アイテム詳細の取得に失敗しました',error);
+    }
+}
+
+export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+    const item_id = params.id;
     const headers = new Headers(request.headers);
     const body = request.body;
     const axiosHeaders: { [key: string]: string } = {};
@@ -18,7 +40,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
     });
 
     try {
-        const response = await axiosReq.post(`/events/${event_id}/shops`, body, { headers: axiosHeaders });
+        const response = await axiosReq.patch(`/items/${item_id}`, body, { headers: axiosHeaders });
         return NextResponse.json(response.data)
     } catch (error: any) {
         if (error.response) {
@@ -26,21 +48,21 @@ export async function POST(request: Request, { params }: { params: { id: string 
         } else {
             console.error("Unexpected error:", error.message);
         }
-        throw new Error('イベント詳細の取得に失敗しました',error);
+        throw new Error('商品情報の更新に失敗しました',error);
     }
 }
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-    const event_id = params.id;
-    const body = request.body
+    const item_id = params.id;
     const headers = new Headers(request.headers);
     const axiosHeaders: { [key: string]: string } = {};
+
     headers.forEach((value, key) => {
         axiosHeaders[key] = value;
     });
 
     try {
-        const response = await axiosReq.delete(`/events/${event_id}/shops`, { data:body, headers: axiosHeaders });
+        const response = await axiosReq.delete(`/items/${item_id}`, { headers: axiosHeaders });
         return NextResponse.json(response.data)
     } catch (error: any) {
         if (error.response) {
@@ -48,6 +70,6 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
         } else {
             console.error("Unexpected error:", error.message);
         }
-        throw new Error('イベント詳細の取得に失敗しました',error);
+        throw new Error('商品情報の削除に失敗しました',error);
     }
 }

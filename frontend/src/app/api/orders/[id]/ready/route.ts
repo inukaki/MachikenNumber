@@ -17,7 +17,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     });
 
     try {
-        const response = await axiosReq.get(`/events/shops/${shop_id}`, { headers: axiosHeaders });
+        const response = await axiosReq.get(`/orders/${shop_id}/ready`, { headers: axiosHeaders });
         return NextResponse.json(response.data)
     } catch (error: any) {
         if (error.response) {
@@ -25,6 +25,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
         } else {
             console.error("Unexpected error:", error.message);
         }
-        throw new Error('イベント詳細の取得に失敗しました',error);
+        throw new Error('注文情報の取得に失敗しました',error);
     }
 }

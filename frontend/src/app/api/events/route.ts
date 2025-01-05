@@ -1,65 +1,51 @@
-// クライアントサイドからNESTのエンドポイントにfetchできないので、ここ経由で
+import axios, { AxiosInstance } from 'axios';   
+import { NextResponse } from 'next/server';
 
-
-const axiosBase = require('axios');
-const axios = axiosBase.create({
-    baseUrl: 'https://nya2:3002',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-    },
+const axiosReq: AxiosInstance = axios.create({
+    baseURL: `${process.env.NEST_URL}`,
+    timeout: 30000,
     responseType: 'json',
 });
 
-interface fetchType {
-    method?: 'GET' | 'POST';
-    headers?:{
-        [key: string]: string;
+export async function GET(request: Request) {
+    const headers = new Headers(request.headers);
+    const axiosHeaders: { [key: string]: string } = {};
+
+    headers.forEach((value, key) => {
+        axiosHeaders[key] = value;
+    });
+
+    try {
+        const response = await axiosReq.get(`/events`, { headers: axiosHeaders });
+        return NextResponse.json(response.data)
+    } catch (error: any) {
+        if (error.response) {
+            console.error("Axios error:", error.response.data);
+        } else {
+            console.error("Unexpected error:", error.message);
+        }
+        throw new Error('イベント詳細の取得に失敗しました',error);
     }
-    body?: string | object | null | undefined;
 }
 
-export default async function api({
-    method='GET',
-    headers={'Content-Type': 'application/json',},
-    body=null
-}:fetchType) {
-    if (typeof body === 'object') {
-        body = JSON.stringify(body);
+export async function POST(request: Request) {
+    const headers = new Headers(request.headers);
+    const body = await request.json()
+    const axiosHeaders: { [key: string]: string } = {"Content-Type": "application/json"};
+
+    headers.forEach((value, key) => {
+        axiosHeaders[key] = value;
+    });
+
+    try {
+        const response = await axiosReq.post(`/events`, body, { headers: axiosHeaders });
+        return NextResponse.json(response.data);
+    } catch (error: any) {
+        if (error.response) {
+            console.error("Axios error:", error.response.data);
+        } else {
+            console.error("Unexpected error:", error.message);
+        }
+        throw new Error('イベント詳細の取得に失敗しました',error); // エラーメッセージのカスタマイズ
     }
-    const res = await axios.get('/events')
-    return res
 }
-
-
-// export default async function api({
-//     method='GET',
-//     headers={'Content-Type': 'application/json',},
-//     body=null
-// }:fetchType) {
-//     if (typeof body === 'object') {
-//         body = JSON.stringify(body);
-//     }
-//     const res = await fetch(`https://nya2:3002/events`, {
-//         method: method,
-//         headers: headers,
-//         body: body,
-//     });
-//     return res
-// }
-
-// export async function GET({
-//     method='GET',
-//     headers={'Content-Type': 'application/json',},
-//     body=null
-// }:fetchType){
-//     if (typeof body === 'object') {
-//         body = JSON.stringify(body);
-//     }
-//     const res = await fetch(`https://nya2:3002/events`, {
-//         method: 'GET',
-//         headers: headers,
-//         body: body,
-//     });
-//     return res 
-// }
