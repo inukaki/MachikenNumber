@@ -62,7 +62,7 @@ export function MenuEditModal({ open, onOpenChange, payment }: MenuEditModalProp
 
   async function onSubmit(data: z.infer<typeof menuSchema>) {
     try {
-      const res = await fetch(`http://localhost:3001/items/${payment.item_id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/items/${payment.item_id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
