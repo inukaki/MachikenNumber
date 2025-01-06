@@ -7,10 +7,27 @@ const axiosReq: AxiosInstance = axios.create({
     responseType: 'json',
 });
 
+const decoderToJson = async (body:ReadableStream<Uint8Array<ArrayBufferLike>> | null) => {
+    if (!body) {
+        throw new Error('Request body is null');
+    }
+    const reader = body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let result = '';
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        result += decoder.decode(value, { stream: true });
+    }
+    result += decoder.decode();
+
+    return result;
+}
+
 export async function POST(request: Request, { params }: { params: { id: string } }) {
     const event_id = params.id;
     const headers = new Headers(request.headers);
-    const body = request.body;
+    const body = await decoderToJson(request.body);
     const axiosHeaders: { [key: string]: string } = {};
 
     headers.forEach((value, key) => {
