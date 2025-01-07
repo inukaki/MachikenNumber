@@ -38,7 +38,9 @@ export default async function Order({ params }: { params: { id: string } }) {
   const orderData = await getOrders(shopId);
 
   const [menuData, unreadyOrders] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/items/${shopId}`, { cache: 'no-store' }).then((res) => res.json()),
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/items/${shopId}`, { cache: 'no-store' }).then((res) =>
+      res.json(),
+    ),
     getUnreadyOrders(shopId),
   ]);
 

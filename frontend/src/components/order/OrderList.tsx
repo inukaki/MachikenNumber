@@ -40,19 +40,25 @@ export default function OrderList({ orderData, shopId }: { orderData: Order[]; s
   async function updateOrderStatus(orderId: string, newStatus: 1 | 2) {
     try {
       if (newStatus === 1) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${orderId}/${shopId}/ready`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/orders/${orderId}/${shopId}/ready`,
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        });
+        );
       } else if (newStatus === 2) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${orderId}/${shopId}/received`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/orders/${orderId}/${shopId}/received`,
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        });
+        );
       }
 
       setOrders(

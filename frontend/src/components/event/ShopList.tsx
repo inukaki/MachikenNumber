@@ -66,11 +66,14 @@ export default function ShopList({ event_id }: ShopListProps) {
         status,
       }));
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${event_id}/shopsView`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedShops),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/events/${event_id}/shopsView`,
+        {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedShops),
+        },
+      );
 
       if (!response.ok) throw new Error('ショップの表示状態の更新に失敗しました');
 
