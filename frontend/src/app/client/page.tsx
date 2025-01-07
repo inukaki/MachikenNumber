@@ -10,7 +10,7 @@ interface Event {
 }
 
 async function getEvents() {
-  const res = await fetch(`/api/events`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
     cache: 'no-store',
   });
   return res.json();

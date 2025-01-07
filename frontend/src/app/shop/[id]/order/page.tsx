@@ -3,7 +3,7 @@ import OrderMenu from '@/components/order/OrderMenu';
 
 async function getUnreadyOrders(shopId: string) {
   try {
-    const res = await fetch(`/api/orders/${shopId}/unready`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${shopId}/unready`, {
       cache: 'no-store',
     });
     if (!res.ok) {
@@ -18,7 +18,7 @@ async function getUnreadyOrders(shopId: string) {
 }
 async function getOrders(shopId: string) {
   try {
-    const res = await fetch(`/api/orders/${shopId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${shopId}`, {
       cache: 'no-store',
     });
     if (!res.ok) {
@@ -38,7 +38,7 @@ export default async function Order({ params }: { params: { id: string } }) {
   const orderData = await getOrders(shopId);
 
   const [menuData, unreadyOrders] = await Promise.all([
-    fetch(`/api/items/${shopId}`, { cache: 'no-store' }).then((res) => res.json()),
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/items/${shopId}`, { cache: 'no-store' }).then((res) => res.json()),
     getUnreadyOrders(shopId),
   ]);
 
