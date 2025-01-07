@@ -18,7 +18,7 @@ interface EventDetail {
 }
 
 async function getEventDetail(eventId: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${eventId}`, {
+  const res = await fetch(`/api/events/${eventId}`, {
     cache: 'no-store',
   });
   return res.json();

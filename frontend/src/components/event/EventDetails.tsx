@@ -52,7 +52,7 @@ export default function EventDetails({ event_id }: { event_id: string }) {
     if (!editedDetails) return;
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_URL}/events/${event_id}`, {
+      const response = await fetch(`/api/events/${event_id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

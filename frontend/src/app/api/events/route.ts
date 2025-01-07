@@ -20,7 +20,7 @@ const decoderToJson = async (body:ReadableStream<Uint8Array<ArrayBufferLike>> | 
         result += decoder.decode(value, { stream: true });
     }
     result += decoder.decode();
-
+    
     return result;
 }
 
