@@ -25,6 +25,7 @@
     "@radix-ui/react-toast": "^1.2.2",
     "@tanstack/react-table": "^8.20.5",
     "aos": "^2.3.4",
+    "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.5.1",
